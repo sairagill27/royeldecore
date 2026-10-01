@@ -1,0 +1,293 @@
+ /* SGHomeTrends Global */
+:root {
+    --sgh-sage-green: #6B8F71;
+    --sgh-soft-ivory: #E8EFE6;
+    --sgh-off-white: #F7F7F5;
+    --sgh-forest-green: #3E5F46;
+    --sgh-warm-beige: #D9C9B6;
+    --sgh-text-main: #2E3A2F;
+    --sgh-text-muted: #64756A;
+    --sgh-border: #E3E5DF;
+}
+body {
+    background-color: var(--sgh-off-white);
+    color: var(--sgh-text-main);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+   /* SGHomeTrends Navbar */
+.navbar-sgh {
+    background-color: var(--sgh-off-white);
+    border-bottom: 1px solid var(--sgh-border);
+    min-height: 76px;
+}
+.sgh-logo {
+    width: auto;
+    height: 58px;
+    object-fit: contain;
+}
+.navbar-sgh .navbar-brand {
+    margin-right: 2.5rem;
+}
+.navbar-sgh .nav-link {
+    color: var(--sgh-text-main) !important;
+    font-size: 0.94rem;
+    font-weight: 500;
+    padding: 1.5rem 0.8rem !important;
+}
+.navbar-sgh .nav-link:hover {
+    color: var(--sgh-sage-green) !important;
+}
+.navbar-sgh .nav-ai {
+    color: var(--sgh-forest-green) !important;
+    font-weight: 600;
+}
+   /* Navbar Dropdown */
+.navbar-sgh .dropdown-menu {
+    background-color: #FFFFFF;
+    border: 1px solid var(--sgh-border);
+    border-radius: 12px;
+    padding: 0.6rem;
+    min-width: 220px;
+}
+.navbar-sgh .dropdown-item {
+    color: var(--sgh-text-main);
+    font-size: 0.9rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 7px;
+}
+.navbar-sgh .dropdown-item:hover {
+    background-color: var(--sgh-soft-ivory);
+    color: var(--sgh-forest-green);
+}
+   Header Actions
+.sgh-header-actions {
+    gap: 0.2rem;
+    margin-left: 1rem;
+}
+.sgh-icon-link {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--sgh-text-main);
+    text-decoration: none;
+    border-radius: 50%;
+
+    transition: all 0.2s ease;
+}
+.sgh-icon-link:hover {
+    background-color: var(--sgh-soft-ivory);
+    color: var(--sgh-forest-green);
+}
+.sgh-icon-link i {
+    font-size: 1.05rem;
+}
+   /* Navbar Responsive */
+@media (max-width: 991.98px) {
+    .navbar-sgh {
+        padding: 0.7rem 0;
+    }
+    .navbar-sgh .nav-link {
+        padding: 0.7rem 0 !important;
+    }
+    .sgh-header-actions {
+        margin-left: 0;
+        margin-top: 0.75rem;
+        padding-bottom: 0.5rem;
+    }
+}
+   /* SGHomeTrends Footer */
+.sgh-footer {
+    background-color: #3E5F46;
+    color: #F7F7F5;
+    padding: 4.5rem 0 1.5rem;
+}
+/* Brand */
+.sgh-footer-brand {
+    display: inline-block;
+    text-decoration: none;
+    margin-bottom: 1.2rem;
+}
+.sgh-footer-logo {
+    height: 52px;
+    width: auto;
+    object-fit: contain;
+    background-color: #FFFFFF;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+.sgh-footer-description {
+    color: #E8EFE6;
+    font-size: 0.92rem;
+    line-height: 1.8;
+    max-width: 360px;
+    margin-bottom: 1.5rem;
+}
+/* Footer Headings */
+.sgh-footer-title {
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+}
+/* Footer Links */
+.sgh-footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sgh-footer-links li {
+    margin-bottom: 0.7rem;
+}
+.sgh-footer-links a {
+    color: #E8EFE6;
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.2s ease;
+}
+.sgh-footer-links a:hover {
+    color: #D9C9B6;
+}
+/* Social Links */
+.sgh-social-links {
+    display: flex;
+    gap: 0.6rem;
+}
+.sgh-social-links a {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #F7F7F5;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+.sgh-social-links a:hover {
+    background-color: #6B8F71;
+    border-color: #6B8F71;
+    color: #FFFFFF;
+}
+.sgh-social-links i {
+    font-size: 0.95rem;
+}
+/* Newsletter */
+.sgh-footer-small-text {
+    color: #E8EFE6;
+    font-size: 0.84rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+.sgh-footer-newsletter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #F7F7F5;
+    color: #3E5F46;
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.sgh-footer-newsletter-btn:hover {
+    background-color: #D9C9B6;
+    color: #2E3A2F;
+}
+/* Footer Bottom */
+.sgh-footer-bottom {
+    margin-top: 3.5rem;
+    padding-top: 1.3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.sgh-footer-bottom p {
+    color: #DCE5DC;
+    font-size: 0.8rem;
+}
+.sgh-footer-bottom-links {
+    display: flex;
+    gap: 1.3rem;
+}
+.sgh-footer-bottom-links a {
+    color: #DCE5DC;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s ease;
+}
+.sgh-footer-bottom-links a:hover {
+    color: #FFFFFF;
+}
+/* Mobile */
+@media (max-width: 767.98px) {
+    .sgh-footer {
+        padding: 3.5rem 0 1.5rem;
+    }
+    .sgh-footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 2.5rem;
+    }
+    .sgh-footer-bottom-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+}
+
+/* =========================
+HOMEPAGE HERO
+========================= */
+
+.sgh-hero-image {
+height: 520px;
+object-fit: cover;
+}
+
+.sgh-hero .carousel-caption {
+left: 0;
+right: 0;
+bottom: 0;
+padding: 70px 20px 35px;
+background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+}
+
+.sgh-hero .carousel-caption h1,
+.sgh-hero .carousel-caption h2 {
+font-size: 2.2rem;
+font-weight: 600;
+}
+
+.sgh-hero .carousel-caption p {
+font-size: 1rem;
+}
+
+@media (max-width: 767px) {
+.sgh-hero-image {
+height: 400px;
+}
+
+
+.sgh-hero .carousel-caption h1,
+.sgh-hero .carousel-caption h2 {
+    font-size: 1.5rem;
+}
+
+.sgh-hero .carousel-caption p {
+    font-size: 0.85rem;
+}
+
+
+}
