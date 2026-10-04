@@ -1,344 +1,329 @@
-/* =====================================================
-   SGHomeTrends - style.css
-   Sections: 1 Colors | 2 Headings | 3 Buttons | 4 Header
-             5 Footer | 6 Accessibility
-   ===================================================== */
+ /* 1. BRAND COLORS (defined once, used everywhere) */
+ :root {
+    --sgh-sage: #6B8F71;
+    /* Primary Sage */
+    --sgh-soft-sage: #E8EFE6;
+    /* Soft Sage */
+    --sgh-ivory: #F7F7F5;
+    /* Ivory (page background) */
+    --sgh-forest: #3E5F46;
+    /* Forest Green */
+    --sgh-beige: #D9C9B6;
+    /* Warm Beige */
+    --sgh-charcoal: #2E3A2F;
+    /* Dark Charcoal (text) */
+    --sgh-muted: #64756A;
+    /* Muted Gray-Green */
 
+    /* Tell Bootstrap to use our colors instead of its blue */
+    --bs-primary: var(--sgh-sage);
+    --bs-primary-rgb: 107, 143, 113;
+    --bs-body-color: var(--sgh-charcoal);
+    --bs-body-bg: var(--sgh-ivory);
+    --bs-body-font-family: 'Inter', system-ui, sans-serif;
+    --bs-link-color: var(--sgh-forest);
+    --bs-link-hover-color: var(--sgh-sage);
+    --bs-secondary-color: var(--sgh-muted);
+ }
 
-/* =====================================================
-   1. BRAND COLORS (defined once, used everywhere)
-   ===================================================== */
-:root {
-   --sgh-sage: #6B8F71;
-   /* Primary Sage */
-   --sgh-soft-sage: #E8EFE6;
-   /* Soft Sage */
-   --sgh-ivory: #F7F7F5;
-   /* Ivory (page background) */
-   --sgh-forest: #3E5F46;
-   /* Forest Green */
-   --sgh-beige: #D9C9B6;
-   /* Warm Beige */
-   --sgh-charcoal: #2E3A2F;
-   /* Dark Charcoal (text) */
-   --sgh-muted: #64756A;
-   /* Muted Gray-Green */
+ /* 2. HEADINGS use the elegant serif font */
 
-   /* Tell Bootstrap to use our colors instead of its blue */
-   --bs-primary: var(--sgh-sage);
-   --bs-primary-rgb: 107, 143, 113;
-   --bs-body-color: var(--sgh-charcoal);
-   --bs-body-bg: var(--sgh-ivory);
-   --bs-body-font-family: 'Inter', system-ui, sans-serif;
-   --bs-link-color: var(--sgh-forest);
-   --bs-link-hover-color: var(--sgh-sage);
-   --bs-secondary-color: var(--sgh-muted);
-}
+ h1,
+ h2,
+ h3,
+ h4,
+ .navbar-brand {
+    font-family: 'Playfair Display', Georgia, serif;
+ }
 
+ /* 3. BUTTONS */
+ /* Filled green button (Register, Subscribe, Search) */
+ .btn-primary {
+    --bs-btn-bg: var(--sgh-sage);
+    --bs-btn-border-color: var(--sgh-sage);
+    --bs-btn-hover-bg: var(--sgh-forest);
+    --bs-btn-hover-border-color: var(--sgh-forest);
+    --bs-btn-active-bg: var(--sgh-forest);
+    --bs-btn-active-border-color: var(--sgh-forest);
+    --bs-btn-disabled-bg: var(--sgh-sage);
+    --bs-btn-disabled-border-color: var(--sgh-sage);
+ }
 
-/* =====================================================
-   2. HEADINGS use the elegant serif font
-   ===================================================== */
-h1,
-h2,
-h3,
-h4,
-.navbar-brand {
-   font-family: 'Playfair Display', Georgia, serif;
-}
+ /* Outline green button (Login) */
+ .btn-outline-primary {
+    --bs-btn-color: var(--sgh-forest);
+    --bs-btn-border-color: var(--sgh-sage);
+    --bs-btn-hover-bg: var(--sgh-sage);
+    --bs-btn-hover-border-color: var(--sgh-sage);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-bg: var(--sgh-forest);
+    --bs-btn-active-border-color: var(--sgh-forest);
+ }
 
+ /* 4. HEADER */
 
-/* =====================================================
-   3. BUTTONS
-   ===================================================== */
+ /* Soft shadow under the header */
+ .sgh-header {
+    box-shadow: 0 2px 12px rgba(46, 58, 47, 0.08);
+ }
 
-/* Filled green button (Register, Subscribe, Search) */
-.btn-primary {
-   --bs-btn-bg: var(--sgh-sage);
-   --bs-btn-border-color: var(--sgh-sage);
-   --bs-btn-hover-bg: var(--sgh-forest);
-   --bs-btn-hover-border-color: var(--sgh-forest);
-   --bs-btn-active-bg: var(--sgh-forest);
-   --bs-btn-active-border-color: var(--sgh-forest);
-   --bs-btn-disabled-bg: var(--sgh-sage);
-   --bs-btn-disabled-border-color: var(--sgh-sage);
-}
+ /* LOGO SIZE: change 56px to make it bigger or smaller */
+ .sgh-logo {
+    height: 56px;
+    width: auto;
+ }
 
-/* Outline green button (Login) */
-.btn-outline-primary {
-   --bs-btn-color: var(--sgh-forest);
-   --bs-btn-border-color: var(--sgh-sage);
-   --bs-btn-hover-bg: var(--sgh-sage);
-   --bs-btn-hover-border-color: var(--sgh-sage);
-   --bs-btn-hover-color: #fff;
-   --bs-btn-active-bg: var(--sgh-forest);
-   --bs-btn-active-border-color: var(--sgh-forest);
-}
+ /* Menu links: one line, brand colors */
+ .navbar .nav-link {
+    color: var(--sgh-charcoal);
+    font-weight: 500;
+    padding: 0.5rem 0.9rem;
+    white-space: nowrap;
+ }
 
+ .navbar .nav-link:hover,
+ .navbar .nav-link.active {
+    color: var(--sgh-sage);
+ }
 
-/* =====================================================
-   4. HEADER
-   ===================================================== */
+ /* Round icon buttons (search, cart, account) */
+ .sgh-icon-btn {
+    font-size: 1.25rem;
+    color: var(--sgh-charcoal);
+    border-radius: 50%;
+    padding: 0.4rem 0.6rem;
+ }
 
-/* Soft shadow under the header */
-.sgh-header {
-   box-shadow: 0 2px 12px rgba(46, 58, 47, 0.08);
-}
+ .sgh-icon-btn:hover {
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+ }
 
-/* LOGO SIZE: change 56px to make it bigger or smaller */
-.sgh-logo {
-   height: 56px;
-   width: auto;
-}
+ /* Dropdown boxes: rounded, no border, soft shadow */
+ .sgh-dropdown {
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(46, 58, 47, 0.15);
+    padding: 0.5rem;
+ }
 
-/* Menu links: one line, brand colors */
-.navbar .nav-link {
-   color: var(--sgh-charcoal);
-   font-weight: 500;
-   padding: 0.5rem 0.9rem;
-   white-space: nowrap;
-}
+ .sgh-dropdown .dropdown-item {
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+ }
 
-.navbar .nav-link:hover,
-.navbar .nav-link.active {
-   color: var(--sgh-sage);
-}
+ .sgh-dropdown .dropdown-item:hover {
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+ }
 
-/* Round icon buttons (search, cart, account) */
-.sgh-icon-btn {
-   font-size: 1.25rem;
-   color: var(--sgh-charcoal);
-   border-radius: 50%;
-   padding: 0.4rem 0.6rem;
-}
+ .dropdown-item:active {
+    background-color: var(--sgh-sage);
+ }
 
-.sgh-icon-btn:hover {
-   background: var(--sgh-soft-sage);
-   color: var(--sgh-forest);
-}
+ /* DESKTOP (992px and wider): open dropdowns on hover */
+ @media (min-width: 992px) {
+    .navbar .dropdown:hover>.dropdown-menu {
+       display: block;
+       margin-top: 0;
+    }
+ }
 
-/* Dropdown boxes: rounded, no border, soft shadow */
-.sgh-dropdown {
-   border: 0;
-   border-radius: 12px;
-   box-shadow: 0 10px 30px rgba(46, 58, 47, 0.15);
-   padding: 0.5rem;
-}
-
-.sgh-dropdown .dropdown-item {
-   border-radius: 8px;
-   padding: 0.5rem 1rem;
-}
-
-.sgh-dropdown .dropdown-item:hover {
-   background: var(--sgh-soft-sage);
-   color: var(--sgh-forest);
-}
-
-.dropdown-item:active {
-   background-color: var(--sgh-sage);
-}
-
-/* DESKTOP (992px and wider): open dropdowns on hover */
-@media (min-width: 992px) {
-   .navbar .dropdown:hover>.dropdown-menu {
-      display: block;
-      margin-top: 0;
-   }
-}
-
-/* MEDIUM LAPTOPS (992px to 1399px): make the header more compact
+ /* MEDIUM LAPTOPS (992px to 1399px): make the header more compact
    so the full menu fits on one line */
-@media (min-width: 992px) and (max-width: 1399.98px) {
-   .sgh-logo {
-      height: 48px;
-   }
+ @media (min-width: 992px) and (max-width: 1399.98px) {
+    .sgh-logo {
+       height: 48px;
+    }
 
-   .navbar .nav-link {
-      padding: 0.5rem 0.55rem;
-      font-size: 0.92rem;
-   }
+    .navbar .nav-link {
+       padding: 0.5rem 0.55rem;
+       font-size: 0.92rem;
+    }
 
-   .navbar .btn {
-      font-size: 0.92rem;
-   }
-}
+    .navbar .btn {
+       font-size: 0.92rem;
+    }
+ }
 
-/* MOBILE / TABLET (below 992px) */
-@media (max-width: 991.98px) {
-   .sgh-logo {
-      height: 48px;
-   }
+ /* MOBILE / TABLET (below 992px) */
+ @media (max-width: 991.98px) {
+    .sgh-logo {
+       height: 48px;
+    }
 
-   /* If the open menu is taller than the screen,
+    /* If the open menu is taller than the screen,
        it scrolls inside itself instead of the whole page */
-   .navbar-collapse {
-      max-height: calc(100vh - 90px);
-      overflow-y: auto;
-   }
-}
+    .navbar-collapse {
+       max-height: calc(100vh - 90px);
+       overflow-y: auto;
+    }
+ }
 
-/* GREEN FOCUS GLOW (replaces Bootstrap's blue) for inputs and buttons */
-.form-control:focus {
-   border-color: var(--sgh-sage);
-   box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.25);
-}
+ /* GREEN FOCUS GLOW (replaces Bootstrap's blue) for inputs and buttons */
+ .form-control:focus {
+    border-color: var(--sgh-sage);
+    box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.25);
+ }
 
-.btn:focus-visible,
-.btn-check:focus-visible+.btn {
-   box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.35);
-}
+ .btn:focus-visible,
+ .btn-check:focus-visible+.btn {
+    box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.35);
+ }
 
-.btn-primary,
-.btn-outline-primary {
-   --bs-btn-focus-shadow-rgb: 107, 143, 113;
-}
+ .btn-primary,
+ .btn-outline-primary {
+    --bs-btn-focus-shadow-rgb: 107, 143, 113;
+ }
 
-.navbar-toggler:focus {
-   box-shadow: 0 0 0 0.2rem rgba(107, 143, 113, 0.35);
-}
+ .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(107, 143, 113, 0.35);
+ }
 
-/* =====================================================
+ /* =====================================================
    5. FOOTER
    ===================================================== */
 
-/* FOOTER BACKGROUND: change this one color to make it lighter or darker.
+ /* FOOTER BACKGROUND: change this one color to make it lighter or darker.
    Lighter: #4C7054   Darker: #2E3A2F (old color) */
-.sgh-footer {
-   background: #2F4936;
-   color: #E8EFE6;
-}
+ .sgh-footer {
+    background: #2F4936;
+    color: #E8EFE6;
+ }
 
-/* Footer links */
-.sgh-footer a {
-   color: #E8EFE6;
-   text-decoration: none;
-}
+ /* Footer links */
+ .sgh-footer a {
+    color: #E8EFE6;
+    text-decoration: none;
+ }
 
-.sgh-footer a:hover {
-   color: var(--sgh-beige);
-   text-decoration: underline;
-}
+ .sgh-footer a:hover {
+    color: var(--sgh-beige);
+    text-decoration: underline;
+ }
 
-/* Column headings */
-.sgh-footer-title {
-   color: #fff;
-   font-family: 'Inter', system-ui, sans-serif;
-   font-weight: 600;
-   letter-spacing: 0.04em;
-   text-transform: uppercase;
-   margin-bottom: 1rem;
-}
+ /* Column headings */
+ .sgh-footer-title {
+    color: #fff;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+ }
 
-.sgh-footer li {
-   margin-bottom: 0.45rem;
-}
+ .sgh-footer li {
+    margin-bottom: 0.45rem;
+ }
 
-/* Newsletter strip: slightly darker band with a thin line below */
-.sgh-footer-newsletter {
-   background: rgba(0, 0, 0, 0.12);
-   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
+ /* Newsletter strip: slightly darker band with a thin line below */
+ .sgh-footer-newsletter {
+    background: rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+ }
 
-/* White rounded box behind the logo */
-.sgh-footer-logo-box {
-   background: #fff;
-   border-radius: 12px;
-   padding: 0.5rem 0.9rem;
-}
+ /* White rounded box behind the logo */
+ .sgh-footer-logo-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 0.5rem 0.9rem;
+ }
 
-/* Round social icon buttons */
-.sgh-social {
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
-   width: 40px;
-   height: 40px;
-   border-radius: 50%;
-   background: rgba(255, 255, 255, 0.12);
-   font-size: 1.1rem;
-   transition: background 0.2s;
-}
+ /* Round social icon buttons */
+ .sgh-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 1.1rem;
+    transition: background 0.2s;
+ }
 
-.sgh-footer a.sgh-social:hover {
-   background: var(--sgh-beige);
-   color: var(--sgh-charcoal);
-   text-decoration: none;
-}
+ .sgh-footer a.sgh-social:hover {
+    background: var(--sgh-beige);
+    color: var(--sgh-charcoal);
+    text-decoration: none;
+ }
 
-/* Bottom bar: thin line above, slightly darker background */
-.sgh-footer-bottom {
-   background: rgba(0, 0, 0, 0.12);
-   border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
+ /* Bottom bar: thin line above, slightly darker background */
+ .sgh-footer-bottom {
+    background: rgba(0, 0, 0, 0.12);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+ }
 
-.sgh-footer-bottom .list-inline-item:not(:last-child) {
-   margin-right: 1rem;
-}
-
-
+ .sgh-footer-bottom .list-inline-item:not(:last-child) {
+    margin-right: 1rem;
+ }
 
 
-/* =====================================================
+
+
+ /* =====================================================
    6. ACCESSIBILITY: visible outline for keyboard users
    ===================================================== */
-:focus-visible {
-   outline: 3px solid var(--sgh-sage);
-   outline-offset: 2px;
-}
+ :focus-visible {
+    outline: 3px solid var(--sgh-sage);
+    outline-offset: 2px;
+ }
 
-/* =====================================================
+ /* =====================================================
    7. HOME: HERO SECTION
    ===================================================== */
 
-/* Soft sage background with comfortable spacing */
-.sgh-hero {
-   background: var(--sgh-soft-sage);
-   padding: 3rem 0;
-}
+ /* Soft sage background with comfortable spacing */
+ .sgh-hero {
+    background: var(--sgh-soft-sage);
+    padding: 3rem 0;
+ }
 
-@media (min-width: 992px) {
-   .sgh-hero {
-      padding: 5rem 0;
-   }
-}
+ @media (min-width: 992px) {
+    .sgh-hero {
+       padding: 5rem 0;
+    }
+ }
 
-/* Small uppercase label above the heading */
-.sgh-eyebrow {
-   color: var(--sgh-forest);
-   font-weight: 600;
-   font-size: 0.85rem;
-   letter-spacing: 0.14em;
-   text-transform: uppercase;
-}
+ /* Small uppercase label above the heading */
+ .sgh-eyebrow {
+    color: var(--sgh-forest);
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+ }
 
-/* Heading: grows and shrinks smoothly with the screen width */
-.sgh-hero-title {
-   font-size: clamp(2.2rem, 4.5vw, 3.6rem);
-   line-height: 1.15;
-   font-weight: 700;
-   color: var(--sgh-charcoal);
-}
+ /* Heading: grows and shrinks smoothly with the screen width */
+ .sgh-hero-title {
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    line-height: 1.15;
+    font-weight: 700;
+    color: var(--sgh-charcoal);
+ }
 
-.sgh-hero-accent {
-   color: var(--sgh-sage);
-   font-style: italic;
-}
+ .sgh-hero-accent {
+    color: var(--sgh-sage);
+    font-style: italic;
+ }
 
-/* Image: fixed height, cropped neatly, rounded corners */
-.sgh-hero-img {
+ /* Image: fixed height, cropped neatly, rounded corners */
+ .sgh-hero-img {
     width: 100%;
     height: 300px;
     object-fit: cover;
     border-radius: 24px;
     box-shadow: 0 20px 50px rgba(46, 58, 47, 0.18);
-}
-@media (min-width: 992px) {
-    .sgh-hero-img { height: 360px; }
-}
+ }
 
-/* Budget Planner card: sits under the picture, not on top of it */
-.sgh-hero-card {
+ @media (min-width: 992px) {
+    .sgh-hero-img {
+       height: 360px;
+    }
+ }
+
+ /* Budget Planner card: sits under the picture, not on top of it */
+ .sgh-hero-card {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -349,11 +334,13 @@ h4,
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(46, 58, 47, 0.10);
     transition: transform 0.2s;
-}
-.sgh-hero-card:hover {
+ }
+
+ .sgh-hero-card:hover {
     transform: translateY(-3px);
-}
-.sgh-hero-card-icon {
+ }
+
+ .sgh-hero-card-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -363,11 +350,79 @@ h4,
     background: var(--sgh-soft-sage);
     color: var(--sgh-forest);
     font-size: 1.2rem;
-}
- 
-/* Keep the floating card inside the screen on tablets */
-@media (max-width: 1199.98px) {
-   .sgh-hero-card {
-      left: 1rem;
-   }
-}
+ }
+
+ /* Keep the floating card inside the screen on tablets */
+ @media (max-width: 1199.98px) {
+    .sgh-hero-card {
+       left: 1rem;
+    }
+ }
+
+ /* =====================================================
+   8. HOME: FEATURED CATEGORIES
+   ===================================================== */
+
+ /* General spacing for every homepage section (reused later) */
+ .sgh-section {
+    padding: 3.5rem 0;
+ }
+
+ @media (min-width: 992px) {
+    .sgh-section {
+       padding: 5rem 0;
+    }
+ }
+
+ /* Section heading (reused later) */
+ .sgh-section-title {
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 700;
+    color: var(--sgh-charcoal);
+ }
+
+ /* Category card: white box, rounded, lifts on hover */
+ .sgh-cat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.75rem 1rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 18px;
+    text-decoration: none;
+    color: var(--sgh-charcoal);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+ }
+
+ .sgh-cat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(46, 58, 47, 0.12);
+    border-color: var(--sgh-sage);
+    color: var(--sgh-forest);
+ }
+
+ /* Round icon circle */
+ .sgh-cat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+    font-size: 1.8rem;
+    transition: background 0.2s, color 0.2s;
+ }
+
+ .sgh-cat-card:hover .sgh-cat-icon {
+    background: var(--sgh-sage);
+    color: #fff;
+ }
+
+ .sgh-cat-name {
+    font-weight: 600;
+    text-align: center;
+ }
