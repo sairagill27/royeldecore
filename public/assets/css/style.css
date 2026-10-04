@@ -426,3 +426,62 @@
     font-weight: 600;
     text-align: center;
  }
+
+ /* =====================================================
+   9. PRODUCT CARD + FEATURED PRODUCTS
+   ===================================================== */
+
+ .sgh-product-card {
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+ }
+
+ .sgh-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(46, 58, 47, 0.12);
+ }
+
+ /* Square image area; shows the placeholder icon when there is no photo */
+ .sgh-product-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-sage);
+    font-size: 3rem;
+    text-decoration: none;
+ }
+
+ .sgh-product-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+ }
+
+ .sgh-product-name {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+ }
+
+ .sgh-product-name a:hover {
+    color: var(--sgh-sage) !important;
+ }
+
+ /* Stock badges */
+ .sgh-badge-ok {
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+ }
+
+ .sgh-badge-low {
+    background: #f6ead2;
+    color: #7a5a14;
+ }
+
+ .sgh-badge-out {
+    background: #f1dcdc;
+    color: #8a2f2f;
+ }

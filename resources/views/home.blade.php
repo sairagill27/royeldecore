@@ -10,6 +10,9 @@
 
 {{-- More sections (categories, products, blog...) will be added here later --}}
 
+    {{-- Section 3: Featured Products --}}
+    @include('home.products')
+    
 @endsection
 
   
