@@ -16,7 +16,7 @@
         <p class="text-secondary">Featured products will appear here soon.</p>
         @else
         {{-- 1 per row on small phones, 2 on phones/tablets, 4 on large screens --}}
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3 g-lg-4">
+        <div class="row row-cols-2 row-cols-lg-4 g-2 g-md-3 g-lg-4">
             @foreach ($featuredProducts as $product)
             <div class="col">
                 <x-product-card :product="$product" />

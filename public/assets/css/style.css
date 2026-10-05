@@ -428,22 +428,32 @@
  }
 
  /* =====================================================
-   9. PRODUCT CARD + FEATURED PRODUCTS
+   9. PRODUCT CARD (compact)
    ===================================================== */
-
  .sgh-product-card {
     border: 1px solid rgba(107, 143, 113, 0.18);
-    border-radius: 18px;
+    border-radius: 14px;
     overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
  }
 
  .sgh-product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 30px rgba(46, 58, 47, 0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px rgba(46, 58, 47, 0.12);
  }
 
- /* Square image area; shows the placeholder icon when there is no photo */
+ .sgh-product-card .card-body {
+    padding: 0.7rem;
+    gap: 0.2rem;
+ }
+
+ @media (min-width: 768px) {
+    .sgh-product-card .card-body {
+       padding: 0.9rem;
+    }
+ }
+
+ /* Square image area (a little smaller on every screen) */
  .sgh-product-media {
     display: flex;
     align-items: center;
@@ -451,7 +461,7 @@
     aspect-ratio: 1 / 1;
     background: var(--sgh-soft-sage);
     color: var(--sgh-sage);
-    font-size: 3rem;
+    font-size: 2.2rem;
     text-decoration: none;
  }
 
@@ -461,16 +471,43 @@
     object-fit: cover;
  }
 
- .sgh-product-name {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-weight: 600;
+ .sgh-product-cat {
+    color: var(--sgh-muted);
+    font-size: 0.72rem;
  }
+
+ /* Name: max 2 lines so all cards keep the same height */
+.sgh-product-name {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.7em;
+}
 
  .sgh-product-name a:hover {
     color: var(--sgh-sage) !important;
  }
 
+ .sgh-price {
+    font-weight: 700;
+    color: var(--sgh-forest);
+    margin: 0.15rem 0 0.3rem;
+ }
+
  /* Stock badges */
+ .sgh-product-card .badge {
+    font-size: 0.68rem;
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+ }
+
  .sgh-badge-ok {
     background: var(--sgh-soft-sage);
     color: var(--sgh-forest);
@@ -484,4 +521,140 @@
  .sgh-badge-out {
     background: #f1dcdc;
     color: #8a2f2f;
+ }
+
+
+ /* =====================================================
+   10. SHOP PAGE
+   ===================================================== */
+
+ /* Height of the sticky header. Change if you change the logo size. */
+ :root {
+    --sgh-header-h: 90px;
+ }
+
+ .sgh-shop-banner {
+    background: var(--sgh-soft-sage);
+    padding: 1.5rem 0;
+ }
+
+ @media (min-width: 992px) {
+    .sgh-shop-banner {
+       padding: 2rem 0;
+    }
+ }
+
+ .sgh-shop-banner .breadcrumb {
+    --bs-breadcrumb-divider-color: var(--sgh-muted);
+ }
+
+ /* Products column may shrink instead of pushing the page wider */
+ .sgh-products-col {
+    min-width: 0;
+ }
+
+ /* ---------- FILTER PANEL (desktop): wide, left edge, sticky ---------- */
+ @media (min-width: 992px) {
+    .sgh-sidebar-col {
+       width: 300px;
+    }
+
+    .sgh-sidebar {
+       position: sticky;
+       top: calc(var(--sgh-header-h) + 16px);
+       max-height: calc(100vh - var(--sgh-header-h) - 32px);
+       overflow-y: auto;
+       padding-right: 4px;
+       scrollbar-width: thin;
+    }
+ }
+
+ @media (min-width: 1400px) {
+    .sgh-sidebar-col {
+       width: 320px;
+    }
+ }
+
+ .sgh-filter-box {
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 16px;
+    padding: 1.1rem 1.25rem;
+ }
+
+ .sgh-filter-title {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sgh-muted);
+    margin-bottom: 0.75rem;
+ }
+
+ .sgh-filter-link {
+    display: block;
+    padding: 0.45rem 0.7rem;
+    border-radius: 10px;
+    color: var(--sgh-charcoal);
+    text-decoration: none;
+    transition: background 0.15s;
+ }
+
+ .sgh-filter-link:hover {
+    background: var(--sgh-soft-sage);
+ }
+
+ .sgh-filter-link.active {
+    background: var(--sgh-sage);
+    color: #fff;
+    font-weight: 600;
+ }
+
+ /* Green switch */
+ .form-check-input:checked {
+    background-color: var(--sgh-sage);
+    border-color: var(--sgh-sage);
+ }
+
+ .form-check-input:focus {
+    border-color: var(--sgh-sage);
+    box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.25);
+ }
+
+ .sgh-toolbar {
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(107, 143, 113, 0.2);
+ }
+
+ .sgh-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+ }
+
+ .sgh-chip:hover {
+    background: var(--sgh-sage);
+    color: #fff;
+ }
+
+ .sgh-empty {
+    background: #fff;
+    border: 1px dashed rgba(107, 143, 113, 0.4);
+    border-radius: 16px;
+    padding: 3rem 1rem;
+ }
+
+ .pagination {
+    --bs-pagination-active-bg: var(--sgh-sage);
+    --bs-pagination-active-border-color: var(--sgh-sage);
+    --bs-pagination-color: var(--sgh-forest);
+    --bs-pagination-hover-color: var(--sgh-forest);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.25);
  }
