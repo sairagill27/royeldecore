@@ -477,7 +477,7 @@
  }
 
  /* Name: max 2 lines so all cards keep the same height */
-.sgh-product-name {
+ .sgh-product-name {
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.88rem;
     font-weight: 600;
@@ -489,7 +489,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     min-height: 2.7em;
-}
+ }
 
  .sgh-product-name a:hover {
     color: var(--sgh-sage) !important;
@@ -533,20 +533,7 @@
     --sgh-header-h: 90px;
  }
 
- .sgh-shop-banner {
-    background: var(--sgh-soft-sage);
-    padding: 1.5rem 0;
- }
 
- @media (min-width: 992px) {
-    .sgh-shop-banner {
-       padding: 2rem 0;
-    }
- }
-
- .sgh-shop-banner .breadcrumb {
-    --bs-breadcrumb-divider-color: var(--sgh-muted);
- }
 
  /* Products column may shrink instead of pushing the page wider */
  .sgh-products-col {
@@ -657,4 +644,123 @@
     --bs-pagination-color: var(--sgh-forest);
     --bs-pagination-hover-color: var(--sgh-forest);
     --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.25);
+ }
+
+ /* =====================================================
+   11. SHOP HERO BANNER
+   ===================================================== */
+
+ /* Soft gradient background with two faint circles for depth */
+ .sgh-shop-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 1.75rem 0 1.5rem;
+    background: linear-gradient(135deg, var(--sgh-soft-sage) 0%, #f3f6f1 55%, var(--sgh-ivory) 100%);
+    border-bottom: 1px solid rgba(107, 143, 113, 0.2);
+ }
+
+ .sgh-shop-hero::before,
+ .sgh-shop-hero::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+ }
+
+ .sgh-shop-hero::before {
+    width: 320px;
+    height: 320px;
+    right: -80px;
+    top: -140px;
+    background: radial-gradient(circle, rgba(107, 143, 113, 0.22), transparent 70%);
+ }
+
+ .sgh-shop-hero::after {
+    width: 220px;
+    height: 220px;
+    right: 22%;
+    bottom: -120px;
+    background: radial-gradient(circle, rgba(217, 201, 182, 0.55), transparent 70%);
+ }
+
+ @media (min-width: 992px) {
+    .sgh-shop-hero {
+       padding: 2.5rem 0 2rem;
+    }
+ }
+
+ .sgh-shop-hero .breadcrumb {
+    --bs-breadcrumb-divider-color: var(--sgh-muted);
+ }
+
+ .sgh-shop-hero-text {
+    max-width: 640px;
+ }
+
+ .sgh-shop-hero-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--sgh-charcoal);
+ }
+
+ /* Product count badge */
+ .sgh-shop-count {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.25);
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+    box-shadow: 0 4px 14px rgba(46, 58, 47, 0.06);
+    color: var(--sgh-muted);
+    font-size: 0.9rem;
+ }
+
+ .sgh-shop-count strong {
+    color: var(--sgh-forest);
+    font-size: 1.15rem;
+ }
+
+ /* Category pills: one scrollable row */
+ .sgh-pills {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+    /* hide scrollbar (Firefox) */
+ }
+
+ .sgh-pills::-webkit-scrollbar {
+    display: none;
+ }
+
+ /* hide scrollbar (Chrome) */
+
+ .sgh-pill {
+    flex: 0 0 auto;
+    padding: 0.45rem 1.1rem;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.28);
+    color: var(--sgh-charcoal);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+ }
+
+ .sgh-pill:hover {
+    background: var(--sgh-soft-sage);
+    border-color: var(--sgh-sage);
+    color: var(--sgh-forest);
+ }
+
+ .sgh-pill.active {
+    background: var(--sgh-forest);
+    border-color: var(--sgh-forest);
+    color: #fff;
  }
