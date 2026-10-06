@@ -764,3 +764,93 @@
     border-color: var(--sgh-forest);
     color: #fff;
  }
+
+
+ /* =====================================================
+   12. PRODUCT DETAILS PAGE
+   ===================================================== */
+
+ /* Image box: square, never wider than 520px, rounded */
+ .sgh-detail-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    max-width: 520px;
+    background: var(--sgh-soft-sage);
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 20px;
+    overflow: hidden;
+    color: var(--sgh-sage);
+    font-size: 4rem;
+ }
+
+ .sgh-detail-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+ }
+
+ .sgh-detail-title {
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    font-weight: 700;
+    line-height: 1.2;
+ }
+
+ .sgh-detail-price {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--sgh-forest);
+ }
+
+ /* Quantity selector: [ − 1 + ] */
+ .sgh-qty {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(107, 143, 113, 0.4);
+    border-radius: 999px;
+    background: #fff;
+    overflow: hidden;
+ }
+
+ .sgh-qty button {
+    width: 42px;
+    height: 46px;
+    border: 0;
+    background: transparent;
+    font-size: 1.2rem;
+    color: var(--sgh-forest);
+ }
+
+ .sgh-qty input {
+    width: 52px;
+    height: 46px;
+    border: 0;
+    text-align: center;
+    font-weight: 600;
+    background: transparent;
+    -moz-appearance: textfield;
+    appearance: textfield;
+ }
+
+ .sgh-qty input::-webkit-outer-spin-button,
+ .sgh-qty input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+ }
+
+ .sgh-qty input:focus {
+    outline: none;
+ }
+
+ .sgh-qty:focus-within {
+    box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.25);
+ }
+
+ /* Sections under the product (description, related) */
+ .sgh-detail-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(107, 143, 113, 0.2);
+ }
