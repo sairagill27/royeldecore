@@ -924,3 +924,21 @@
        top: calc(var(--sgh-header-h) + 16px);
     }
  }
+
+ /* =====================================================
+   14. LOGIN / REGISTER
+   ===================================================== */
+ .sgh-auth-card {
+    max-width: 440px;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 12px 34px rgba(46, 58, 47, 0.08);
+ }
+
+ @media (min-width: 576px) {
+    .sgh-auth-card {
+       padding: 2.5rem;
+    }
+ }
