@@ -38,6 +38,15 @@
     {{-- MAIN CONTENT: each page (like home) puts its content here --}}
     <main id="main-content">
         @yield('content')
+        {{-- MESSAGES: shown after adding, removing or updating the cart --}}
+        @if (session('success') || session('error'))
+        <div class="container mt-3">
+            <div class="alert alert-{{ session('success') ? 'success' : 'danger' }} alert-dismissible fade show mb-0" role="alert">
+                {{ session('success') ?? session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        @endif
     </main>
 
     {{-- FOOTER: loads resources/views/components/footer.blade.php --}}

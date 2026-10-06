@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 {{-- SEO: the page title and description come from the product --}}
-@section('title', ($product->seo_title ?: $product->name) . ' | SGHomeTrends')
+@section('title', ($product->seo_title ?: $product->name) . ' | ' . config('app.name'))
 @section('meta_description', $product->meta_description ?: \Illuminate\Support\Str::limit(strip_tags($product->description), 150))
 
 @section('content')
@@ -33,7 +33,6 @@ $inStock = $product->stock > 0;
         <div class="col-md-6">
             <div class="sgh-detail-media">
                 @if ($product->image)
-                {{-- eager: this is the main image at the top, so load it right away --}}
                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                     width="800" height="800" loading="eager" fetchpriority="high">
                 @else
@@ -56,7 +55,6 @@ $inStock = $product->stock > 0;
 
             <p class="sgh-detail-price mb-3">{{ $currency }} {{ number_format($product->price) }}</p>
 
-            {{-- Stock status --}}
             @if ($product->stock > 5)
             <span class="badge sgh-badge-ok mb-3"><i class="bi bi-check-circle me-1"></i>In stock</span>
             @elseif ($inStock)
@@ -65,27 +63,27 @@ $inStock = $product->stock > 0;
             <span class="badge sgh-badge-out mb-3"><i class="bi bi-x-circle me-1"></i>Out of stock</span>
             @endif
 
-            {{-- Short description (first 200 characters) --}}
             <p class="text-secondary">{{ \Illuminate\Support\Str::limit(strip_tags($product->description), 200) }}</p>
 
-            {{-- QUANTITY + ADD TO CART --}}
-            <div class="d-flex flex-wrap align-items-center gap-3 my-4">
+            {{-- ADD TO CART FORM.
+                 @csrf = security token. We send only the product id and quantity;
+                 the price is always read from the database, never from the browser. --}}
+            <form action="{{ route('cart.add') }}" method="POST" class="d-flex flex-wrap align-items-center gap-3 my-4">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                <div class="sgh-qty" @if(!$inStock) aria-disabled="true" @endif>
+                <div class="sgh-qty">
                     <button type="button" id="qtyMinus" aria-label="Decrease quantity" @disabled(!$inStock)>−</button>
-                    {{-- max = stock, so nobody can pick more than we have --}}
-                    <input type="number" id="qty" value="1" min="1" max="{{ max($product->stock, 1) }}"
+                    <input type="number" name="quantity" id="qty" value="1" min="1" max="{{ max($product->stock, 1) }}"
                         aria-label="Quantity" @disabled(!$inStock)>
                     <button type="button" id="qtyPlus" aria-label="Increase quantity" @disabled(!$inStock)>+</button>
                 </div>
 
-                {{-- This button is wired to the cart in the Cart step --}}
-                <button type="button" class="btn btn-primary btn-lg rounded-pill px-5" @disabled(!$inStock)>
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5" @disabled(!$inStock)>
                     <i class="bi bi-bag-plus me-2"></i>{{ $inStock ? 'Add to Cart' : 'Out of stock' }}
                 </button>
-            </div>
+            </form>
 
-            {{-- Small details --}}
             <ul class="list-unstyled small text-secondary border-top pt-3 mb-0">
                 @if ($product->sku)
                 <li class="mb-1"><strong class="text-body">SKU:</strong> {{ $product->sku }}</li>
@@ -101,7 +99,7 @@ $inStock = $product->stock > 0;
     {{-- ============ DESCRIPTION ============ --}}
     <div class="sgh-detail-section">
         <h2 class="h4 mb-3">Description</h2>
-        {{-- nl2br + e(): keeps line breaks but still blocks any HTML (safe) --}}
+        {{-- e() blocks any HTML, nl2br keeps line breaks (safe) --}}
         <div class="text-secondary">{!! nl2br(e($product->description)) !!}</div>
     </div>
 
@@ -120,7 +118,7 @@ $inStock = $product->stock > 0;
     @endif
 </div>
 
-{{-- Tiny script: the + and − buttons change the quantity (never below 1 or above stock) --}}
+{{-- The + and − buttons change the quantity (never below 1 or above stock) --}}
 <script>
     (function() {
         var input = document.getElementById('qty');

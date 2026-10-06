@@ -76,8 +76,10 @@
                     {{-- CART: the number "0" is fixed for now; we make it live later --}}
                     <a href="{{ url('/cart') }}" class="btn sgh-icon-btn position-relative" aria-label="Shopping cart">
                         <i class="bi bi-bag"></i>
-                        <span class="badge rounded-pill bg-primary position-absolute top-0 start-100 translate-middle">0</span>
-                    </a>
+                        @php $cartCount = (int) array_sum(session('cart', [])); @endphp
+                        @if ($cartCount > 0)
+                        <span class="badge rounded-pill bg-primary position-absolute top-0 start-100 translate-middle">{{ $cartCount }}</span>
+                        @endif
                     {{-- Visitors NOT logged in: two buttons with a gap between them --}}
                     @guest
                     <div class="d-flex gap-2 ms-lg-2">
