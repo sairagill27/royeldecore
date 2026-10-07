@@ -6,6 +6,8 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Account\OrderController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -39,3 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::view('/account', 'account.index')->name('account');
 });
+
+// CHECKOUT (login required). throttle: max 10 order attempts per minute.
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
+
+// MY ORDERS
+Route::get('/account/orders', [OrderController::class, 'index'])->name('account.orders');
+Route::get('/account/orders/{order:order_number}', [OrderController::class, 'show'])->name('account.orders.show');

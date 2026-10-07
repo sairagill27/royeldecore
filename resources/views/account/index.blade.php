@@ -13,7 +13,8 @@
         <div class="col">
             <div class="sgh-filter-box h-100">
                 <h2 class="h6">My orders</h2>
-                <p class="small text-secondary mb-0">Your order history will appear here.</p>
+                <p class="small text-secondary mb-2">See your orders and their status.</p>
+                <a href="{{ route('account.orders') }}" class="small fw-semibold">View my orders <i class="bi bi-arrow-right"></i></a>
             </div>
         </div>
         <div class="col">

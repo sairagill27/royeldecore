@@ -942,3 +942,223 @@
        padding: 2.5rem;
     }
  }
+
+ /* =====================================================
+   15. CHECKOUT + ORDERS
+   ===================================================== */
+
+ /* Generic white card */
+ .sgh-card {
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 16px;
+    padding: 1.25rem;
+ }
+
+ @media (min-width: 768px) {
+    .sgh-card {
+       padding: 1.5rem;
+    }
+ }
+
+ /* Numbered card heading */
+ .sgh-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+ }
+
+ .sgh-card-title>span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+    font-size: 0.8rem;
+ }
+
+ /* Progress steps: Cart > Checkout > Order placed */
+ .sgh-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    font-size: 0.9rem;
+    color: var(--sgh-muted);
+ }
+
+ .sgh-steps li {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+ }
+
+ .sgh-steps li>span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid rgba(107, 143, 113, 0.4);
+    font-size: 0.75rem;
+ }
+
+ .sgh-steps li.done>span {
+    background: var(--sgh-sage);
+    border-color: var(--sgh-sage);
+    color: #fff;
+ }
+
+ .sgh-steps li.active {
+    color: var(--sgh-forest);
+    font-weight: 600;
+ }
+
+ .sgh-steps li.active>span {
+    background: var(--sgh-forest);
+    border-color: var(--sgh-forest);
+    color: #fff;
+ }
+
+ /* Payment option box */
+ .sgh-pay-option {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+    border: 2px solid var(--sgh-sage);
+    border-radius: 12px;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+ }
+
+ .sgh-pay-option>i:first-child {
+    font-size: 1.5rem;
+ }
+
+ /* Small product rows in the checkout summary */
+ .sgh-mini-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+ }
+
+ .sgh-mini-thumb {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-sage);
+ }
+
+ .sgh-mini-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+ }
+
+ .sgh-mini-qty {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--sgh-forest);
+    color: #fff;
+    font-size: 0.7rem;
+    line-height: 20px;
+    text-align: center;
+ }
+
+ /* Order rows on "My orders" */
+ .sgh-order-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    text-decoration: none;
+    color: var(--sgh-charcoal);
+    transition: box-shadow 0.2s, border-color 0.2s;
+ }
+
+ .sgh-order-row:hover {
+    border-color: var(--sgh-sage);
+    box-shadow: 0 8px 22px rgba(46, 58, 47, 0.1);
+    color: var(--sgh-charcoal);
+ }
+
+ /* Status badges */
+ .sgh-status {
+    display: inline-block;
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+ }
+
+ .sgh-status-pending {
+    background: #f6ead2;
+    color: #7a5a14;
+ }
+
+ .sgh-status-confirmed,
+ .sgh-status-processing {
+    background: #dde8f3;
+    color: #2c4a6b;
+ }
+
+ .sgh-status-shipped {
+    background: #e3eadf;
+    color: #3E5F46;
+ }
+
+ .sgh-status-delivered {
+    background: var(--sgh-forest);
+    color: #fff;
+ }
+
+ .sgh-status-cancelled,
+ .sgh-status-refunded {
+    background: #f1dcdc;
+    color: #8a2f2f;
+ }
+
+ /* "Order placed" message */
+ .sgh-success {
+    background: var(--sgh-soft-sage);
+    border: 1px solid rgba(107, 143, 113, 0.3);
+    border-radius: 20px;
+    padding: 2rem 1rem;
+ }
+
+ .sgh-success>i {
+    font-size: 3rem;
+    color: var(--sgh-sage);
+ }
