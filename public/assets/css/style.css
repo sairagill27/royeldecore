@@ -965,7 +965,7 @@ h4,
    15. CHECKOUT + ORDERS
    ===================================================== */
 
-/* Generic white card */
+/* White card (used on checkout and order pages) */
 .sgh-card {
    background: #fff;
    border: 1px solid rgba(107, 143, 113, 0.18);
@@ -979,7 +979,7 @@ h4,
    }
 }
 
-/* Numbered card heading */
+/* Card heading with a numbered circle */
 .sgh-card-title {
    display: flex;
    align-items: center;
@@ -1048,7 +1048,7 @@ h4,
    color: #fff;
 }
 
-/* Payment option box */
+/* Payment option box (Cash on delivery) */
 .sgh-pay-option {
    display: flex;
    align-items: center;
@@ -1107,13 +1107,13 @@ h4,
    text-align: center;
 }
 
-/* Order rows on "My orders" */
+/* One order row on "My orders" */
 .sgh-order-row {
    display: flex;
    flex-wrap: wrap;
    align-items: center;
-   gap: 0.5rem 1.25rem;
    justify-content: space-between;
+   gap: 0.5rem 1.25rem;
    background: #fff;
    border: 1px solid rgba(107, 143, 113, 0.18);
    border-radius: 14px;
@@ -1130,7 +1130,7 @@ h4,
    color: var(--sgh-charcoal);
 }
 
-/* Status badges */
+/* Status badges: each status has its own colour */
 .sgh-status {
    display: inline-block;
    padding: 0.2rem 0.75rem;
@@ -1168,7 +1168,7 @@ h4,
    color: #8a2f2f;
 }
 
-/* "Order placed" message */
+/* "Thank you, your order is placed" box */
 .sgh-success {
    background: var(--sgh-soft-sage);
    border: 1px solid rgba(107, 143, 113, 0.3);

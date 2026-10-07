@@ -45,7 +45,7 @@ class CheckoutController extends Controller
         try {
             $order = $checkout->placeOrder($request->user(), $data);
         } catch (CheckoutException $e) {
-            // Safe message (for example "only 2 left"): show it and keep what was typed
+            // Safe message (for example "only 2 left"): show it to the customer
             return redirect()->route('cart.index')->with('error', $e->getMessage());
         }
 
