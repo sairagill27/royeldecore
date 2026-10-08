@@ -1180,3 +1180,512 @@ h4,
    font-size: 3rem;
    color: var(--sgh-sage);
 }
+
+/* =====================================================
+   16. ADMIN PANEL
+   ===================================================== */
+
+.sgh-admin {
+   background: #f1f4ef;
+}
+
+/* Sidebar on the left + main area on the right */
+.sgh-admin-shell {
+   display: flex;
+   min-height: 100vh;
+}
+
+.sgh-admin-main {
+   flex: 1;
+   min-width: 0;
+}
+
+/* Sidebar (also the slide-in panel on phones) */
+.sgh-admin-offcanvas {
+   --bs-offcanvas-width: 270px;
+}
+
+.sgh-admin-sidebar {
+   display: flex;
+   flex-direction: column;
+   flex: 1 0 auto;
+   min-height: 100%;
+   background: var(--sgh-charcoal);
+   color: #cfd8d1;
+   padding: 1.25rem 0.9rem;
+}
+
+/* On large screens the sidebar stays fixed while the page scrolls */
+@media (min-width: 992px) {
+   .sgh-admin-aside {
+      flex: 0 0 250px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--sgh-charcoal);
+   }
+}
+
+/* Brand at the top of the sidebar */
+.sgh-admin-brand {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: baseline;
+   gap: 0 0.5rem;
+   padding: 0 0.5rem 1.25rem;
+   margin-bottom: 0.75rem;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.sgh-admin-brand a {
+   font-family: 'Playfair Display', Georgia, serif;
+   font-size: 1.25rem;
+   font-weight: 700;
+   color: #fff;
+   text-decoration: none;
+}
+
+.sgh-admin-brand small {
+   color: var(--sgh-beige);
+   font-size: 0.75rem;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+}
+
+.sgh-admin-brand .btn-close {
+   margin-left: auto;
+}
+
+/* Menu links */
+.sgh-admin-nav {
+   display: flex;
+   flex-direction: column;
+   gap: 0.2rem;
+}
+
+.sgh-admin-link {
+   display: flex;
+   align-items: center;
+   gap: 0.7rem;
+   padding: 0.6rem 0.75rem;
+   border-radius: 10px;
+   color: #cfd8d1;
+   text-decoration: none;
+   font-size: 0.93rem;
+   transition: background 0.15s, color 0.15s;
+}
+
+.sgh-admin-link:hover {
+   background: rgba(255, 255, 255, 0.08);
+   color: #fff;
+}
+
+.sgh-admin-link.active {
+   background: var(--sgh-sage);
+   color: #fff;
+   font-weight: 600;
+}
+
+.sgh-admin-link.disabled {
+   opacity: 0.5;
+   cursor: not-allowed;
+}
+
+.sgh-admin-link.disabled:hover {
+   background: transparent;
+   color: #cfd8d1;
+}
+
+.sgh-admin-link em {
+   margin-left: auto;
+   font-style: normal;
+   font-size: 0.65rem;
+   padding: 0.05rem 0.5rem;
+   border-radius: 999px;
+   background: rgba(255, 255, 255, 0.15);
+}
+
+.sgh-admin-sidebar-foot {
+   margin-top: auto;
+   padding-top: 1rem;
+   border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Top bar */
+.sgh-admin-topbar {
+   position: sticky;
+   top: 0;
+   z-index: 10;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 1rem;
+   padding: 0.75rem 1rem;
+   background: #fff;
+   border-bottom: 1px solid rgba(107, 143, 113, 0.2);
+}
+
+@media (min-width: 992px) {
+   .sgh-admin-topbar {
+      padding: 0.85rem 1.75rem;
+   }
+}
+
+.sgh-admin-content {
+   padding: 1rem;
+}
+
+@media (min-width: 992px) {
+   .sgh-admin-content {
+      padding: 1.75rem;
+   }
+}
+
+/* Statistic cards */
+.sgh-stat {
+   display: flex;
+   align-items: center;
+   gap: 0.9rem;
+   height: 100%;
+   background: #fff;
+   border: 1px solid rgba(107, 143, 113, 0.18);
+   border-radius: 16px;
+   padding: 1rem;
+}
+
+.sgh-stat-icon {
+   flex: 0 0 auto;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 46px;
+   height: 46px;
+   border-radius: 12px;
+   background: var(--sgh-soft-sage);
+   color: var(--sgh-forest);
+   font-size: 1.3rem;
+}
+
+.sgh-stat small {
+   display: block;
+   color: var(--sgh-muted);
+   font-size: 0.78rem;
+}
+
+.sgh-stat strong {
+   display: block;
+   font-size: 1.15rem;
+   line-height: 1.2;
+   color: var(--sgh-charcoal);
+}
+
+.sgh-stat em {
+   font-style: normal;
+   font-size: 0.72rem;
+   color: #7a5a14;
+}
+
+/* =====================================================
+   17. ADMIN POLISH (overrides section 16)
+   ===================================================== */
+
+/* ---------- Colours used only in the admin ---------- */
+.sgh-admin {
+   --adm-bg: #f3f5f1;
+   --adm-line: rgba(46, 58, 47, 0.08);
+   --adm-ink: #2E3A2F;
+   --adm-muted: #6b7a70;
+   --adm-shadow: 0 1px 2px rgba(46, 58, 47, 0.05), 0 10px 28px rgba(46, 58, 47, 0.06);
+   background: var(--adm-bg);
+   color: var(--adm-ink);
+}
+
+/* ---------- Sidebar: soft gradient, thin marker on the active item ---------- */
+.sgh-admin-aside,
+.sgh-admin-sidebar {
+   background: linear-gradient(180deg, #2E3A2F 0%, #243026 100%);
+}
+
+.sgh-admin-brand a {
+   letter-spacing: 0.01em;
+}
+
+.sgh-admin-link {
+   position: relative;
+   color: #b9c6bc;
+   font-weight: 500;
+}
+
+.sgh-admin-link:hover {
+   background: rgba(255, 255, 255, 0.06);
+   color: #fff;
+}
+
+.sgh-admin-link.active {
+   background: rgba(107, 143, 113, 0.28);
+   color: #fff;
+}
+
+.sgh-admin-link.active::before {
+   content: "";
+   position: absolute;
+   left: -0.9rem;
+   top: 20%;
+   bottom: 20%;
+   width: 4px;
+   border-radius: 0 4px 4px 0;
+   background: #9cc3a3;
+}
+
+.sgh-admin-link i {
+   font-size: 1.05rem;
+   opacity: 0.9;
+}
+
+/* ---------- Top bar: white with a soft blur ---------- */
+.sgh-admin-topbar {
+   background: rgba(255, 255, 255, 0.88);
+   -webkit-backdrop-filter: blur(8px);
+   backdrop-filter: blur(8px);
+   border-bottom: 1px solid var(--adm-line);
+}
+
+.sgh-admin-topbar h1 {
+   font-family: 'Inter', system-ui, sans-serif;
+   font-weight: 600;
+}
+
+/* ---------- Welcome row ---------- */
+.sgh-hello {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: flex-end;
+   justify-content: space-between;
+   gap: 0.75rem;
+   margin-bottom: 1.5rem;
+}
+
+.sgh-hello h2 {
+   font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+   margin: 0 0 0.15rem;
+}
+
+.sgh-hello p {
+   margin: 0;
+   color: var(--adm-muted);
+   font-size: 0.95rem;
+}
+
+.sgh-hello-date {
+   display: inline-flex;
+   align-items: center;
+   gap: 0.45rem;
+   padding: 0.4rem 0.9rem;
+   border-radius: 999px;
+   background: #fff;
+   border: 1px solid var(--adm-line);
+   color: var(--adm-muted);
+   font-size: 0.85rem;
+   box-shadow: var(--adm-shadow);
+}
+
+/* ---------- Statistic cards ---------- */
+.sgh-stat {
+   border: 1px solid var(--adm-line);
+   border-radius: 18px;
+   padding: 1.1rem 1.15rem;
+   box-shadow: var(--adm-shadow);
+   transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sgh-stat:hover {
+   transform: translateY(-2px);
+}
+
+.sgh-stat-icon {
+   width: 50px;
+   height: 50px;
+   border-radius: 14px;
+   font-size: 1.35rem;
+}
+
+.sgh-stat small {
+   font-size: 0.78rem;
+   letter-spacing: 0.03em;
+   color: var(--adm-muted);
+}
+
+.sgh-stat strong {
+   font-size: 1.4rem;
+   font-weight: 700;
+   letter-spacing: -0.01em;
+}
+
+.sgh-stat em {
+   display: block;
+   font-style: normal;
+   font-size: 0.74rem;
+   color: var(--adm-muted);
+}
+
+/* One accent colour per card */
+.sgh-stat--sage .sgh-stat-icon {
+   background: rgba(107, 143, 113, 0.16);
+   color: #3E5F46;
+}
+
+.sgh-stat--gold .sgh-stat-icon {
+   background: rgba(184, 138, 68, 0.17);
+   color: #8a6320;
+}
+
+.sgh-stat--forest .sgh-stat-icon {
+   background: rgba(62, 95, 70, 0.15);
+   color: #2f4d37;
+}
+
+.sgh-stat--clay .sgh-stat-icon {
+   background: rgba(185, 106, 79, 0.15);
+   color: #9a4f37;
+}
+
+/* ---------- Panels (white boxes) ---------- */
+.sgh-panel {
+   background: #fff;
+   border: 1px solid var(--adm-line);
+   border-radius: 18px;
+   padding: 1.25rem;
+   box-shadow: var(--adm-shadow);
+}
+
+.sgh-panel-head {
+   margin-bottom: 1rem;
+}
+
+.sgh-panel-head h2 {
+   font-family: 'Inter', system-ui, sans-serif;
+   font-size: 1rem;
+   font-weight: 600;
+   margin: 0;
+}
+
+.sgh-panel-head p {
+   margin: 0.1rem 0 0;
+   font-size: 0.82rem;
+   color: var(--adm-muted);
+}
+
+.sgh-panel-empty {
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+   margin: 0;
+   padding: 1.25rem 0;
+   color: var(--adm-muted);
+   font-size: 0.9rem;
+}
+
+.sgh-panel-empty i {
+   font-size: 1.2rem;
+   color: var(--sgh-sage);
+}
+
+/* ---------- Sales chart ---------- */
+.sgh-chart {
+   display: flex;
+   align-items: stretch;
+   gap: 0.6rem;
+   height: 230px;
+   padding-top: 0.5rem;
+}
+
+.sgh-chart-col {
+   flex: 1;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-end;
+   align-items: center;
+   min-width: 0;
+}
+
+.sgh-chart-bar {
+   width: 100%;
+   max-width: 46px;
+   min-height: 3px;
+   border-radius: 10px 10px 4px 4px;
+   background: linear-gradient(180deg, #8db395 0%, #5f8767 100%);
+   transition: filter 0.2s;
+}
+
+.sgh-chart-bar.is-empty {
+   background: #e4eae2;
+}
+
+.sgh-chart-col:hover .sgh-chart-bar {
+   filter: brightness(0.92);
+}
+
+.sgh-chart-value {
+   font-size: 0.68rem;
+   color: var(--adm-muted);
+   margin-bottom: 0.3rem;
+   white-space: nowrap;
+   min-height: 1em;
+}
+
+.sgh-chart-label {
+   font-size: 0.75rem;
+   color: var(--adm-muted);
+   margin-top: 0.45rem;
+}
+
+/* ---------- Lists ---------- */
+.sgh-status-list,
+.sgh-stock-list {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+}
+
+.sgh-status-list li,
+.sgh-stock-list li {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 0.75rem;
+   padding: 0.65rem 0;
+   border-bottom: 1px solid var(--adm-line);
+   font-size: 0.9rem;
+}
+
+.sgh-status-list li:last-child,
+.sgh-stock-list li:last-child {
+   border-bottom: 0;
+}
+
+/* ---------- Table ---------- */
+.sgh-table {
+   --bs-table-bg: transparent;
+   font-size: 0.9rem;
+}
+
+.sgh-table thead th {
+   border-bottom: 1px solid var(--adm-line);
+   color: var(--adm-muted);
+   font-size: 0.72rem;
+   font-weight: 600;
+   letter-spacing: 0.08em;
+   text-transform: uppercase;
+   padding-bottom: 0.65rem;
+}
+
+.sgh-table td {
+   border-color: var(--adm-line);
+   padding-top: 0.8rem;
+   padding-bottom: 0.8rem;
+}
+
+.sgh-table tbody tr:hover {
+   background: #f7f9f6;
+}
