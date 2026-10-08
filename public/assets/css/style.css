@@ -1689,3 +1689,35 @@ h4,
 .sgh-table tbody tr:hover {
    background: #f7f9f6;
 }
+
+/* =====================================================
+   18. SHOW / HIDE PASSWORD BUTTON
+   ===================================================== */
+.sgh-eye {
+   background: #fff;
+   border: 1px solid var(--bs-border-color);
+   border-left: 0;
+   color: var(--sgh-muted);
+   padding: 0 0.9rem;
+}
+
+.sgh-eye:hover,
+.sgh-eye[aria-pressed="true"] {
+   color: var(--sgh-forest);
+   background: var(--sgh-soft-sage);
+}
+
+/* Keep the box and the button looking like one field when focused */
+.input-group:focus-within .form-control,
+.input-group:focus-within .sgh-eye {
+   border-color: var(--sgh-sage);
+}
+
+.input-group:focus-within {
+   box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.25);
+   border-radius: 0.375rem;
+}
+
+.input-group .form-control:focus {
+   box-shadow: none;
+}
