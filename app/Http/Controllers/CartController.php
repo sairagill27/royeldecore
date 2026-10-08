@@ -29,10 +29,15 @@ class CartController extends Controller
         // Only active products can be added
         $product = Product::where('status', 'active')->findOrFail($data['product_id']);
 
+        // The toast shows a "View cart" button after a successful add
+        $viewCart = ['label' => 'View cart', 'url' => route('cart.index')];
+
         return match ($cart->add($product, $data['quantity'])) {
             'out'     => back()->with('error', 'Sorry, this product is out of stock.'),
-            'limited' => back()->with('success', 'Added. Only ' . $product->stock . ' available, so the quantity was adjusted.'),
-            default   => back()->with('success', '"' . $product->name . '" was added to your cart.'),
+            'limited' => back()->with('warning', 'Only ' . $product->stock . ' available, so we adjusted the quantity.')
+                ->with('toast_action', $viewCart),
+            default   => back()->with('success', '"' . $product->name . '" was added to your cart.')
+                ->with('toast_action', $viewCart),
         };
     }
 

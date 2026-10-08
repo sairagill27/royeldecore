@@ -86,20 +86,16 @@
                 </div>
             </header>
 
+            {{-- Page content. Messages now appear as toasts (see <x-flash /> below). --}}
             <main class="sgh-admin-content">
-
-                {{-- Messages (saved, deleted, errors...) --}}
-                @if (session('success') || session('error'))
-                <div class="alert alert-{{ session('success') ? 'success' : 'danger' }} alert-dismissible fade show" role="alert">
-                    {{ session('success') ?? session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
-
                 @yield('content')
             </main>
         </div>
     </div>
+
+    {{-- TOAST MESSAGES: saved, deleted, errors...
+     This loads resources/views/components/flash.blade.php --}}
+    <x-flash />
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

@@ -90,7 +90,8 @@ class AuthController extends Controller
         $request->session()->regenerate();   // new session ID after login
 
         // "intended" = go back to the page they wanted (e.g. checkout), else the account page
-        return redirect()->intended(route('account'));
+        return redirect()->intended(route('account'))
+            ->with('success', 'Welcome back, ' . Str::before($request->user()->name, ' ') . '!');
     }
 
     // ---------- LOGOUT ----------

@@ -6,11 +6,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{-- Page title. Each page can set its own with @section('title'). --}}
-    <title>@yield('title', 'SGHomeTrends | Home Décor & Inspiration')</title>
+    {{-- Page title. Each page can set its own with @section('title').
+         config('app.name') reads the website name from .env (APP_NAME). --}}
+    <title>@yield('title', config('app.name') . ' | Home Décor & Inspiration')</title>
 
     {{-- Short description shown in Google results --}}
-    <meta name="description" content="@yield('meta_description', 'Home décor inspiration, products, ideas and tools from SGHomeTrends.')">
+    <meta name="description" content="@yield('meta_description', 'Home décor inspiration, products, ideas and tools from ' . config('app.name') . '.')">
 
     {{-- Fonts: Inter for text, Playfair Display for headings --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
@@ -35,22 +36,17 @@
     {{-- HEADER: loads resources/views/components/header.blade.php --}}
     <x-header />
 
-    {{-- MAIN CONTENT: each page (like home) puts its content here --}}
+    {{-- MAIN CONTENT: each page (home, shop, cart...) puts its content here --}}
     <main id="main-content">
         @yield('content')
-        {{-- MESSAGES: shown after adding, removing or updating the cart --}}
-        @if (session('success') || session('error'))
-        <div class="container mt-3">
-            <div class="alert alert-{{ session('success') ? 'success' : 'danger' }} alert-dismissible fade show mb-0" role="alert">
-                {{ session('success') ?? session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-        @endif
     </main>
 
     {{-- FOOTER: loads resources/views/components/footer.blade.php --}}
     <x-footer />
+
+    {{-- TOAST MESSAGES: login, logout, add to cart, errors...
+         This loads resources/views/components/flash.blade.php --}}
+    <x-flash />
 
     {{-- Bootstrap JavaScript (makes the mobile menu and dropdowns work) --}}
     <script
