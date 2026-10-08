@@ -49,3 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/account/orders', [OrderController::class, 'index'])->name('account.orders');
     Route::get('/account/orders/{order:order_number}', [OrderController::class, 'show'])->name('account.orders.show');
 });
+
+// ---------- ADMIN ----------
+// auth = must be logged in. staff = must be an active admin or staff member.
+Route::middleware(['auth', 'staff'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(base_path('routes/admin.php'));

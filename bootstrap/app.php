@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [\App\Http\Middleware\SecurityHeaders::class]);
+
+        // "staff" is the short name we use in routes
+        $middleware->alias([
+            'staff' => \App\Http\Middleware\EnsureStaff::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

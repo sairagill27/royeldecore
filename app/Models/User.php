@@ -46,4 +46,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // Used by the admin guard and, later, by menus and policies
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    // Admin or staff
+    public function isStaff(): bool
+    {
+        return in_array($this->role, ['admin', 'staff'], true);
+    }
 }
