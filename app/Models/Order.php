@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    // Order statuses from your roadmap (key = saved value, value = shown text)
+    // Order statuses (key = saved value, value = shown text)
     public const STATUSES = [
         'pending'    => 'Pending',
         'confirmed'  => 'Confirmed',
@@ -19,8 +19,19 @@ class Order extends Model
         'refunded'   => 'Refunded',
     ];
 
-    // status and payment_status are NOT here on purpose: they use database
-    // defaults and are changed only by the admin later.
+    // Which status may follow which. Anything not listed here is refused.
+    public const TRANSITIONS = [
+        'pending'    => ['confirmed', 'cancelled'],
+        'confirmed'  => ['processing', 'cancelled'],
+        'processing' => ['shipped', 'cancelled'],
+        'shipped'    => ['delivered'],
+        'delivered'  => ['refunded'],
+        'cancelled'  => [],
+        'refunded'   => [],
+    ];
+
+    // status and payment_status are NOT here on purpose: they are changed only
+    // by the admin through OrderStatusService.
     protected $fillable = [
         'user_id',
         'order_number',
@@ -54,7 +65,7 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    // Text shown to the customer, e.g. "Pending"
+    // Text shown to people, e.g. "Pending"
     public function statusLabel(): string
     {
         return self::STATUSES[$this->status] ?? ucfirst($this->status);
@@ -64,5 +75,20 @@ class Order extends Model
     public function statusClass(): string
     {
         return 'sgh-status-' . $this->status;
+    }
+
+    // The statuses this order is allowed to move to next
+    public function nextStatuses(): array
+    {
+        return self::TRANSITIONS[$this->status] ?? [];
+    }
+
+    // "cod" becomes "Cash on delivery"
+    public function paymentLabel(): string
+    {
+        return match ($this->payment_method) {
+            'cod'   => 'Cash on delivery',
+            default => ucfirst((string) $this->payment_method),
+        };
     }
 }

@@ -52,7 +52,10 @@
                             <i class="bi bi-box-seam"></i> Products
                         </a>
                         <span class="sgh-admin-link disabled"><i class="bi bi-tags"></i> Categories <em>Soon</em></span>
-                        <span class="sgh-admin-link disabled"><i class="bi bi-receipt"></i> Orders <em>Soon</em></span>
+                        <a href="{{ route('admin.orders.index') }}"
+                            class="sgh-admin-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                            <i class="bi bi-receipt"></i> Orders
+                        </a>
                         <span class="sgh-admin-link disabled"><i class="bi bi-people"></i> Customers <em>Soon</em></span>
                     </nav>
 
