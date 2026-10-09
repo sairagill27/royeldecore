@@ -38,25 +38,33 @@
                             data-bs-dismiss="offcanvas" data-bs-target="#adminMenu" aria-label="Close menu"></button>
                     </div>
 
+                    {{-- MENU: each link turns green when you are on that section --}}
                     <nav class="sgh-admin-nav" aria-label="Admin menu">
-                        {{-- Working link: turns green when you are on this page --}}
+
                         <a href="{{ route('admin.dashboard') }}"
                             class="sgh-admin-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                             <i class="bi bi-speedometer2"></i> Dashboard
                         </a>
 
-                        {{-- Not built yet: shown greyed out with a "Soon" label.
-                         When a page is ready, we replace the <span> with a real <a href>. --}}
                         <a href="{{ route('admin.products.index') }}"
                             class="sgh-admin-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                             <i class="bi bi-box-seam"></i> Products
                         </a>
-                        <span class="sgh-admin-link disabled"><i class="bi bi-tags"></i> Categories <em>Soon</em></span>
+
+                        <a href="{{ route('admin.categories.index') }}"
+                            class="sgh-admin-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                            <i class="bi bi-tags"></i> Categories
+                        </a>
+
                         <a href="{{ route('admin.orders.index') }}"
                             class="sgh-admin-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
                             <i class="bi bi-receipt"></i> Orders
                         </a>
-                        <span class="sgh-admin-link disabled"><i class="bi bi-people"></i> Customers <em>Soon</em></span>
+
+                        <a href="{{ route('admin.customers.index') }}"
+                            class="sgh-admin-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
+                            <i class="bi bi-people"></i> Customers
+                        </a>
                     </nav>
 
                     <div class="sgh-admin-sidebar-foot">
@@ -92,15 +100,14 @@
                 </div>
             </header>
 
-            {{-- Page content. Messages now appear as toasts (see <x-flash /> below). --}}
+            {{-- Page content. Messages appear as toasts (see <x-flash /> below). --}}
             <main class="sgh-admin-content">
                 @yield('content')
             </main>
         </div>
     </div>
 
-    {{-- TOAST MESSAGES: saved, deleted, errors...
-     This loads resources/views/components/flash.blade.php --}}
+    {{-- TOAST MESSAGES: saved, deleted, errors... --}}
     <x-flash />
 
     <script
