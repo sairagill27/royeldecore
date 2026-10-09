@@ -47,7 +47,10 @@
 
                         {{-- Not built yet: shown greyed out with a "Soon" label.
                          When a page is ready, we replace the <span> with a real <a href>. --}}
-                        <span class="sgh-admin-link disabled"><i class="bi bi-box-seam"></i> Products <em>Soon</em></span>
+                        <a href="{{ route('admin.products.index') }}"
+                            class="sgh-admin-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                            <i class="bi bi-box-seam"></i> Products
+                        </a>
                         <span class="sgh-admin-link disabled"><i class="bi bi-tags"></i> Categories <em>Soon</em></span>
                         <span class="sgh-admin-link disabled"><i class="bi bi-receipt"></i> Orders <em>Soon</em></span>
                         <span class="sgh-admin-link disabled"><i class="bi bi-people"></i> Customers <em>Soon</em></span>

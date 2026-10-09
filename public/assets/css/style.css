@@ -1918,3 +1918,97 @@ h4,
       animation: none;
    }
 }
+
+/* =====================================================
+   20. ADMIN: PRODUCT LIST
+   ===================================================== */
+
+/* Search and filter bar */
+.sgh-admin-toolbar {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 0.75rem;
+   margin-bottom: 1rem;
+}
+
+.sgh-admin-filters {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 0.5rem;
+}
+
+.sgh-admin-filters .form-control {
+   width: 210px;
+}
+
+.sgh-admin-filters .form-select {
+   width: auto;
+}
+
+@media (max-width: 575.98px) {
+
+   .sgh-admin-filters .form-control,
+   .sgh-admin-filters .form-select {
+      width: 100%;
+   }
+}
+
+/* Small product photo in the table */
+.sgh-admin-thumb {
+   flex: 0 0 auto;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 44px;
+   height: 44px;
+   border-radius: 10px;
+   overflow: hidden;
+   background: var(--sgh-soft-sage);
+   color: var(--sgh-sage);
+}
+
+.sgh-admin-thumb img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+/* Grey badge for draft products */
+.sgh-badge-draft {
+   background: #e8ebe7;
+   color: #5a6a5f;
+}
+
+/* Round icon buttons in the Actions column */
+.sgh-row-actions {
+   display: flex;
+   justify-content: flex-end;
+   align-items: center;
+   gap: 0.35rem;
+}
+
+.sgh-icon-action {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 34px;
+   height: 34px;
+   border: 0;
+   border-radius: 50%;
+   background: transparent;
+   color: var(--sgh-muted);
+   text-decoration: none;
+   transition: background 0.15s, color 0.15s;
+}
+
+.sgh-icon-action:hover {
+   background: var(--sgh-soft-sage);
+   color: var(--sgh-forest);
+}
+
+.sgh-icon-action.is-danger:hover {
+   background: #f1dcdc;
+   color: #8a2f2f;
+}
