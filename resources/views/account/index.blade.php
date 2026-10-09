@@ -10,6 +10,7 @@
     <p class="text-secondary mb-4">{{ auth()->user()->email }}</p>
 
     <div class="row row-cols-1 row-cols-md-3 g-3">
+
         <div class="col">
             <div class="sgh-filter-box h-100">
                 <h2 class="h6">My orders</h2>
@@ -17,16 +18,19 @@
                 <a href="{{ route('account.orders') }}" class="small fw-semibold">View my orders <i class="bi bi-arrow-right"></i></a>
             </div>
         </div>
+
         <div class="col">
             <div class="sgh-filter-box h-100">
                 <h2 class="h6">Wishlist</h2>
-                <p class="small text-secondary mb-0">Products you saved for later.</p>
+                <p class="small text-secondary mb-0">Products you saved for later. Coming soon.</p>
             </div>
         </div>
+
         <div class="col">
             <div class="sgh-filter-box h-100">
                 <h2 class="h6">Profile and password</h2>
-                <p class="small text-secondary mb-0">Update your details.</p>
+                <p class="small text-secondary mb-2">Update your details or change your password.</p>
+                <a href="{{ route('account.profile') }}" class="small fw-semibold">Edit profile <i class="bi bi-arrow-right"></i></a>
             </div>
         </div>
     </div>
