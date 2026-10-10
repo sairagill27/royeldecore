@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,14 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+
+    // PASSWORD RESET. The route name "password.reset" is required by Laravel's reset email.
+    Route::get('/forgot-password', [PasswordResetController::class, 'showForgot'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetController::class, 'sendLink'])
+        ->middleware('throttle:5,1')->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'showReset'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'reset'])
+        ->middleware('throttle:6,1')->name('password.store');
 });
 
 // "auth" = only logged-in users. Visitors are sent to the login page.
@@ -66,8 +75,9 @@ Route::middleware(['auth', 'staff'])
     ->name('admin.')
     ->group(base_path('routes/admin.php'));
 
+
 // ---------- DEV ONLY: preview emails in the browser ----------
-// Exists only when APP_ENV=local, and only for staff. Open it from the admin order page address.
+// Exists only when APP_ENV=local, and only for staff.
 if (app()->environment('local')) {
     Route::middleware(['auth', 'staff'])->group(function () {
         Route::get('/dev/mail/customer/{order:order_number}', fn(\App\Models\Order $order) => new \App\Mail\OrderPlaced($order->load('items')));
