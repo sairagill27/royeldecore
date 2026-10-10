@@ -65,3 +65,12 @@ Route::middleware(['auth', 'staff'])
     ->prefix('admin')
     ->name('admin.')
     ->group(base_path('routes/admin.php'));
+
+// ---------- DEV ONLY: preview emails in the browser ----------
+// Exists only when APP_ENV=local, and only for staff. Open it from the admin order page address.
+if (app()->environment('local')) {
+    Route::middleware(['auth', 'staff'])->group(function () {
+        Route::get('/dev/mail/customer/{order:order_number}', fn(\App\Models\Order $order) => new \App\Mail\OrderPlaced($order->load('items')));
+        Route::get('/dev/mail/admin/{order:order_number}', fn(\App\Models\Order $order) => new \App\Mail\NewOrderAlert($order->load('items')));
+    });
+}

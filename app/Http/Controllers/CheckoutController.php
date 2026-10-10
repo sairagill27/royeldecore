@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\CheckoutException;
+use App\Mail\NewOrderAlert;
+use App\Mail\OrderPlaced;
+use App\Models\Order;
 use App\Services\CartService;
 use App\Services\CheckoutService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -49,8 +54,31 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', $e->getMessage());
         }
 
+        // The order is saved. Now send the emails.
+        $this->sendEmails($order);
+
         return redirect()
             ->route('account.orders.show', $order->order_number)
             ->with('placed', true);
+    }
+
+    // Sends the customer email and the admin alert.
+    // If sending fails, the order stays saved and the problem goes to the log.
+    private function sendEmails(Order $order): void
+    {
+        try {
+            $order->load('items');
+
+            Mail::to($order->customer_email)->send(new OrderPlaced($order));
+
+            if ($admin = config('shop.admin_email')) {
+                Mail::to($admin)->send(new NewOrderAlert($order));
+            }
+        } catch (\Throwable $e) {
+            Log::error('Order email failed', [
+                'order' => $order->order_number,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }
