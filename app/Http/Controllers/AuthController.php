@@ -43,7 +43,9 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();   // new session ID after login
 
-        return redirect()->route('account')->with('success', 'Welcome! Your account has been created.');
+        return redirect()->route('account')
+            ->with('success', 'Welcome! Your account has been created.')
+            ->with('alert_title', 'Account created');
     }
 
     // ---------- LOGIN ----------
@@ -91,7 +93,8 @@ class AuthController extends Controller
 
         // "intended" = go back to the page they wanted (e.g. checkout), else the account page
         return redirect()->intended(route('account'))
-            ->with('success', 'Welcome back, ' . Str::before($request->user()->name, ' ') . '!');
+            ->with('success', 'Welcome back, ' . Str::before($request->user()->name, ' ') . '!')
+            ->with('alert_title', 'Login successful');
     }
 
     // ---------- LOGOUT ----------
@@ -102,6 +105,8 @@ class AuthController extends Controller
         $request->session()->invalidate();       // destroys the old session
         $request->session()->regenerateToken();  // new CSRF token
 
-        return redirect('/')->with('success', 'You have been logged out.');
+        return redirect('/')
+            ->with('success', 'You have been logged out. See you soon!')
+            ->with('alert_title', 'Logged out');
     }
 }

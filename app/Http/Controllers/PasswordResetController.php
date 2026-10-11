@@ -76,7 +76,8 @@ class PasswordResetController extends Controller
 
         if ($status === Password::PASSWORD_RESET) {
             return redirect()->route('login')
-                ->with('success', 'Your password was changed. You can log in now.');
+                ->with('success', 'Your password was changed. You can log in now.')
+                ->with('alert_title', 'Password changed');
         }
 
         // Wrong, used or expired link. One message for all of them.
