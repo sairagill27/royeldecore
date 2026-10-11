@@ -5,6 +5,7 @@ use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProductController;
@@ -15,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop/{category:slug?}', [ShopController::class, 'index'])->name('shop');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
+
+
+// CONTACT. throttle:5,10 = max 5 messages per 10 minutes per visitor (stops spam)
+Route::get('/contact', [ContactController::class, 'show'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,10')->name('contact.store');
 
 
 // CART. throttle:60,1 = max 60 requests per minute per visitor (stops abuse)

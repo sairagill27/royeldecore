@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -30,3 +31,9 @@ Route::get('customers/{user}', [CustomerController::class, 'show'])->name('custo
 Route::patch('customers/{user}/status', [CustomerController::class, 'toggle'])
     ->middleware('throttle:30,1')
     ->name('customers.toggle');
+
+// Contact messages: inbox, read one, mark unread, delete
+Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
+Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+Route::patch('messages/{message}/unread', [MessageController::class, 'unread'])->name('messages.unread');
+Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');

@@ -19,6 +19,9 @@
 
 <body class="sgh-admin">
 
+    {{-- How many contact messages are still unread (shown as a badge in the menu) --}}
+    @php $unreadMessages = \App\Models\ContactMessage::whereNull('read_at')->count(); @endphp
+
     {{-- The page is split into: sidebar (left) + main area (right) --}}
     <div class="sgh-admin-shell">
 
@@ -65,6 +68,14 @@
                             class="sgh-admin-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
                             <i class="bi bi-people"></i> Customers
                         </a>
+
+                        <a href="{{ route('admin.messages.index') }}"
+                            class="sgh-admin-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
+                            <i class="bi bi-envelope"></i> Messages
+                            @if ($unreadMessages > 0)
+                            <span class="sgh-count" aria-label="{{ $unreadMessages }} unread">{{ $unreadMessages }}</span>
+                            @endif
+                        </a>
                     </nav>
 
                     <div class="sgh-admin-sidebar-foot">
@@ -100,14 +111,14 @@
                 </div>
             </header>
 
-            {{-- Page content. Messages appear as toasts (see <x-flash /> below). --}}
+            {{-- Page content. Messages appear as popups (see <x-flash /> below). --}}
             <main class="sgh-admin-content">
                 @yield('content')
             </main>
         </div>
     </div>
 
-    {{-- TOAST MESSAGES: saved, deleted, errors... --}}
+    {{-- POPUP MESSAGES: saved, deleted, errors... --}}
     <x-flash />
 
     <script
