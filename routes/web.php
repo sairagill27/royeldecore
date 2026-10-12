@@ -18,6 +18,17 @@ Route::get('/shop/{category:slug?}', [ShopController::class, 'index'])->name('sh
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 
 
+// ---------- INFORMATION PAGES ----------
+Route::view('/about', 'pages.about')->name('about');
+
+// Legal pages (the footer already links to these addresses)
+Route::view('/privacy-policy', 'pages.legal.privacy')->name('legal.privacy');
+Route::view('/terms', 'pages.legal.terms')->name('legal.terms');
+Route::view('/disclaimer', 'pages.legal.disclaimer')->name('legal.disclaimer');
+Route::view('/affiliate-disclosure', 'pages.legal.affiliate')->name('legal.affiliate');
+Route::view('/cookies', 'pages.legal.cookies')->name('legal.cookies');
+
+
 // CONTACT. throttle:5,10 = max 5 messages per 10 minutes per visitor (stops spam)
 Route::get('/contact', [ContactController::class, 'show'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,10')->name('contact.store');
@@ -82,11 +93,14 @@ Route::middleware(['auth', 'staff'])
     ->group(base_path('routes/admin.php'));
 
 
-// ---------- DEV ONLY: preview emails in the browser ----------
-// Exists only when APP_ENV=local, and only for staff.
+// ---------- DEV ONLY: previews that exist only when APP_ENV=local, for staff ----------
 if (app()->environment('local')) {
     Route::middleware(['auth', 'staff'])->group(function () {
+        // Preview the order emails in the browser
         Route::get('/dev/mail/customer/{order:order_number}', fn(\App\Models\Order $order) => new \App\Mail\OrderPlaced($order->load('items')));
         Route::get('/dev/mail/admin/{order:order_number}', fn(\App\Models\Order $order) => new \App\Mail\NewOrderAlert($order->load('items')));
+
+        // Preview an error page, for example /dev/error/404
+        Route::get('/dev/error/{code}', fn(int $code) => abort($code))->whereIn('code', [403, 404, 419, 429, 500, 503]);
     });
 }
