@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -31,5 +32,16 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    // Products customers may see: active, and not inside a hidden category.
+    // Use it like: Product::visible()->get()
+    public function scopeVisible(Builder $query): Builder
+    {
+        return $query->where('status', 'active')
+            ->where(function (Builder $q) {
+                $q->whereNull('category_id')
+                    ->orWhereHas('category', fn(Builder $c) => $c->where('is_active', true));
+            });
     }
 }

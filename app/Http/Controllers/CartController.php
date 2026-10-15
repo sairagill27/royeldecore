@@ -27,7 +27,7 @@ class CartController extends Controller
         ]);
 
         // Only active products can be added
-        $product = Product::where('status', 'active')->findOrFail($data['product_id']);
+        $product = Product::visible()->findOrFail($data['product_id']);
 
         // The toast shows a "View cart" button after a successful add
         $viewCart = ['label' => 'View cart', 'url' => route('cart.index')];

@@ -8,16 +8,16 @@ class ProductController extends Controller
 {
     public function show(string $slug)
     {
-        // SECURITY: only active products can be opened. Draft products show 404.
+        // SECURITY: draft products, and products in a hidden category, show 404
         $product = Product::with('category')
+            ->visible()
             ->where('slug', $slug)
-            ->where('status', 'active')
             ->firstOrFail();
 
-        // Up to 4 other active products from the same category
+        // Up to 4 other visible products from the same category
         $related = Product::select(['id', 'category_id', 'name', 'slug', 'price', 'stock', 'image'])
             ->with('category:id,name')
-            ->where('status', 'active')
+            ->visible()
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->latest()

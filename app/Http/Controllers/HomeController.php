@@ -2,21 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // Up to 4 active, featured products. with('category') loads each
-        // product's category in one extra query instead of one per product.
-        $featuredProducts = Product::with('category')
-            ->where('status', 'active')
+        // Up to 4 visible, featured products
+        $featuredProducts = Product::select(['id', 'category_id', 'name', 'slug', 'price', 'stock', 'image'])
+            ->with('category:id,name')
+            ->visible()
             ->where('is_featured', true)
             ->latest()
             ->take(4)
             ->get();
 
-        return view('home', compact('featuredProducts'));
+        // The category cards: real categories, in the order you set in the admin panel
+        $homeCategories = Category::where('is_active', true)
+            ->orderBy('sort_order')
+            ->take(6)
+            ->get(['id', 'name', 'slug', 'image']);
+
+        return view('home', compact('featuredProducts', 'homeCategories'));
     }
 }
