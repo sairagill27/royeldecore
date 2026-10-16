@@ -2390,3 +2390,150 @@ dialog.sgh-alert.is-leaving {
 .sgh-search-box {
    max-width: 640px;
 }
+
+/* =====================================================
+   26. BLOG EDITOR + ARTICLE TEXT
+   ===================================================== */
+
+/* Formatting bar above the writing box */
+.sgh-editor-bar {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: 0.2rem;
+   padding: 0.35rem 0.5rem;
+   background: #f5f8f4;
+   border: 1px solid var(--bs-border-color);
+   border-bottom: 0;
+   border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.sgh-editor-bar button {
+   width: 34px;
+   height: 34px;
+   border: 0;
+   border-radius: 8px;
+   background: transparent;
+   color: var(--sgh-charcoal);
+   font-size: 1.05rem;
+}
+
+.sgh-editor-bar button:hover {
+   background: var(--sgh-soft-sage);
+   color: var(--sgh-forest);
+}
+
+/* The writing box: joined to the bar above it */
+textarea.sgh-editor {
+   border-radius: 0 0 0.5rem 0.5rem;
+   min-height: 420px;
+   font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+   font-size: 0.93rem;
+   line-height: 1.65;
+}
+
+/* The preview box */
+.sgh-preview {
+   min-height: 420px;
+   padding: 1.25rem;
+   background: #fff;
+   border: 1px solid var(--bs-border-color);
+   border-radius: 0.5rem;
+}
+
+/* Article text: used by the editor preview and the public article page */
+.sgh-prose {
+   font-size: 1.05rem;
+   line-height: 1.8;
+   color: #34413a;
+   overflow-wrap: anywhere;
+}
+
+.sgh-prose> :first-child {
+   margin-top: 0;
+}
+
+.sgh-prose h2 {
+   font-size: 1.6rem;
+   margin: 2.2rem 0 0.8rem;
+   color: var(--sgh-charcoal);
+}
+
+.sgh-prose h3 {
+   font-size: 1.3rem;
+   margin: 1.8rem 0 0.6rem;
+   color: var(--sgh-charcoal);
+}
+
+.sgh-prose p {
+   margin-bottom: 1.2rem;
+}
+
+.sgh-prose ul,
+.sgh-prose ol {
+   margin-bottom: 1.2rem;
+   padding-left: 1.4rem;
+}
+
+.sgh-prose li {
+   margin-bottom: 0.4rem;
+}
+
+.sgh-prose a {
+   color: var(--sgh-forest);
+   text-decoration: underline;
+   text-underline-offset: 3px;
+}
+
+.sgh-prose a:hover {
+   color: var(--sgh-sage);
+}
+
+.sgh-prose img {
+   max-width: 100%;
+   height: auto;
+   border-radius: 14px;
+   margin: 0.5rem 0 1.2rem;
+}
+
+.sgh-prose blockquote {
+   margin: 1.6rem 0;
+   padding: 0.6rem 1.2rem;
+   border-left: 4px solid var(--sgh-sage);
+   background: var(--sgh-soft-sage);
+   border-radius: 0 12px 12px 0;
+   font-family: 'Playfair Display', Georgia, serif;
+   font-size: 1.15rem;
+}
+
+.sgh-prose blockquote p:last-child {
+   margin-bottom: 0;
+}
+
+.sgh-prose hr {
+   margin: 2rem 0;
+   opacity: 0.2;
+}
+
+.sgh-prose code {
+   background: #eef2ec;
+   padding: 0.1rem 0.35rem;
+   border-radius: 6px;
+   font-size: 0.9em;
+}
+
+.sgh-prose table {
+   width: 100%;
+   margin-bottom: 1.2rem;
+   border-collapse: collapse;
+}
+
+.sgh-prose th,
+.sgh-prose td {
+   padding: 0.5rem 0.75rem;
+   border: 1px solid #dfe6dc;
+}
+
+.sgh-prose th {
+   background: var(--sgh-soft-sage);
+}

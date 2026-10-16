@@ -69,6 +69,11 @@
                             <i class="bi bi-people"></i> Customers
                         </a>
 
+                        <a href="{{ route('admin.posts.index') }}"
+                            class="sgh-admin-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
+                            <i class="bi bi-journal-text"></i> Blog posts
+                        </a>
+
                         <a href="{{ route('admin.messages.index') }}"
                             class="sgh-admin-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
                             <i class="bi bi-envelope"></i> Messages

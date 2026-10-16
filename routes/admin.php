@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +38,9 @@ Route::get('messages', [MessageController::class, 'index'])->name('messages.inde
 Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
 Route::patch('messages/{message}/unread', [MessageController::class, 'unread'])->name('messages.unread');
 Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+
+// Blog posts: list, write, edit, delete, plus the live Markdown preview
+Route::post('posts/preview', [PostController::class, 'preview'])
+    ->middleware('throttle:30,1')
+    ->name('posts.preview');
+Route::resource('posts', PostController::class)->except('show');
