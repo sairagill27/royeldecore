@@ -3,6 +3,7 @@
 use App\Http\Controllers\Account\OrderController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactController;
@@ -21,6 +22,14 @@ Route::get('/products/{slug}', [ProductController::class, 'show'])->name('produc
 
 // SEARCH (the box in the header sends ?q=word to this address)
 Route::get('/search', [SearchController::class, 'index'])->middleware('throttle:60,1')->name('search');
+
+// BLOG. The category and tag addresses come BEFORE /blog/{slug}, so they are matched first.
+Route::middleware('throttle:120,1')->group(function () {
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/category/{category:slug}', [BlogController::class, 'category'])->name('blog.category');
+    Route::get('/blog/tag/{tag:slug}', [BlogController::class, 'tag'])->name('blog.tag');
+    Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+});
 
 // NEWSLETTER. throttle:5,10 = max 5 sign-ups per 10 minutes per visitor (stops spam)
 Route::post('/newsletter', [NewsletterController::class, 'subscribe'])->middleware('throttle:5,10')->name('newsletter.subscribe');

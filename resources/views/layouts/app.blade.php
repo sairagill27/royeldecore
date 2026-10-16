@@ -27,6 +27,9 @@
 
     {{-- OUR CSS: brand colors. Loaded last so it can override Bootstrap. --}}
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    {{-- Extra tags a page adds (canonical link, sharing tags, structured data...) --}}
+    @stack('head')
 </head>
 
 <body>
@@ -44,7 +47,7 @@
     {{-- FOOTER: loads resources/views/components/footer.blade.php --}}
     <x-footer />
 
-    {{-- TOAST MESSAGES: login, logout, add to cart, errors...
+    {{-- POPUP MESSAGES: login, logout, add to cart, errors...
          This loads resources/views/components/flash.blade.php --}}
     <x-flash />
 
@@ -53,6 +56,9 @@
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+
+    {{-- Extra scripts a page adds --}}
+    @stack('scripts')
 </body>
 
 </html>

@@ -1,18 +1,19 @@
 @extends('layouts.app')
-@section('title', 'SGHomeTrends | Home Décor & Inspiration')
+
+@section('title', config('app.name') . ' | Home Décor & Inspiration')
+
 @section('content')
 
 {{-- Section 1: Hero --}}
 @include('home.hero')
 
 {{-- Section 2: Featured Categories --}}
-    @include('home.categories')
+@include('home.categories')
 
-{{-- More sections (categories, products, blog...) will be added here later --}}
+{{-- Section 3: Featured Products --}}
+@include('home.products')
 
-    {{-- Section 3: Featured Products --}}
-    @include('home.products')
-    
+{{-- Section 4: Latest from the blog --}}
+@include('home.blog')
+
 @endsection
-
-  

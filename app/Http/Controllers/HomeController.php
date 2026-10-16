@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogPost;
 use App\Models\Category;
 use App\Models\Product;
 
@@ -24,6 +25,12 @@ class HomeController extends Controller
             ->take(6)
             ->get(['id', 'name', 'slug', 'image']);
 
-        return view('home', compact('featuredProducts', 'homeCategories'));
+        // The 3 newest live blog posts
+        $latestPosts = BlogPost::published()->forCards()
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        return view('home', compact('featuredProducts', 'homeCategories', 'latestPosts'));
     }
 }
