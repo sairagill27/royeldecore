@@ -67,10 +67,11 @@ class BlogController extends Controller
         // and it is left out of the grid so it never appears twice.
         $featured   = null;
         $featuredId = null;
+        $page       = max(1, $request->integer('page', 1));
         if (! $category && ! $tag && $term === '') {
             $newest     = (clone $base)->first();
             $featuredId = $newest?->id;
-            if ($request->integer('page', 1) <= 1) {
+            if ($page <= 1) {
                 $featured = $newest;
             }
         }
@@ -101,6 +102,19 @@ class BlogController extends Controller
             $intro   = 'Practical décor ideas, room inspiration and tips for every budget and space.';
         }
 
+        // CANONICAL: the one official address of this page. Search words never count,
+        // and page 2, 3... keep their own page number.
+        if ($category) {
+            $canonical = route('blog.category', $category->slug);
+        } elseif ($tag) {
+            $canonical = route('blog.tag', $tag->slug);
+        } else {
+            $canonical = route('blog.index');
+        }
+        if ($term === '' && $page > 1) {
+            $canonical .= '?page=' . $page;
+        }
+
         // Search results and empty pages are kept out of search engines
         $noindex = $term !== '' || ($posts->isEmpty() && ! $featured);
 
@@ -113,7 +127,8 @@ class BlogController extends Controller
             'term',
             'heading',
             'intro',
-            'noindex'
+            'noindex',
+            'canonical'
         ));
     }
 
@@ -126,8 +141,10 @@ class BlogController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // The article text, with raw HTML removed and unsafe links blanked
-        $html = Markdown::toHtml($post->content);
+        // The article text: raw HTML removed, unsafe links blanked, headings numbered for the contents box
+        $article = Markdown::article($post->content);
+        $html    = $article['html'];
+        $toc     = $article['toc'];
 
         // "Keep reading": up to 3 posts from the same category, then the latest others
         $related = BlogPost::published()->forCards()
@@ -157,6 +174,6 @@ class BlogController extends Controller
             ->take(4)
             ->get();
 
-        return view('blog.show', compact('post', 'html', 'related', 'products'));
+        return view('blog.show', compact('post', 'html', 'toc', 'related', 'products'));
     }
 }

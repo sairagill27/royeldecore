@@ -1,13 +1,32 @@
 @extends('layouts.app')
 
+@php
+// Breadcrumb trail for search engines: Home > Blog > Category or Tag
+$crumbs = [['Home', url('/')], ['Blog', route('blog.index')]];
+if ($category) {
+$crumbs[] = [$category->name, route('blog.category', $category->slug)];
+} elseif ($tag) {
+$crumbs[] = [$tag->name, route('blog.tag', $tag->slug)];
+}
+
+$ld = [
+'@context' => 'https://schema.org',
+'@type' => 'BreadcrumbList',
+'itemListElement' => collect($crumbs)->map(fn ($c, $i) => [
+'@type' => 'ListItem', 'position' => $i + 1, 'name' => $c[0], 'item' => $c[1],
+])->values()->all(),
+];
+@endphp
+
 @section('title', $heading . ' | ' . config('app.name'))
 @section('meta_description', $intro)
 
 @push('head')
-<link rel="canonical" href="{{ url()->current() }}">
+<link rel="canonical" href="{{ $canonical }}">
 @if ($noindex)
 <meta name="robots" content="noindex, follow">
 @endif
+{!! \App\Services\JsonLd::tag($ld) !!}
 @endpush
 
 @section('content')

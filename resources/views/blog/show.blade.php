@@ -7,46 +7,89 @@ $shareText = rawurlencode($post->title);
 $date = $post->published_at->timezone(config('shop.timezone'));
 $image = $post->featured_image ? asset('storage/' . $post->featured_image) : null;
 $metaDesc = $post->meta_description ?: $post->summary(155);
+$ogTitle = $post->seo_title ?: $post->title;
+$updated = $post->updated_at->gt($post->published_at->copy()->addDay());
 
 // Structured data for search engines. JSON_HEX_TAG and friends make sure text such as
 // </script> inside a title can never end the tag early.
-$ld = [
-'@context' => 'https://schema.org',
+$articleLd = [
 '@type' => 'BlogPosting',
 'headline' => $post->title,
+'description' => $metaDesc,
 'datePublished' => $post->published_at->toIso8601String(),
 'dateModified' => $post->updated_at->toIso8601String(),
 'author' => ['@type' => 'Person', 'name' => $post->author?->name ?? config('app.name')],
-'publisher' => ['@type' => 'Organization', 'name' => config('app.name')],
+'publisher' => ['@type' => 'Organization', 'name' => config('app.name'),
+'logo' => ['@type' => 'ImageObject', 'url' => asset('assets/images/logo.png')]],
 'mainEntityOfPage' => $url,
+'inLanguage' => 'en',
+'wordCount' => \Illuminate\Support\Str::wordCount(strip_tags($post->content)),
 ];
 if ($image) {
-$ld['image'] = $image;
+$articleLd['image'] = [$image];
 }
+if ($post->category) {
+$articleLd['articleSection'] = $post->category->name;
+}
+if ($post->tags->isNotEmpty()) {
+$articleLd['keywords'] = $post->tags->pluck('name')->implode(', ');
+}
+
+// Breadcrumb trail: Home > Blog > Category > Article
+$crumbs = [['Home', url('/')], ['Blog', route('blog.index')]];
+if ($post->category) {
+$crumbs[] = [$post->category->name, route('blog.category', $post->category->slug)];
+}
+$crumbs[] = [$post->title, $url];
+
+$breadcrumbLd = [
+'@type' => 'BreadcrumbList',
+'itemListElement' => collect($crumbs)->map(fn ($c, $i) => [
+'@type' => 'ListItem', 'position' => $i + 1, 'name' => $c[0], 'item' => $c[1],
+])->values()->all(),
+];
+
+$ld = ['@context' => 'https://schema.org', '@graph' => [$articleLd, $breadcrumbLd]];
 @endphp
 
-@section('title', ($post->seo_title ?: $post->title) . ' | ' . config('app.name'))
+@section('title', $ogTitle . ' | ' . config('app.name'))
 @section('meta_description', $metaDesc)
+@section('has_og', '1')
 
 @push('head')
 <link rel="canonical" href="{{ $url }}">
 
-{{-- Shown when the article is shared (WhatsApp, Facebook...) --}}
+{{-- Authors can switch an article out of search engines in the editor --}}
+@if ($post->noindex)
+<meta name="robots" content="noindex, follow">
+@endif
+
+{{-- Shown when the article is shared (WhatsApp, Facebook, X...) --}}
 <meta property="og:type" content="article">
-<meta property="og:title" content="{{ $post->seo_title ?: $post->title }}">
+<meta property="og:title" content="{{ $ogTitle }}">
 <meta property="og:description" content="{{ $metaDesc }}">
 <meta property="og:url" content="{{ $url }}">
 <meta property="og:site_name" content="{{ config('app.name') }}">
+<meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">
+<meta property="article:modified_time" content="{{ $post->updated_at->toIso8601String() }}">
+@if ($post->category)
+<meta property="article:section" content="{{ $post->category->name }}">
+@endif
+@foreach ($post->tags as $tag)
+<meta property="article:tag" content="{{ $tag->name }}">
+@endforeach
 @if ($image)
 <meta property="og:image" content="{{ $image }}">
+<meta property="og:image:alt" content="{{ $post->featured_image_alt }}">
 @endif
 <meta name="twitter:card" content="{{ $image ? 'summary_large_image' : 'summary' }}">
+<meta name="twitter:title" content="{{ $ogTitle }}">
+<meta name="twitter:description" content="{{ $metaDesc }}">
+@if ($image)
+<meta name="twitter:image" content="{{ $image }}">
+@endif
 
-<script type="application/ld+json">
-    {
-        !!json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) !!
-    }
-</script>
+{!! \App\Services\JsonLd::tag($ld) !!}
 @endpush
 
 @section('content')
@@ -73,7 +116,7 @@ $ld['image'] = $image;
             <a href="{{ route('blog.category', $post->category->slug) }}" class="sgh-blog-cat">{{ $post->category->name }}</a>
             @endif
 
-            {{-- {{ }} escapes the title, so nothing in it can run as code --}}
+            {{-- The one and only H1 of the page. {{ }} escapes it, so nothing in it can run as code. --}}
             <h1 class="sgh-article-title mt-2 mb-3">{{ $post->title }}</h1>
 
             @if (filled($post->excerpt))
@@ -83,6 +126,9 @@ $ld['image'] = $image;
             <p class="sgh-blog-meta mb-0">
                 @if ($post->author) By <strong>{{ $post->author->name }}</strong> · @endif
                 <time datetime="{{ $post->published_at->toIso8601String() }}">{{ $date->format('d F Y') }}</time>
+                @if ($updated)
+                · Updated <time datetime="{{ $post->updated_at->toIso8601String() }}">{{ $post->updated_at->timezone(config('shop.timezone'))->format('d F Y') }}</time>
+                @endif
                 · {{ $post->readingMinutes() }} min read
             </p>
         </div>
@@ -98,9 +144,22 @@ $ld['image'] = $image;
         </figure>
         @endif
 
-        {{-- ============ THE ARTICLE TEXT ============
-             $html comes from the safe Markdown renderer: raw HTML is already removed. --}}
         <div class="sgh-article-body">
+
+            {{-- ============ CONTENTS BOX (only for articles with 3 or more headings) ============ --}}
+            @if (count($toc) >= 3)
+            <nav class="sgh-toc" aria-label="In this article">
+                <strong>In this article</strong>
+                <ol>
+                    @foreach ($toc as $item)
+                    <li class="{{ $item['level'] === 3 ? 'is-sub' : '' }}"><a href="#{{ $item['id'] }}">{{ $item['text'] }}</a></li>
+                    @endforeach
+                </ol>
+            </nav>
+            @endif
+
+            {{-- ============ THE ARTICLE TEXT ============
+                 $html comes from the safe Markdown renderer: raw HTML is already removed. --}}
             <div class="sgh-prose" id="articleText">{!! $html !!}</div>
 
             {{-- Tags --}}

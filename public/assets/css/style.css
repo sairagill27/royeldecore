@@ -2792,3 +2792,46 @@ textarea.sgh-editor {
    width: 0;
    background: var(--sgh-sage);
 }
+
+/* =====================================================
+   28. BLOG SEO HELPERS
+   ===================================================== */
+
+/* Jump links stop below the sticky header, not behind it */
+.sgh-prose h2,
+.sgh-prose h3 {
+   scroll-margin-top: calc(var(--sgh-header-h) + 16px);
+}
+
+/* "In this article" contents box */
+.sgh-toc {
+   margin-bottom: 2rem;
+   padding: 1.1rem 1.25rem;
+   background: var(--sgh-soft-sage);
+   border-radius: 16px;
+}
+
+.sgh-toc ol {
+   margin: 0.6rem 0 0;
+   padding-left: 1.2rem;
+}
+
+.sgh-toc li {
+   margin-bottom: 0.3rem;
+}
+
+.sgh-toc li.is-sub {
+   margin-left: 1rem;
+   list-style: circle;
+   font-size: 0.95em;
+}
+
+.sgh-toc a {
+   color: var(--sgh-forest);
+   text-decoration: none;
+}
+
+.sgh-toc a:hover {
+   color: var(--sgh-sage);
+   text-decoration: underline;
+}

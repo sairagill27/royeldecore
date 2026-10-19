@@ -13,6 +13,22 @@
     {{-- Short description shown in Google results --}}
     <meta name="description" content="@yield('meta_description', 'Home décor inspiration, products, ideas and tools from ' . config('app.name') . '.')">
 
+    {{-- RSS feed: lets feed readers and search engines find new articles --}}
+    <link rel="alternate" type="application/rss+xml" title="{{ config('app.name') }} blog" href="{{ route('blog.feed') }}">
+
+    {{-- Default sharing tags (WhatsApp, Facebook...). A page that sets its own, such as an
+         article, adds @section('has_og') and skips these. --}}
+    @hasSection('has_og')
+    @else
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+    <meta property="og:title" content="@yield('title', config('app.name') . ' | Home Décor & Inspiration')">
+    <meta property="og:description" content="@yield('meta_description', 'Home décor inspiration, products, ideas and tools from ' . config('app.name') . '.')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('assets/images/logo.png') }}">
+    <meta name="twitter:card" content="summary">
+    @endif
+
     {{-- Fonts: Inter for text, Playfair Display for headings --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
@@ -28,7 +44,7 @@
     {{-- OUR CSS: brand colors. Loaded last so it can override Bootstrap. --}}
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
-    {{-- Extra tags a page adds (canonical link, sharing tags, structured data...) --}}
+    {{-- Extra tags a page adds (canonical link, structured data...) --}}
     @stack('head')
 </head>
 

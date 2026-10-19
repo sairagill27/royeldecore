@@ -25,10 +25,13 @@ class BlogPost extends Model
         'published_at',
         'seo_title',
         'meta_description',
+        'focus_keyword',
+        'noindex',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
+        'noindex'      => 'boolean',
     ];
 
     // The author
@@ -54,6 +57,12 @@ class BlogPost extends Model
         return $query->where('status', 'published')
             ->whereNotNull('published_at')
             ->where('published_at', '<=', now());
+    }
+
+    // Posts that should appear in search engines (the sitemap and the feed use this)
+    public function scopeIndexable(Builder $query): Builder
+    {
+        return $query->where('noindex', false);
     }
 
     // For lists and cards: loads only what a card shows. The whole article text is

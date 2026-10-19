@@ -7,7 +7,7 @@
 
             {{-- 1. LOGO: size is controlled by .sgh-logo in style.css --}}
             <a class="navbar-brand me-lg-4" href="{{ url('/') }}">
-                <img src="{{ asset('assets/images/logo.png') }}" alt="SGHomeTrends" class="sgh-logo">
+                <img src="{{ asset('assets/images/logo.png') }}" alt="{{ config('app.name') }}" class="sgh-logo">
             </a>
 
             {{-- 2. HAMBURGER BUTTON: only visible on mobile/tablet --}}
@@ -20,8 +20,10 @@
 
             {{-- 3. MENU AREA --}}
             <div class="collapse navbar-collapse" id="mainNavbar">
+
                 {{-- LEFT SIDE: main links (me-auto pushes the rest to the right) --}}
                 <ul class="navbar-nav me-auto mb-3 mb-lg-0 gap-lg-1">
+
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                     </li>
@@ -46,7 +48,8 @@
                             <li><a class="dropdown-item" href="{{ url('/shop/personalized-decor') }}">Personalized Décor</a></li>
                         </ul>
                     </li>
-                    {{-- TOOLS DROPDOWN: opens on hover (desktop) or tap (mobile) --}}
+
+                    {{-- TOOLS DROPDOWN (the calculator pages are built later) --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle {{ request()->is('tools*') ? 'active' : '' }}" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Tools</a>
@@ -58,6 +61,7 @@
                             <li><a class="dropdown-item" href="{{ url('/tools/room-budget-planner') }}">Room Budget Planner</a></li>
                         </ul>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About</a>
                     </li>
@@ -65,21 +69,27 @@
                         <a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">Contact</a>
                     </li>
                 </ul>
+
                 {{-- RIGHT SIDE: search, cart, and login/account (gap-3 = space between items) --}}
                 <div class="d-flex align-items-center gap-3">
+
                     {{-- SEARCH ICON: opens the search bar below the menu --}}
                     <button class="btn sgh-icon-btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#searchBar"
                         aria-controls="searchBar" aria-expanded="false" aria-label="Open search">
                         <i class="bi bi-search"></i>
                     </button>
-                    {{-- CART: the number "0" is fixed for now; we make it live later --}}
+
+                    {{-- CART: the number shows only when the cart has items.
+                         Note the closing </a> right after @endif. --}}
                     <a href="{{ url('/cart') }}" class="btn sgh-icon-btn position-relative" aria-label="Shopping cart">
                         <i class="bi bi-bag"></i>
                         @php $cartCount = (int) array_sum(session('cart', [])); @endphp
                         @if ($cartCount > 0)
                         <span class="badge rounded-pill bg-primary position-absolute top-0 start-100 translate-middle">{{ $cartCount }}</span>
                         @endif
+                    </a>
+
                     {{-- Visitors NOT logged in: two buttons with a gap between them --}}
                     @guest
                     <div class="d-flex gap-2 ms-lg-2">
@@ -87,6 +97,7 @@
                         <a href="{{ url('/register') }}" class="btn btn-primary rounded-pill px-3">Register</a>
                     </div>
                     @endguest
+
                     {{-- Logged-in customers: account dropdown --}}
                     @auth
                     <div class="dropdown">
@@ -97,7 +108,6 @@
                         <ul class="dropdown-menu dropdown-menu-end sgh-dropdown">
                             <li><a class="dropdown-item" href="{{ url('/account') }}">My Account</a></li>
                             <li><a class="dropdown-item" href="{{ url('/account/orders') }}">My Orders</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/account/wishlist') }}">Wishlist</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -111,10 +121,12 @@
                         </ul>
                     </div>
                     @endauth
+
                 </div> {{-- end of RIGHT SIDE --}}
             </div> {{-- end of MENU AREA --}}
         </div> {{-- end of container --}}
     </nav>
+
     {{-- SEARCH BAR: hidden until the search icon is clicked.
          It must stay HERE, after </nav> and before </header>. --}}
     <div class="collapse border-top" id="searchBar">
@@ -122,7 +134,6 @@
             <form action="{{ url('/search') }}" method="GET" role="search">
                 <div class="d-flex align-items-center gap-2">
 
-                    {{-- Search box + Search button --}}
                     <div class="input-group input-group-lg">
                         <input type="search" name="q" class="form-control"
                             placeholder="Search décor products, ideas and articles…" aria-label="Search">

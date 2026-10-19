@@ -12,6 +12,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SeoController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,12 +21,19 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop/{category:slug?}', [ShopController::class, 'index'])->name('shop');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 
+// SEO FILES for search engines
+Route::middleware('throttle:60,1')->group(function () {
+    Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+    Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
+});
+
 // SEARCH (the box in the header sends ?q=word to this address)
 Route::get('/search', [SearchController::class, 'index'])->middleware('throttle:60,1')->name('search');
 
-// BLOG. The category and tag addresses come BEFORE /blog/{slug}, so they are matched first.
+// BLOG. The fixed addresses (category, tag, feed) come BEFORE /blog/{slug}, so they are matched first.
 Route::middleware('throttle:120,1')->group(function () {
     Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/feed.xml', [SeoController::class, 'feed'])->name('blog.feed');
     Route::get('/blog/category/{category:slug}', [BlogController::class, 'category'])->name('blog.category');
     Route::get('/blog/tag/{tag:slug}', [BlogController::class, 'tag'])->name('blog.tag');
     Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
