@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
@@ -39,8 +40,17 @@ Route::get('messages/{message}', [MessageController::class, 'show'])->name('mess
 Route::patch('messages/{message}/unread', [MessageController::class, 'unread'])->name('messages.unread');
 Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
 
-// Blog posts: list, write, edit, delete, plus the live Markdown preview
+// Blog posts: the live Markdown preview, then list, write, edit, delete
 Route::post('posts/preview', [PostController::class, 'preview'])
     ->middleware('throttle:30,1')
     ->name('posts.preview');
 Route::resource('posts', PostController::class)->except('show');
+
+// Blog comments: list, approve, reject, delete
+Route::get('comments', [CommentController::class, 'index'])->name('comments.index');
+Route::patch('comments/{comment}/approve', [CommentController::class, 'approve'])
+    ->middleware('throttle:60,1')->name('comments.approve');
+Route::patch('comments/{comment}/reject', [CommentController::class, 'reject'])
+    ->middleware('throttle:60,1')->name('comments.reject');
+Route::delete('comments/{comment}', [CommentController::class, 'destroy'])
+    ->middleware('throttle:60,1')->name('comments.destroy');

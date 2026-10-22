@@ -10,8 +10,7 @@ $metaDesc = $post->meta_description ?: $post->summary(155);
 $ogTitle = $post->seo_title ?: $post->title;
 $updated = $post->updated_at->gt($post->published_at->copy()->addDay());
 
-// Structured data for search engines. JSON_HEX_TAG and friends make sure text such as
-// </script> inside a title can never end the tag early.
+// Structured data for search engines (printed safely by JsonLd::tag below)
 $articleLd = [
 '@type' => 'BlogPosting',
 'headline' => $post->title,
@@ -91,7 +90,6 @@ $ld = ['@context' => 'https://schema.org', '@graph' => [$articleLd, $breadcrumbL
 
 {!! \App\Services\JsonLd::tag($ld) !!}
 @endpush
-
 @section('content')
 
 {{-- Reading progress: a thin line along the top of the screen --}}
@@ -193,6 +191,7 @@ $ld = ['@context' => 'https://schema.org', '@graph' => [$articleLd, $breadcrumbL
         </div>
     </div>
 </article>
+@include('blog.comments', ['post' => $post])
 
 {{-- ============ FROM OUR SHOP ============ --}}
 @if ($products->isNotEmpty())

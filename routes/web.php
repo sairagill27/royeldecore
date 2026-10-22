@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
@@ -38,6 +39,10 @@ Route::middleware('throttle:120,1')->group(function () {
     Route::get('/blog/tag/{tag:slug}', [BlogController::class, 'tag'])->name('blog.tag');
     Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 });
+
+// COMMENTS. throttle:5,10 = max 5 comments per 10 minutes per visitor (stops spam)
+Route::post('/blog/{slug}/comments', [CommentController::class, 'store'])
+    ->middleware('throttle:5,10')->name('blog.comments.store');
 
 // NEWSLETTER. throttle:5,10 = max 5 sign-ups per 10 minutes per visitor (stops spam)
 Route::post('/newsletter', [NewsletterController::class, 'subscribe'])->middleware('throttle:5,10')->name('newsletter.subscribe');

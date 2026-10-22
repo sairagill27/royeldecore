@@ -20,7 +20,10 @@
 <body class="sgh-admin">
 
     {{-- How many contact messages are still unread (shown as a badge in the menu) --}}
-    @php $unreadMessages = \App\Models\ContactMessage::whereNull('read_at')->count(); @endphp
+    @php
+    $unreadMessages = \App\Models\ContactMessage::whereNull('read_at')->count();
+    $pendingComments = \App\Models\Comment::where('status', 'pending')->count();
+    @endphp
 
     {{-- The page is split into: sidebar (left) + main area (right) --}}
     <div class="sgh-admin-shell">
@@ -73,7 +76,13 @@
                             class="sgh-admin-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
                             <i class="bi bi-journal-text"></i> Blog posts
                         </a>
-
+                        <a href="{{ route('admin.comments.index') }}"
+                            class="sgh-admin-link {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
+                            <i class="bi bi-chat-dots"></i> Comments
+                            @if ($pendingComments > 0)
+                            <span class="sgh-count" aria-label="{{ $pendingComments }} waiting">{{ $pendingComments }}</span>
+                            @endif
+                        </a>
                         <a href="{{ route('admin.messages.index') }}"
                             class="sgh-admin-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
                             <i class="bi bi-envelope"></i> Messages

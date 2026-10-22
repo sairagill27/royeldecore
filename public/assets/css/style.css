@@ -2835,3 +2835,62 @@ textarea.sgh-editor {
    color: var(--sgh-sage);
    text-decoration: underline;
 }
+
+/* =====================================================
+   30. BLOG COMMENTS
+   ===================================================== */
+.sgh-comments {
+   max-width: 760px;
+   margin: 0 auto;
+}
+
+.sgh-comment {
+   display: flex;
+   gap: 0.9rem;
+   padding: 1rem 0;
+}
+
+.sgh-comment+.sgh-comment {
+   border-top: 1px solid rgba(107, 143, 113, 0.2);
+}
+
+.sgh-comment-avatar {
+   flex: 0 0 auto;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 42px;
+   height: 42px;
+   border-radius: 50%;
+   background: var(--sgh-soft-sage);
+   color: var(--sgh-forest);
+   font-weight: 700;
+}
+
+.sgh-comment-body {
+   min-width: 0;
+   overflow-wrap: anywhere;
+}
+
+.sgh-comment-form {
+   background: #fff;
+   border: 1px solid rgba(107, 143, 113, 0.18);
+   border-radius: 18px;
+   padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+   .sgh-comment-form {
+      padding: 1.75rem;
+   }
+}
+
+/* Comment text in the admin table */
+.sgh-comment-cell {
+   max-width: 460px;
+   overflow-wrap: anywhere;
+}
+
+.sgh-comment-cell strong {
+   margin-right: 0.4rem;
+}

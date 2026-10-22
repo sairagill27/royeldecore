@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class BlogPost extends Model
@@ -48,6 +49,12 @@ class BlogPost extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'post_tag', 'blog_post_id', 'tag_id');
+    }
+
+    // One article has many comments
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'blog_post_id');
     }
 
     // Posts visitors may read: published, and the publish date has arrived.
