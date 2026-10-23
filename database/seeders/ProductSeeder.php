@@ -46,8 +46,8 @@ class ProductSeeder extends Seeder
                     'stock'            => $stock,
                     'status'           => 'active',
                     'is_featured'      => $featured,
-                    'seo_title'        => $name . ' | SGHomeTrends',
-                    'meta_description' => 'Shop ' . $name . ' at SGHomeTrends.',
+                    'seo_title'        => $name . ' | ' . config('app.name'),
+                    'meta_description' => 'Shop ' . $name . ' at ' . config('app.name') . '.',
                 ]
             );
         }

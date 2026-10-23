@@ -25,7 +25,7 @@
 
             {{-- Left: small label, big heading, short text --}}
             <div class="sgh-shop-hero-text">
-                <p class="sgh-eyebrow mb-2">{{ $category ? 'Collection' : 'The SGHomeTrends shop' }}</p>
+                <p class="sgh-eyebrow mb-2">{{ $category ? 'Collection' : 'The RoyelDecore shop' }}</p>
                 <h1 class="sgh-shop-hero-title mb-2">
                     {{ $category ? $category->name : 'Shop Décor' }}
                 </h1>
