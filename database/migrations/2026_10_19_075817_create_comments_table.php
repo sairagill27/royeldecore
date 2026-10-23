@@ -10,19 +10,13 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-
-            // If an article is deleted, its comments go with it
             $table->foreignId('blog_post_id')->constrained('blog_posts')->cascadeOnDelete();
-            // If a customer account is deleted, the comment stays (user_id becomes empty)
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-
             $table->string('name', 80);
-            $table->string('email');                         // for moderation only, never shown
+            $table->string('email');
             $table->text('body');
-            $table->string('status', 20)->default('pending')->index();   // pending, approved or rejected
-
+            $table->string('status', 20)->default('pending')->index();
             $table->timestamps();
-
             $table->index(['blog_post_id', 'status']);
         });
     }
