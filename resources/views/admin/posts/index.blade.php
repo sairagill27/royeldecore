@@ -41,9 +41,14 @@
             @endif
         </form>
 
-        <a href="{{ route('admin.posts.create') }}" class="btn btn-primary btn-sm rounded-pill px-3 ms-lg-auto">
-            <i class="bi bi-plus-lg me-1"></i> Write a post
-        </a>
+        <div class="d-flex gap-2 ms-lg-auto">
+            <a href="{{ route('admin.posts.audit') }}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                <i class="bi bi-graph-up-arrow me-1"></i> SEO audit
+            </a>
+            <a href="{{ route('admin.posts.create') }}" class="btn btn-primary btn-sm rounded-pill px-3">
+                <i class="bi bi-plus-lg me-1"></i> Write a post
+            </a>
+        </div>
     </div>
 
     @if ($posts->isEmpty())
@@ -95,6 +100,10 @@
                         <span class="badge sgh-badge-low">Scheduled</span>
                         @else
                         <span class="badge sgh-badge-ok">Published</span>
+                        @endif
+
+                        @if ($post->noindex)
+                        <span class="badge sgh-badge-draft" title="Hidden from search engines">noindex</span>
                         @endif
                     </td>
                     <td>

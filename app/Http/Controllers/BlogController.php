@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\Product;
+use App\Models\SlugRedirect;
 use App\Models\Tag;
 use App\Services\Markdown;
 use Illuminate\Http\Request;
@@ -47,7 +48,7 @@ class BlogController extends Controller
             $base->where('blog_category_id', $category->id);
         }
         if ($tag) {
-            $base->whereHas('tags', fn($q) => $q->where('tags.id', $tag->id));
+            $base->whereHas('tags', fn ($q) => $q->where('tags.id', $tag->id));
         }
 
         if ($term !== '') {
@@ -56,10 +57,10 @@ class BlogController extends Controller
 
             $base->where(function ($q) use ($like) {
                 $q->where('title', 'like', $like)
-                    ->orWhere('excerpt', 'like', $like)
-                    ->orWhere('content', 'like', $like)
-                    ->orWhereHas('tags', fn($t) => $t->where('name', 'like', $like))
-                    ->orWhereHas('category', fn($c) => $c->where('name', 'like', $like));
+                  ->orWhere('excerpt', 'like', $like)
+                  ->orWhere('content', 'like', $like)
+                  ->orWhereHas('tags', fn ($t) => $t->where('name', 'like', $like))
+                  ->orWhereHas('category', fn ($c) => $c->where('name', 'like', $like));
             });
         }
 
@@ -77,15 +78,15 @@ class BlogController extends Controller
         }
 
         $posts = $base
-            ->when($featuredId, fn($q) => $q->where('id', '!=', $featuredId))
+            ->when($featuredId, fn ($q) => $q->where('id', '!=', $featuredId))
             ->paginate(9)
             ->withQueryString();
 
         // The category pills: only categories that have at least one live post
-        $categories = BlogCategory::withCount(['posts' => fn($q) => $q->published()])
+        $categories = BlogCategory::withCount(['posts' => fn ($q) => $q->published()])
             ->orderBy('sort_order')
             ->get()
-            ->filter(fn($c) => $c->posts_count > 0);
+            ->filter(fn ($c) => $c->posts_count > 0);
 
         // The heading and the intro text
         if ($term !== '') {
@@ -119,27 +120,30 @@ class BlogController extends Controller
         $noindex = $term !== '' || ($posts->isEmpty() && ! $featured);
 
         return view('blog.index', compact(
-            'posts',
-            'featured',
-            'categories',
-            'category',
-            'tag',
-            'term',
-            'heading',
-            'intro',
-            'noindex',
-            'canonical'
+            'posts', 'featured', 'categories', 'category', 'tag', 'term', 'heading', 'intro', 'noindex', 'canonical'
         ));
     }
 
     // /blog/{slug}: one article
     public function show(string $slug)
     {
-        // SECURITY: drafts and scheduled posts show 404
+        // SECURITY: drafts and scheduled posts are not found
         $post = BlogPost::published()
             ->with(['category:id,name,slug', 'author:id,name', 'tags:id,name,slug'])
             ->where('slug', $slug)
-            ->firstOrFail();
+            ->first();
+
+        if (! $post) {
+            // An OLD address of a live article? Send visitors (and Google) to the new one.
+            $redirect = SlugRedirect::where('old_slug', $slug)->first();
+            $target   = $redirect
+                ? BlogPost::published()->whereKey($redirect->blog_post_id)->first(['id', 'slug'])
+                : null;
+
+            abort_if(! $target, 404);
+
+            return redirect()->route('blog.show', $target->slug, 301);
+        }
 
         // The article text: raw HTML removed, unsafe links blanked, headings numbered for the contents box
         $article = Markdown::article($post->content);
@@ -149,7 +153,7 @@ class BlogController extends Controller
         // "Keep reading": up to 3 posts from the same category, then the latest others
         $related = BlogPost::published()->forCards()
             ->where('id', '!=', $post->id)
-            ->when($post->blog_category_id, fn($q) => $q->where('blog_category_id', $post->blog_category_id))
+            ->when($post->blog_category_id, fn ($q) => $q->where('blog_category_id', $post->blog_category_id))
             ->latest('published_at')
             ->take(3)
             ->get();

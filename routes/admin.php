@@ -40,7 +40,8 @@ Route::get('messages/{message}', [MessageController::class, 'show'])->name('mess
 Route::patch('messages/{message}/unread', [MessageController::class, 'unread'])->name('messages.unread');
 Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
 
-// Blog posts: the live Markdown preview, then list, write, edit, delete
+// Blog posts: SEO audit, the live Markdown preview, then list, write, edit, delete
+Route::get('posts/seo-audit', [PostController::class, 'audit'])->name('posts.audit');
 Route::post('posts/preview', [PostController::class, 'preview'])
     ->middleware('throttle:30,1')
     ->name('posts.preview');

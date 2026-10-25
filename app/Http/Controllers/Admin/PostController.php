@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostRequest;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
+use App\Models\SlugRedirect;
 use App\Models\Tag;
 use App\Services\Markdown;
+use App\Services\SeoScore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -19,7 +22,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         // The article text is not loaded here: the list does not need it, so it stays fast
-        $query = BlogPost::select(['id', 'user_id', 'blog_category_id', 'title', 'slug', 'featured_image', 'status', 'published_at', 'created_at'])
+        $query = BlogPost::select(['id', 'user_id', 'blog_category_id', 'title', 'slug', 'featured_image', 'status', 'published_at', 'noindex', 'created_at'])
             ->with(['category:id,name', 'author:id,name'])
             ->latest('id');
 
@@ -59,6 +62,33 @@ class PostController extends Controller
         return view('admin.posts.index', compact('posts', 'categories', 'counts', 'filter'));
     }
 
+    // ---------- SEO AUDIT: every post scored, weakest first ----------
+    public function audit()
+    {
+        // The 100 newest posts. The article text IS loaded here, because scoring needs it.
+        $rows = BlogPost::select(['id', 'title', 'slug', 'seo_title', 'meta_description', 'focus_keyword',
+                                  'noindex', 'featured_image', 'featured_image_alt', 'status', 'published_at', 'content'])
+            ->latest('id')
+            ->take(100)
+            ->get()
+            ->map(function (BlogPost $post) {
+                $seo = SeoScore::forPost($post);
+
+                return ['post' => $post, 'seo' => $seo, 'level' => SeoScore::level($seo['score'])];
+            })
+            ->sortBy(fn ($row) => $row['seo']['score'])
+            ->values();
+
+        $stats = [
+            'total'   => $rows->count(),
+            'average' => (int) round($rows->avg(fn ($row) => $row['seo']['score']) ?? 0),
+            'bad'     => $rows->where('level', 'bad')->count(),
+            'good'    => $rows->where('level', 'good')->count(),
+        ];
+
+        return view('admin.posts.audit', compact('rows', 'stats'));
+    }
+
     // ---------- WRITE A NEW POST ----------
     public function create()
     {
@@ -75,6 +105,10 @@ class PostController extends Controller
         $post = BlogPost::create($data);
         $this->syncTags($post, $request->input('tags'));
 
+        // If this address was an old one that redirected somewhere, the new article takes it over
+        SlugRedirect::where('old_slug', $post->slug)->delete();
+        $this->clearSitemap();
+
         return redirect()->route('admin.posts.edit', $post)
             ->with('success', '"' . $post->title . '" was saved.')
             ->with('alert_title', 'Post saved');
@@ -88,8 +122,14 @@ class PostController extends Controller
 
     public function update(PostRequest $request, BlogPost $post)
     {
+        // Remember how the article stood BEFORE the change (needed for redirects)
+        $oldSlug = $post->slug;
+        $wasLive = $post->status === 'published' && $post->published_at && $post->published_at->isPast();
+
         $post->update($this->payload($request, $post));
         $this->syncTags($post, $request->input('tags'));
+        $this->trackSlug($post, $oldSlug, $wasLive);
+        $this->clearSitemap();
 
         return redirect()->route('admin.posts.edit', $post)
             ->with('success', '"' . $post->title . '" was updated.')
@@ -105,7 +145,8 @@ class PostController extends Controller
             Storage::disk('public')->delete($post->featured_image);
         }
         $title = $post->title;
-        $post->delete();   // its tag links are removed automatically
+        $post->delete();   // its tag links, comments and redirects are removed automatically
+        $this->clearSitemap();
 
         return redirect()->route('admin.posts.index')
             ->with('success', '"' . $title . '" was deleted.')
@@ -119,11 +160,30 @@ class PostController extends Controller
             'content' => ['nullable', 'string', 'max:60000'],
         ]);
 
-        // The same safe renderer the public blog will use
+        // The same safe renderer the public blog uses
         return response()->json(['html' => Markdown::toHtml($data['content'] ?? '')]);
     }
 
     // ---------- helpers ----------
+
+    // The sitemap is kept for 10 minutes. Clear it, so a change shows up at once.
+    private function clearSitemap(): void
+    {
+        Cache::forget('seo.sitemap');
+    }
+
+    // REDIRECTS. When a live article's address changes, the old address must keep working.
+    private function trackSlug(BlogPost $post, string $oldSlug, bool $wasLive): void
+    {
+        // The article uses this address now, so no redirect may point away from it
+        SlugRedirect::where('old_slug', $post->slug)->delete();
+
+        // The redirect points to the ARTICLE (not to a fixed address), so after a second
+        // rename the old addresses go straight to the newest one, with no chains.
+        if ($wasLive && $oldSlug !== $post->slug) {
+            SlugRedirect::updateOrCreate(['old_slug' => $oldSlug], ['blog_post_id' => $post->id]);
+        }
+    }
 
     private function formData(BlogPost $post): array
     {
@@ -140,6 +200,13 @@ class PostController extends Controller
     {
         // Everything validated, except the helper fields handled below
         $data = $request->safe()->except(['featured_image', 'remove_image', 'tags']);
+
+        // An unticked checkbox is saved as false
+        $data['noindex'] = $request->boolean('noindex');
+
+        $data['focus_keyword'] = filled($data['focus_keyword'] ?? null)
+            ? Str::squish($data['focus_keyword'])
+            : null;
 
         // No slug typed? Build one from the title and make it unique
         $data['slug'] = filled($data['slug'] ?? null)
@@ -178,9 +245,9 @@ class PostController extends Controller
     private function syncTags(BlogPost $post, ?string $input): void
     {
         $ids = collect(explode(',', (string) $input))
-            ->map(fn($name) => Str::squish($name))
+            ->map(fn ($name) => Str::squish($name))
             ->filter()
-            ->unique(fn($name) => Str::lower($name))
+            ->unique(fn ($name) => Str::lower($name))
             ->take(10)
             ->map(function ($name) {
                 $slug = Str::slug($name);
@@ -204,9 +271,8 @@ class PostController extends Controller
         $i    = 2;
 
         while (BlogPost::where('slug', $slug)
-            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
-            ->exists()
-        ) {
+            ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()) {
             $slug = $base . '-' . $i++;
         }
 

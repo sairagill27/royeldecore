@@ -56,8 +56,11 @@ class PostRequest extends FormRequest
             'featured_image_alt' => ['nullable', 'string', 'max:160', 'required_with:featured_image'],
             'remove_image'       => ['nullable', 'boolean'],
 
+            // Search engine fields
             'seo_title'        => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:320'],
+            'focus_keyword'    => ['nullable', 'string', 'max:80'],
+            'noindex'          => ['nullable', 'boolean'],
         ];
     }
 
@@ -69,6 +72,7 @@ class PostRequest extends FormRequest
             'featured_image.max'                => 'The photo must be smaller than 2 MB.',
             'featured_image_alt.required_with'  => 'Please describe the photo in a few words. Screen readers and search engines use it.',
             'published_at.date_format'          => 'Please choose a valid date and time.',
+            'focus_keyword.max'                 => 'The focus keyword can be up to 80 characters.',
         ];
     }
 }
