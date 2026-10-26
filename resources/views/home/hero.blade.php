@@ -1,59 +1,75 @@
-{{-- HERO SECTION (Editorial Split): text on the left, image on the right --}}
-<section class="sgh-hero">
-    <div class="container">
-        {{-- align-items-center: centers text vertically next to the image --}}
-        <div class="row align-items-center g-4 g-lg-5">
-            {{-- LEFT COLUMN: the text. On mobile it appears first. --}}
-            <div class="col-lg-6">
-                {{-- Small label above the heading --}}
-                <p class="sgh-eyebrow mb-3">Home décor inspiration</p>
-                {{-- Main heading (the serif font comes from style.css) --}}
-                <h1 class="sgh-hero-title mb-3">
-                    Make every room feel <span class="sgh-hero-accent">like home.</span>
-                </h1>
-                {{-- Short description --}}
-                <p class="lead text-secondary mb-4">
-                    Discover thoughtful décor ideas, shop beautiful pieces for your walls
-                    and shelves, and plan your space with our free décor tools.
-                </p>
-                {{-- BUTTONS: the main one first, a quieter one second --}}
-                <div class="d-flex flex-wrap gap-3 mb-4">
-                    <a href="{{ url('/shop') }}" class="btn btn-primary btn-lg rounded-pill px-4">
-                        Explore Décor <i class="bi bi-arrow-right ms-1"></i>
-                    </a>
-                    <a href="{{ url('/tools') }}" class="btn btn-outline-primary btn-lg rounded-pill px-4">
-                        Try Décor Tools
-                    </a>
+{{-- HOME HERO (magazine style): text on the left, photo on the right that fades into the background,
+     and leaf branches on the left edge. The leaves are drawn with SVG (no image files). --}}
+
+@php
+    // The photo: the first of these files that exists in public/assets/images
+    $heroFile = collect(['hero.webp', 'hero.jpg', 'hero.jpeg', 'hero.png', 'hero.jpg.jfif', 'hero.jfif'])
+        ->first(fn ($file) => file_exists(public_path('assets/images/' . $file)));
+
+    // Read aloud by screen readers. Change it to describe your real photo.
+    $heroAlt = 'A calm living room styled with natural décor';
+@endphp
+
+<section class="sgh-banner">
+
+    {{-- The leaf drawing, defined once and used twice below --}}
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <g id="sgh-leaf">
+                <path d="M0 0C8 -10 28 -12 44 0C28 12 8 10 0 0Z"/>
+                <path d="M3 0L38 0" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1"/>
+            </g>
+            <g id="sgh-branch">
+                <path d="M30 0C60 80 10 160 50 260" fill="none" stroke="#7c9c82" stroke-width="2.2" stroke-linecap="round"/>
+                <use href="#sgh-leaf" class="sgh-leaf-a" transform="translate(39 36) rotate(35) scale(.85)"/>
+                <use href="#sgh-leaf" class="sgh-leaf-b" transform="translate(40 72) rotate(148)"/>
+                <use href="#sgh-leaf" class="sgh-leaf-a" transform="translate(37 110) rotate(30) scale(1.1)"/>
+                <use href="#sgh-leaf" class="sgh-leaf-b" transform="translate(34 148) rotate(152) scale(1.05)"/>
+                <use href="#sgh-leaf" class="sgh-leaf-a" transform="translate(34 188) rotate(28)"/>
+                <use href="#sgh-leaf" class="sgh-leaf-b" transform="translate(40 230) rotate(155) scale(.9)"/>
+                <use href="#sgh-leaf" class="sgh-leaf-a" transform="translate(50 260) rotate(85) scale(.8)"/>
+            </g>
+        </defs>
+    </svg>
+
+    {{-- Decorative branches on the left edge --}}
+    <svg class="sgh-banner-leaves sgh-banner-leaves--top" viewBox="-30 0 170 280" aria-hidden="true" focusable="false"><use href="#sgh-branch"/></svg>
+    <svg class="sgh-banner-leaves sgh-banner-leaves--low" viewBox="-30 0 170 280" aria-hidden="true" focusable="false"><use href="#sgh-branch"/></svg>
+
+    {{-- TEXT --}}
+    <div class="sgh-banner-inner">
+        <div class="container">
+            <div class="sgh-banner-copy">
+
+                <p class="sgh-banner-eyebrow">Premium Home Décor</p>
+
+                <h1 class="sgh-banner-title">Beautiful Spaces Start with the Right <em>Décor</em></h1>
+
+                <p class="sgh-banner-text">Transform your home with unique décor pieces, designed to bring warmth, style and inspiration to every corner.</p>
+
+                <div class="sgh-banner-actions">
+                    <a href="{{ route('shop') }}" class="btn sgh-btn-dark rounded-pill px-4 py-2">Shop Now <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a>
+                    <a href="{{ route('blog.index') }}" class="btn sgh-btn-ghost rounded-pill px-4 py-2">Explore Ideas</a>
                 </div>
-                {{-- THREE SMALL BENEFITS (no fake numbers, just things the site offers) --}}
-                <ul class="list-unstyled d-flex flex-wrap gap-3 gap-md-4 small text-secondary mb-0">
-                    <li><i class="bi bi-check-circle-fill text-primary me-1"></i> Curated décor pieces</li>
-                    <li><i class="bi bi-check-circle-fill text-primary me-1"></i> Free room calculators</li>
-                    <li><i class="bi bi-check-circle-fill text-primary me-1"></i> Ideas for every budget</li>
+
+                {{-- Useful shortcuts. Only things that are true for this shop. --}}
+                <ul class="sgh-banner-links">
+                    <li><span><i class="bi bi-cash-coin" aria-hidden="true"></i> Pay on delivery</span></li>
+                    <li><a href="{{ route('blog.index') }}"><i class="bi bi-lightbulb" aria-hidden="true"></i> Décor ideas &amp; guides</a></li>
+                    <li><a href="{{ route('shop') }}"><i class="bi bi-grid" aria-hidden="true"></i> Browse by category</a></li>
+                    <li><a href="{{ route('account.orders') }}"><i class="bi bi-box-seam" aria-hidden="true"></i> Track your order</a></li>
                 </ul>
             </div>
-            {{-- RIGHT COLUMN: the image --}}
-            <div class="col-lg-6">
-                <div class="sgh-hero-media position-relative">
-                    {{-- width/height stop the page from jumping while loading.
-                         loading="eager" because this image is at the top of the page.
-                         Write a real description in alt for your photo. --}}
-                    <img src="{{ asset('assets/images/hero.jpg.jfif') }}"
-                         alt="Bright living room styled with wall art, a mirror and decorative pieces"
-                         class="sgh-hero-img"
-                         width="1200" height="1400"
-                         loading="eager" fetchpriority="high">
-                    {{-- Small floating card on top of the image --}}
-                    <a href="{{ url('/tools/room-budget-planner') }}"
-                       class="sgh-hero-card text-decoration-none">
-                        <span class="sgh-hero-card-icon"><i class="bi bi-calculator"></i></span>
-                        <span>
-                            <strong class="d-block">Room Budget Planner</strong>
-                            <small class="text-secondary">Plan your décor spending</small>
-                        </span>
-                    </a>
-                </div>
-            </div>
         </div>
+    </div>
+
+    {{-- PHOTO (the left edge fades into the background) --}}
+    <div class="sgh-banner-photo">
+        @if ($heroFile)
+            <img src="{{ asset('assets/images/' . $heroFile) }}" alt="{{ $heroAlt }}"
+                 width="1600" height="900" loading="eager" fetchpriority="high">
+        @else
+            <div class="sgh-banner-photo-empty" aria-hidden="true"><i class="bi bi-image"></i></div>
+        @endif
     </div>
 </section>
