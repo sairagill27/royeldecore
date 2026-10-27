@@ -2,12 +2,18 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class HomeHeroTest extends TestCase
 {
     use RefreshDatabase;
+
+    private function category(string $name, string $slug, bool $active = true, int $order = 1): Category
+    {
+        return Category::create(['name' => $name, 'slug' => $slug, 'is_active' => $active, 'sort_order' => $order]);
+    }
 
     public function test_the_hero_has_the_new_wording_and_buttons(): void
     {
@@ -21,14 +27,30 @@ class HomeHeroTest extends TestCase
             ->assertSee('href="' . route('blog.index') . '"', false);
     }
 
-    public function test_the_shortcut_row_only_offers_things_that_are_true_for_this_shop(): void
+    public function test_the_hero_has_a_search_box_that_uses_the_shop_search(): void
     {
         $this->get('/')->assertOk()
-            ->assertSee('Pay on delivery')
-            ->assertSee('Décor ideas')
-            ->assertSee('Browse by category')
-            ->assertSee('Track your order')
-            ->assertSee('href="' . route('account.orders') . '"', false);
+            ->assertSee('action="' . route('search') . '"', false)
+            ->assertSee('id="hero-q"', false)
+            ->assertSee('name="q"', false);
+    }
+
+    public function test_the_hero_shows_real_visible_categories_only_and_at_most_four(): void
+    {
+        $this->category('Zebra Lamps', 'zebra-lamps', true, 1);
+        $this->category('Secret Room', 'secret-room', false, 2);
+        foreach (['Alpha', 'Beta', 'Gamma', 'Delta'] as $i => $name) {
+            $this->category($name . ' Pieces', strtolower($name), true, 10 + $i);
+        }
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString(
+            '<a href="' . route('shop', ['category' => 'zebra-lamps']) . '" class="sgh-banner-chip">Zebra Lamps</a>',
+            $html
+        );
+        $this->assertStringNotContainsString('class="sgh-banner-chip">Secret Room', $html);
+        $this->assertSame(4, substr_count($html, 'class="sgh-banner-chip"'));
     }
 
     public function test_the_hero_makes_no_promises_the_shop_has_not_written_down(): void

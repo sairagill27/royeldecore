@@ -8,6 +8,9 @@
 
     // Read aloud by screen readers. Change it to describe your real photo.
     $heroAlt = 'A calm living room styled with natural décor';
+
+    // The first 4 visible categories (HomeController sends $homeCategories)
+    $chips = ($homeCategories ?? collect())->take(4);
 @endphp
 
 <section class="sgh-banner">
@@ -52,13 +55,23 @@
                     <a href="{{ route('blog.index') }}" class="btn sgh-btn-ghost rounded-pill px-4 py-2">Explore Ideas</a>
                 </div>
 
-                {{-- Useful shortcuts. Only things that are true for this shop. --}}
-                <ul class="sgh-banner-links">
-                    <li><span><i class="bi bi-cash-coin" aria-hidden="true"></i> Pay on delivery</span></li>
-                    <li><a href="{{ route('blog.index') }}"><i class="bi bi-lightbulb" aria-hidden="true"></i> Décor ideas &amp; guides</a></li>
-                    <li><a href="{{ route('shop') }}"><i class="bi bi-grid" aria-hidden="true"></i> Browse by category</a></li>
-                    <li><a href="{{ route('account.orders') }}"><i class="bi bi-box-seam" aria-hidden="true"></i> Track your order</a></li>
-                </ul>
+                {{-- Search the shop --}}
+                <form action="{{ route('search') }}" method="GET" role="search" class="sgh-banner-search">
+                    <label for="hero-q" class="visually-hidden">Search the shop</label>
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <input type="search" id="hero-q" name="q" maxlength="100" autocomplete="off" placeholder="Search mirrors, wall art, clocks&hellip;">
+                    <button type="submit" class="btn sgh-btn-dark rounded-pill px-4">Search</button>
+                </form>
+
+                {{-- Shop by category (real categories from the database) --}}
+                @if ($chips->isNotEmpty())
+                    <div class="sgh-banner-chips">
+                        <span class="sgh-banner-chips-label">Shop by</span>
+                        @foreach ($chips as $chip)
+                            <a href="{{ route('shop', ['category' => $chip->slug]) }}" class="sgh-banner-chip">{{ $chip->name }}</a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
     </div>

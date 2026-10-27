@@ -161,7 +161,7 @@ class PostController extends Controller
         ]);
 
         // The same safe renderer the public blog uses
-        return response()->json(['html' => Markdown::toHtml($data['content'] ?? '')]);
+        return response()->json(['html' => Markdown::article($data['content'] ?? '')['html']]);
     }
 
     // ---------- helpers ----------

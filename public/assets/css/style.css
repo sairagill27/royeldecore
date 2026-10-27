@@ -3204,3 +3204,99 @@ textarea.sgh-editor {
     .sgh-banner-leaves--top { top: -10px; left: -90px; width: 210px; }
     .sgh-banner-leaves--low { bottom: -60px; left: -70px; width: 150px; }
 }
+
+/* =====================================================
+   34. HERO SEARCH AND CATEGORY PILLS
+   ===================================================== */
+.sgh-banner-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 30rem;
+    padding: 0.4rem 0.4rem 0.4rem 1.1rem;
+    background: #fff;
+    border: 1px solid rgba(36, 64, 45, 0.14);
+    border-radius: 999px;
+    box-shadow: 0 10px 28px rgba(36, 64, 45, 0.1);
+}
+.sgh-banner-search:focus-within {
+    border-color: var(--sgh-sage);
+    box-shadow: 0 0 0 0.25rem rgba(107, 143, 113, 0.22);
+}
+.sgh-banner-search i { color: var(--sgh-sage); font-size: 1.05rem; }
+.sgh-banner-search input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.4rem 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 0.95rem;
+    color: #27392e;
+}
+.sgh-banner-search input::placeholder { color: #7d8b81; }
+
+.sgh-banner-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+}
+.sgh-banner-chips-label {
+    margin-right: 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #5f8f69;
+}
+.sgh-banner-chip {
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(36, 64, 45, 0.16);
+    color: #27392e;
+    font-size: 0.86rem;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.sgh-banner-chip:hover { background: #24402d; border-color: #24402d; color: #fff; }
+
+/* =====================================================
+   35. EDITOR TOOLS: SAVE BAR AND ARTICLE FIGURES
+   ===================================================== */
+
+/* Save bar at the end of a form */
+.sgh-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(46, 58, 47, 0.1);
+}
+@media (max-width: 575.98px) {
+    .sgh-form-actions { flex-direction: column-reverse; }
+    .sgh-form-actions .btn { width: 100%; }
+}
+
+/* Pictures inside an article: a figure with an optional caption */
+.sgh-figure { margin: 1.75rem 0; }
+.sgh-figure img { display: block; width: 100%; height: auto; margin: 0; border-radius: 14px; }
+.sgh-figure figcaption {
+    margin-top: 0.6rem;
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--sgh-muted);
+}
+.sgh-figure--center { max-width: 78%; margin-left: auto; margin-right: auto; }
+
+/* Left and right pictures sit beside the text on tablets and laptops, and stack on phones */
+@media (min-width: 768px) {
+    .sgh-figure--left  { float: left;  width: 46%; margin: 0.4rem 1.5rem 1rem 0; }
+    .sgh-figure--right { float: right; width: 46%; margin: 0.4rem 0 1rem 1.5rem; }
+}
+.sgh-prose::after { content: ""; display: table; clear: both; }
+.sgh-prose h2,
+.sgh-prose h3 { clear: both; }

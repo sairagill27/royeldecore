@@ -48,7 +48,8 @@ class SeoScore
         // A link to another page of this site: "](/shop)" or "](https://your-domain/shop)".
         // "](//other.com)" is NOT internal.
         $base     = preg_quote(rtrim(url('/'), '/'), '~');
-        $internal = preg_match('~\]\((?:/(?!/)|' . $base . ')[^)\s]*\)~i', $raw) === 1;
+        $noImages = preg_replace('/!\[[^\]]*\]\([^)]*\)/', '', $raw);   // pictures are not links
+        $internal = preg_match('~\]\((?:/(?!/)|' . $base . ')[^)\s]*\)~i', $noImages) === 1;
 
         $has    = fn(string $text) => $keyword !== '' && mb_stripos($text, $keyword) !== false;
         $kwSlug = Str::slug($keyword);

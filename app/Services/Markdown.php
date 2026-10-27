@@ -17,7 +17,7 @@ class Markdown
         ]);
     }
 
-    // For the public article page: the same safe HTML, plus SEO helpers.
+    // For the public article page and the editor preview: the same safe HTML, plus helpers.
     // Returns ['html' => '...', 'toc' => [['id' => 'one', 'text' => 'One', 'level' => 2], ...]]
     public static function article(?string $text): array
     {
@@ -46,8 +46,39 @@ class Markdown
             return '<h' . $m[1] . ' id="' . $id . '">' . $m[2] . '</h' . $m[1] . '>';
         }, $html);
 
-        // 3. Pictures inside the text load lazily (faster page)
-        $html = preg_replace('/<img /i', '<img loading="lazy" decoding="async" ', $html);
+        // 3. A picture alone in its paragraph becomes a figure:
+        //    ![description](/storage/x.jpg#left "caption")
+        //    #left, #right, #center or #full (default) sets the position; the title is the caption.
+        //    The values below come from the Markdown parser, which has already escaped them.
+        $html = preg_replace_callback('/<p>\s*(<img\b[^>]*>)\s*<\/p>/i', function (array $m): string {
+            $tag  = $m[1];
+            $attr = function (string $name) use ($tag): string {
+                return preg_match('/\b' . $name . '="([^"]*)"/i', $tag, $a) === 1 ? $a[1] : '';
+            };
+
+            $src     = $attr('src');
+            $alt     = $attr('alt');
+            $caption = $attr('title');
+            $align   = 'full';
+
+            if (preg_match('/#(full|center|left|right)$/', $src, $a) === 1) {
+                $align = $a[1];
+                $src   = substr($src, 0, -strlen($a[0]));
+            }
+
+            // An unsafe address was blanked by the parser: leave the paragraph as it is
+            if ($src === '') {
+                return $m[0];
+            }
+
+            return '<figure class="sgh-figure sgh-figure--' . $align . '">'
+                . '<img loading="lazy" decoding="async" src="' . $src . '" alt="' . $alt . '">'
+                . ($caption !== '' ? '<figcaption>' . $caption . '</figcaption>' : '')
+                . '</figure>';
+        }, $html);
+
+        // 4. Any other picture inside the text loads lazily (faster page)
+        $html = preg_replace('/<img (?![^>]*\bloading=)/i', '<img loading="lazy" decoding="async" ', $html);
 
         return ['html' => $html, 'toc' => $toc];
     }
