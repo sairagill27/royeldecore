@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\BlogPost;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -10,12 +11,25 @@ class HomeHeroTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function category(string $name, string $slug, bool $active = true, int $order = 1): Category
+    private function makeCategory(string $name, string $slug, bool $active = true, int $order = 1): Category
     {
         return Category::create(['name' => $name, 'slug' => $slug, 'is_active' => $active, 'sort_order' => $order]);
     }
 
-    public function test_the_hero_has_the_new_wording_and_buttons(): void
+    // Makes a blog article. (The name must NOT be "post": Laravel's TestCase already has a post() method.)
+    private function makeArticle(string $title, string $slug, array $overrides = []): BlogPost
+    {
+        return BlogPost::create(array_merge([
+            'user_id'      => $this->makeAdmin()->id,
+            'title'        => $title,
+            'slug'         => $slug,
+            'content'      => 'Some content.',
+            'status'       => 'published',
+            'published_at' => now()->subDay(),
+        ], $overrides));
+    }
+
+    public function test_the_hero_has_the_wording_and_buttons(): void
     {
         $this->get('/')->assertOk()
             ->assertSee('Premium Home Décor')
@@ -27,20 +41,44 @@ class HomeHeroTest extends TestCase
             ->assertSee('href="' . route('blog.index') . '"', false);
     }
 
-    public function test_the_hero_has_a_search_box_that_uses_the_shop_search(): void
+    public function test_the_hero_has_no_search_box(): void
     {
         $this->get('/')->assertOk()
-            ->assertSee('action="' . route('search') . '"', false)
-            ->assertSee('id="hero-q"', false)
-            ->assertSee('name="q"', false);
+            ->assertDontSee('id="hero-q"', false)
+            ->assertDontSee('sgh-banner-search', false);
+    }
+
+    public function test_the_hero_shows_the_newest_live_article(): void
+    {
+        $this->makeArticle('Older Story', 'older', ['published_at' => now()->subDays(5)]);
+        $this->makeArticle('Newest Story', 'newest', ['published_at' => now()->subDay()]);
+        $this->makeArticle('Draft Story', 'draft', ['status' => 'draft', 'published_at' => null]);
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('From the journal', $html);
+        $this->assertStringContainsString('<a href="' . route('blog.show', 'newest') . '" class="sgh-banner-feature">', $html);
+        $this->assertStringNotContainsString('Draft Story', $html);
+    }
+
+    public function test_the_journal_strip_is_left_out_when_there_is_no_article(): void
+    {
+        $this->get('/')->assertOk()->assertDontSee('class="sgh-banner-feature"', false);
+    }
+
+    public function test_a_title_in_the_journal_strip_cannot_run_as_code(): void
+    {
+        $this->makeArticle('<script>alert(1)</script>', 'evil');
+
+        $this->get('/')->assertOk()->assertDontSee('<script>alert(1)</script>', false);
     }
 
     public function test_the_hero_shows_real_visible_categories_only_and_at_most_four(): void
     {
-        $this->category('Zebra Lamps', 'zebra-lamps', true, 1);
-        $this->category('Secret Room', 'secret-room', false, 2);
+        $this->makeCategory('Zebra Lamps', 'zebra-lamps', true, 1);
+        $this->makeCategory('Secret Room', 'secret-room', false, 2);
         foreach (['Alpha', 'Beta', 'Gamma', 'Delta'] as $i => $name) {
-            $this->category($name . ' Pieces', strtolower($name), true, 10 + $i);
+            $this->makeCategory($name . ' Pieces', strtolower($name), true, 10 + $i);
         }
 
         $html = $this->get('/')->assertOk()->getContent();

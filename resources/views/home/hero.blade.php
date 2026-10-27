@@ -1,4 +1,4 @@
-{{-- HOME HERO (magazine style): text on the left, photo on the right that fades into the background,
+{{-- HOME HERO (magazine style): text at the top left, photo on the right that fades into the background,
      and leaf branches on the left edge. The leaves are drawn with SVG (no image files). --}}
 
 @php
@@ -9,8 +9,9 @@
     // Read aloud by screen readers. Change it to describe your real photo.
     $heroAlt = 'A calm living room styled with natural décor';
 
-    // The first 4 visible categories (HomeController sends $homeCategories)
-    $chips = ($homeCategories ?? collect())->take(4);
+    // The first 4 visible categories and the newest article (HomeController sends both)
+    $chips  = ($homeCategories ?? collect())->take(4);
+    $newest = ($latestPosts ?? collect())->first();
 @endphp
 
 <section class="sgh-banner">
@@ -55,13 +56,18 @@
                     <a href="{{ route('blog.index') }}" class="btn sgh-btn-ghost rounded-pill px-4 py-2">Explore Ideas</a>
                 </div>
 
-                {{-- Search the shop --}}
-                <form action="{{ route('search') }}" method="GET" role="search" class="sgh-banner-search">
-                    <label for="hero-q" class="visually-hidden">Search the shop</label>
-                    <i class="bi bi-search" aria-hidden="true"></i>
-                    <input type="search" id="hero-q" name="q" maxlength="100" autocomplete="off" placeholder="Search mirrors, wall art, clocks&hellip;">
-                    <button type="submit" class="btn sgh-btn-dark rounded-pill px-4">Search</button>
-                </form>
+                {{-- From the journal: your newest article (appears once you have published one) --}}
+                @if ($newest)
+                    <a href="{{ route('blog.show', $newest->slug) }}" class="sgh-banner-feature">
+                        <span class="sgh-banner-feature-icon" aria-hidden="true"><i class="bi bi-journal-richtext"></i></span>
+                        <span class="sgh-banner-feature-body">
+                            <small>From the journal</small>
+                            {{-- {{ }} escapes the title, so nothing in it can run as code --}}
+                            <strong>{{ \Illuminate\Support\Str::limit($newest->title, 60) }}</strong>
+                        </span>
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                @endif
 
                 {{-- Shop by category (real categories from the database) --}}
                 @if ($chips->isNotEmpty())
