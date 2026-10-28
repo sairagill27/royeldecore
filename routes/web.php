@@ -15,6 +15,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ToolController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -44,6 +45,12 @@ Route::middleware('throttle:120,1')->group(function () {
 Route::post('/blog/{slug}/comments', [CommentController::class, 'store'])
     ->middleware('throttle:5,10')->name('blog.comments.store');
 
+// DECOR TOOLS: the calculators. The sums are done on the server, so the page can show a result live.
+Route::get('/tools', [ToolController::class, 'index'])->name('tools.index');
+Route::get('/tools/{tool}', [ToolController::class, 'show'])
+    ->where('tool', '[a-z0-9-]+')->name('tools.show');
+Route::post('/tools/{tool}', [ToolController::class, 'calculate'])
+    ->where('tool', '[a-z0-9-]+')->middleware('throttle:90,1')->name('tools.calculate');
 // NEWSLETTER. throttle:5,10 = max 5 sign-ups per 10 minutes per visitor (stops spam)
 Route::post('/newsletter', [NewsletterController::class, 'subscribe'])->middleware('throttle:5,10')->name('newsletter.subscribe');
 Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])
