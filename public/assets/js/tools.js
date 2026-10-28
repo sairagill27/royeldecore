@@ -44,7 +44,9 @@
 
     function showMessage(text) {
         box.textContent = '';
-        box.appendChild(make('p', 'sgh-res-empty', text));
+        var wrap = make('div', 'sgh-res-empty');
+        wrap.appendChild(make('p', null, text));
+        box.appendChild(wrap);
     }
 
     function showResult(data) {

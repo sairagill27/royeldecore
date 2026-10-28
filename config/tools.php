@@ -2,6 +2,7 @@
 
 // The decor tools. "ready" => false shows a "coming soon" page instead of the calculator.
 // "view" is the name of the view file (resources/views/tools/<view>.blade.php).
+// "gets" is the short list shown in the header ("what you will get").
 return [
 
     'paint-calculator' => [
@@ -11,6 +12,7 @@ return [
         'icon'        => 'bi-palette',
         'view'        => 'paint',
         'ready'       => true,
+        'gets'        => ['Litres of paint', 'Tins to buy', 'Area to paint'],
     ],
 
     'flooring-calculator' => [
@@ -20,6 +22,7 @@ return [
         'icon'        => 'bi-grid-3x3-gap',
         'view'        => 'flooring',
         'ready'       => true,
+        'gets'        => ['Area to buy', 'Number of packs', 'Estimated cost'],
     ],
 
     'wallpaper-calculator' => [
@@ -29,6 +32,7 @@ return [
         'icon'        => 'bi-card-image',
         'view'        => 'wallpaper',
         'ready'       => false,
+        'gets'        => ['Rolls of wallpaper', 'Wall area'],
     ],
 
     'curtain-calculator' => [
@@ -38,6 +42,7 @@ return [
         'icon'        => 'bi-window',
         'view'        => 'curtain',
         'ready'       => false,
+        'gets'        => ['Fabric width and length', 'Number of panels'],
     ],
 
     'room-budget-planner' => [
@@ -47,6 +52,7 @@ return [
         'icon'        => 'bi-wallet2',
         'view'        => 'budget',
         'ready'       => false,
+        'gets'        => ['Total spend', 'Money left', 'Share by item'],
     ],
 
 ];

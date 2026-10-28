@@ -214,4 +214,31 @@ class ToolsTest extends TestCase
             ->assertOk()
             ->assertDontSee('<script>alert(1)</script>', false);
     }
+
+    // ---------- the look ----------
+
+    public function test_the_tool_header_and_result_card_use_the_shops_own_dark_green(): void
+    {
+        $this->get(route('tools.show', 'paint-calculator'))->assertOk()
+            ->assertSee('class="sgh-tool-head"', false)
+            ->assertSee('sgh-tool-leaves', false)
+            ->assertSee('class="sgh-result-card"', false)
+            ->assertSee('class="sgh-step"', false)
+            ->assertSee('Paint Calculator')
+            ->assertSee('Litres of paint')          // the "what you will get" list
+            ->assertSee('How we calculate');
+    }
+
+    public function test_the_tools_page_and_the_coming_soon_page_use_the_same_header(): void
+    {
+        $this->get(route('tools.index'))->assertOk()->assertSee('class="sgh-tool-head"', false);
+        $this->get(route('tools.show', 'curtain-calculator'))->assertOk()->assertSee('class="sgh-tool-head"', false);
+    }
+
+    public function test_every_tool_has_a_short_what_you_get_list(): void
+    {
+        foreach (config('tools') as $tool) {
+            $this->assertNotEmpty($tool['gets']);
+        }
+    }
 }

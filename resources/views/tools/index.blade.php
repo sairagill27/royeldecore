@@ -21,7 +21,9 @@
 
 @section('content')
 
-<section class="sgh-shop-hero">
+{{-- ============ HEADER (dark green, like the home page) ============ --}}
+<section class="sgh-tool-head">
+    @include('tools._leaves')
     <div class="container position-relative">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-3">
@@ -29,9 +31,9 @@
                 <li class="breadcrumb-item active" aria-current="page">Décor tools</li>
             </ol>
         </nav>
-        <p class="sgh-eyebrow mb-2">Free to use</p>
-        <h1 class="sgh-shop-hero-title mb-2">Décor tools</h1>
-        <p class="text-secondary mb-0">Plan your room with simple calculators. Results are estimates to help you shop with confidence.</p>
+        <span class="sgh-tool-badge"><i class="bi bi-stars" aria-hidden="true"></i> Free to use</span>
+        <h1 class="sgh-tool-head-title">Décor tools</h1>
+        <p class="sgh-tool-head-text">Plan your room with simple calculators. Results are estimates to help you shop with confidence.</p>
     </div>
 </section>
 

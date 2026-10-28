@@ -9,7 +9,8 @@
 
 @section('content')
 
-<section class="sgh-shop-hero">
+<section class="sgh-tool-head">
+    @include('tools._leaves')
     <div class="container position-relative">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-3">
@@ -18,7 +19,14 @@
                 <li class="breadcrumb-item active" aria-current="page">{{ $info['name'] }}</li>
             </ol>
         </nav>
-        <h1 class="sgh-shop-hero-title mb-2">{{ $info['name'] }}</h1>
+        <div class="sgh-tool-head-row">
+            <span class="sgh-tool-head-icon" aria-hidden="true"><i class="bi {{ $info['icon'] }}"></i></span>
+            <div>
+                <span class="sgh-tool-badge"><i class="bi bi-hourglass-split" aria-hidden="true"></i> Coming soon</span>
+                <h1 class="sgh-tool-head-title">{{ $info['name'] }}</h1>
+                <p class="sgh-tool-head-text">{{ $info['short'] }}</p>
+            </div>
+        </div>
     </div>
 </section>
 

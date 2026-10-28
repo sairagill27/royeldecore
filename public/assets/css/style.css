@@ -3460,3 +3460,243 @@ a.sgh-tool-card:hover {
     font-size: 0.8rem;
     color: var(--sgh-muted);
 }
+
+/* =====================================================
+   38. DECOR TOOLS: DARK GREEN HEADER, STEPS AND RESULT CARD
+   ===================================================== */
+
+/* ---------- Header: deep forest green (the shop's own colours), no blue anywhere ---------- */
+.sgh-tool-head {
+    position: relative;
+    overflow: hidden;
+    padding: 1.6rem 0 2.2rem;
+    color: #fff;
+    background:
+        radial-gradient(60% 90% at 88% 0%, rgba(147, 176, 152, 0.32) 0%, transparent 60%),
+        radial-gradient(40% 70% at 4% 100%, rgba(217, 201, 182, 0.14) 0%, transparent 65%),
+        linear-gradient(115deg, #24402d 0%, #2f5239 55%, #3E5F46 100%);
+    border-bottom: 3px solid #D9C9B6;
+}
+.sgh-tool-head .breadcrumb { --bs-breadcrumb-divider-color: rgba(255, 255, 255, 0.5); }
+.sgh-tool-head .breadcrumb-item a { color: rgba(255, 255, 255, 0.85); text-decoration: none; }
+.sgh-tool-head .breadcrumb-item a:hover { color: #fff; text-decoration: underline; }
+.sgh-tool-head .breadcrumb-item.active { color: rgba(255, 255, 255, 0.6); }
+
+.sgh-tool-head-row { display: flex; align-items: center; gap: 1.1rem; }
+.sgh-tool-head-icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 1.9rem;
+}
+.sgh-tool-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(217, 201, 182, 0.2);
+    border: 1px solid rgba(217, 201, 182, 0.45);
+    color: #ecdfcc;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.sgh-tool-head-title {
+    margin: 0 0 0.35rem;
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #fff;
+}
+.sgh-tool-head-text { max-width: 36rem; margin: 0; color: rgba(255, 255, 255, 0.82); font-size: 1.02rem; }
+
+/* "What you will get": small pills */
+.sgh-tool-gets { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.3rem 0 0; padding: 0; list-style: none; }
+.sgh-tool-gets li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.84rem;
+}
+.sgh-tool-gets i { color: #b9d3bd; }
+
+/* Leaves in the header */
+.sgh-tool-leaves { position: absolute; pointer-events: none; height: auto; fill: #a9c4ae; fill-opacity: 0.35; }
+.sgh-tool-leaves--a { top: -28px; right: -20px; width: 150px; transform: rotate(205deg); }
+.sgh-tool-leaves--b { bottom: -58px; right: 150px; width: 110px; transform: rotate(150deg); opacity: 0.6; }
+@media (max-width: 575.98px) {
+    .sgh-tool-leaves--b { display: none; }
+    .sgh-tool-head-icon { width: 52px; height: 52px; font-size: 1.5rem; }
+}
+
+/* ---------- The tools page: dark header, so the cards below need no change ---------- */
+
+/* ---------- Numbered steps on the form ---------- */
+.sgh-step {
+    margin-bottom: 1rem;
+    padding: 1.4rem 1.4rem 0.9rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 8px 26px rgba(46, 58, 47, 0.06);
+}
+@media (min-width: 768px) { .sgh-step { padding: 1.7rem 1.8rem 1.1rem; } }
+.sgh-step-title {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0 0 0.25rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+.sgh-step-title > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #24402d;
+    color: #fff;
+    font-size: 0.85rem;
+}
+.sgh-step-title small { font-weight: 400; color: var(--sgh-muted); font-size: 0.82rem; }
+.sgh-step-intro { margin: 0 0 1.1rem; color: var(--sgh-muted); font-size: 0.9rem; }
+
+/* Number boxes: a little larger, with a sage focus ring */
+.sgh-step .form-control,
+.sgh-step .form-select,
+.sgh-step .input-group-text { min-height: 46px; }
+.sgh-step .input-group-text {
+    background: var(--sgh-soft-sage);
+    border-color: var(--bs-border-color);
+    color: var(--sgh-forest);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.sgh-step .form-label { font-weight: 500; font-size: 0.92rem; }
+
+.sgh-tool-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.6rem 0 0; }
+
+/* ---------- The result card: dark green, the main answer large and white ---------- */
+.sgh-result-card {
+    padding: 1.5rem;
+    color: #fff;
+    background: linear-gradient(160deg, #24402d 0%, #2f5239 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
+    box-shadow: 0 18px 44px rgba(36, 64, 45, 0.28);
+}
+.sgh-result-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 1rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #cfe0d2;
+}
+
+/* These rows were light-theme rows: here they are drawn for the dark card */
+.sgh-result-card .sgh-res { padding: 0.85rem 0; }
+.sgh-result-card .sgh-res:not(.is-main) { border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.sgh-result-card .sgh-res-label { color: #b9d3bd; }
+.sgh-result-card .sgh-res-value { color: #fff; font-size: 1.15rem; }
+.sgh-result-card .sgh-res-note  { color: rgba(255, 255, 255, 0.66); }
+.sgh-result-card .sgh-res.is-main {
+    margin-bottom: 0.3rem;
+    padding: 1.1rem 1.2rem;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+}
+.sgh-result-card .sgh-res.is-main .sgh-res-value {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.2rem;
+    line-height: 1.15;
+    color: #fff;
+}
+.sgh-result-card .sgh-res-tips {
+    margin-top: 0.9rem;
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.85);
+}
+.sgh-result-card .sgh-res-tips strong { color: #fff; }
+
+/* Empty state (before any result) */
+.sgh-result-card .sgh-res-empty {
+    padding: 1.4rem 0.5rem 1.6rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+}
+.sgh-result-card .sgh-res-empty i { display: block; margin-bottom: 0.6rem; font-size: 2.4rem; color: #a9c4ae; }
+.sgh-result-card .sgh-res-empty p { margin: 0; font-size: 0.95rem; }
+
+.sgh-result-card .sgh-res-disclaimer {
+    margin: 1.1rem 0 0;
+    padding-top: 0.9rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.22);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.66);
+}
+.sgh-result-card .sgh-res-disclaimer i { margin-right: 0.2rem; color: #b9d3bd; }
+
+/* Dark button used by the tools and the home hero */
+.sgh-btn-dark {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #24402d;
+    --bs-btn-border-color: #24402d;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #355c40;
+    --bs-btn-hover-border-color: #355c40;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #355c40;
+    --bs-btn-active-border-color: #355c40;
+}
+
+/* ---------- "How we calculate" ---------- */
+.sgh-how-card {
+    height: 100%;
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.2);
+    border-radius: 18px;
+}
+.sgh-how-card h3 {
+    margin: 0.7rem 0 0.4rem;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.sgh-how-card p { margin: 0; color: #44524a; font-size: 0.9rem; line-height: 1.6; }
+.sgh-how-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+    font-weight: 700;
+}
