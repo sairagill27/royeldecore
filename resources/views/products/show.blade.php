@@ -84,6 +84,9 @@ $inStock = $product->stock > 0;
                 </button>
             </form>
 
+    {{-- Save to wishlist --}}
+    <x-wishlist-button :product="$product" variant="text" />
+
             <ul class="list-unstyled small text-secondary border-top pt-3 mb-0">
                 @if ($product->sku)
                 <li class="mb-1"><strong class="text-body">SKU:</strong> {{ $product->sku }}</li>

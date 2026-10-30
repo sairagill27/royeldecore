@@ -16,6 +16,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ToolController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -117,6 +118,11 @@ Route::middleware('auth')->group(function () {
     // CHECKOUT. throttle: max 10 order attempts per minute.
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
+
+    // WISHLIST: saved products. throttle:60,1 = max 60 clicks a minute.
+    Route::get('/account/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{productId}', [WishlistController::class, 'toggle'])
+        ->whereNumber('productId')->middleware('throttle:60,1')->name('wishlist.toggle');
 
     // MY ORDERS
     Route::get('/account/orders', [OrderController::class, 'index'])->name('account.orders');

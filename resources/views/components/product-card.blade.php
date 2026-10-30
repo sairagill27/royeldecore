@@ -5,6 +5,7 @@
 @php $currency = 'Rs.'; @endphp
 
 <div class="card sgh-product-card h-100">
+    <x-wishlist-button :product="$product" />
 
     {{-- Square image. Without a photo, a soft placeholder shows. --}}
     <a href="{{ url('/products/' . $product->slug) }}" class="sgh-product-media" aria-label="{{ $product->name }}">

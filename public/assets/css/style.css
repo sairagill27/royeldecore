@@ -3750,3 +3750,41 @@ a.sgh-tool-card:hover {
 }
 .sgh-result-card .sgh-res-disclaimer { color: rgba(255, 255, 255, 0.78); }
 .sgh-result-card .sgh-res-note       { color: rgba(255, 255, 255, 0.76); }
+
+/* =====================================================
+   41. WISHLIST HEART
+   ===================================================== */
+.sgh-wish { margin: 0; }
+
+/* On a product card: a round button in the top-right corner, above the photo */
+.sgh-wish--icon { position: absolute; top: 0.6rem; right: 0.6rem; z-index: 5; }
+.sgh-wish--icon .sgh-wish-btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 14px rgba(46, 58, 47, 0.18);
+}
+
+.sgh-wish-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(107, 143, 113, 0.3);
+    border-radius: 999px;
+    color: var(--sgh-forest);
+    font-size: 0.92rem;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
+}
+.sgh-wish-btn i { font-size: 1.1rem; }
+.sgh-wish-btn:hover { background: #fff; color: #b3503f; border-color: #b3503f; transform: scale(1.05); }
+.sgh-wish-btn.is-saved { color: #b3503f; border-color: #b3503f; }
+
+/* On the product page: a labelled button */
+.sgh-wish--text { margin-top: 0.75rem; }

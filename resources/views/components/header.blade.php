@@ -108,6 +108,7 @@
                         <ul class="dropdown-menu dropdown-menu-end sgh-dropdown">
                             <li><a class="dropdown-item" href="{{ url('/account') }}">My Account</a></li>
                             <li><a class="dropdown-item" href="{{ url('/account/orders') }}">My Orders</a></li>
+                                <li><a class="dropdown-item" href="{{ route('wishlist.index') }}">My Wishlist</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
