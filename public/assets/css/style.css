@@ -3788,3 +3788,19 @@ a.sgh-tool-card:hover {
 
 /* On the product page: a labelled button */
 .sgh-wish--text { margin-top: 0.75rem; }
+
+/* =====================================================
+   42. PRODUCT REVIEWS
+   ===================================================== */
+.sgh-reviews { max-width: 760px; margin: 0 auto; }
+
+.sgh-stars { color: #c08a2e; white-space: nowrap; }
+.sgh-stars i { font-size: 1rem; }
+
+.sgh-review { padding: 1rem 0; }
+.sgh-review + .sgh-review { border-top: 1px solid rgba(107, 143, 113, 0.2); }
+.sgh-review-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem; }
+.sgh-review p { overflow-wrap: anywhere; }
+.sgh-review-meta { color: var(--sgh-muted); font-size: 0.85rem; }
+.sgh-verified { margin-left: 0.4rem; color: var(--sgh-forest); font-weight: 500; }
+.sgh-verified i { color: #5f8f69; }

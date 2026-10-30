@@ -143,4 +143,7 @@ $inStock = $product->stock > 0;
     })();
 </script>
 
+{{-- Customer reviews --}}
+@include('products._reviews', ['product' => $product])
+
 @endsection

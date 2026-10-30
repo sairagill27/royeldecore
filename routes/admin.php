@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PostImageController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 // Every route in this file is already protected by the login and "staff" guard
@@ -59,3 +60,12 @@ Route::patch('comments/{comment}/reject', [CommentController::class, 'reject'])
     ->middleware('throttle:60,1')->name('comments.reject');
 Route::delete('comments/{comment}', [CommentController::class, 'destroy'])
     ->middleware('throttle:60,1')->name('comments.destroy');
+
+// Product reviews: list, approve, reject, delete
+Route::get('reviews', [ReviewController::class, 'index'])->name('reviews.index');
+Route::patch('reviews/{review}/approve', [ReviewController::class, 'approve'])
+    ->middleware('throttle:60,1')->name('reviews.approve');
+Route::patch('reviews/{review}/reject', [ReviewController::class, 'reject'])
+    ->middleware('throttle:60,1')->name('reviews.reject');
+Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])
+    ->middleware('throttle:60,1')->name('reviews.destroy');

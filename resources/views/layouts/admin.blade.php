@@ -23,6 +23,7 @@
     @php
     $unreadMessages = \App\Models\ContactMessage::whereNull('read_at')->count();
     $pendingComments = \App\Models\Comment::where('status', 'pending')->count();
+    $pendingReviews  = \App\Models\ProductReview::where('status', 'pending')->count();
     @endphp
 
     {{-- The page is split into: sidebar (left) + main area (right) --}}
@@ -76,7 +77,15 @@
                             class="sgh-admin-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
                             <i class="bi bi-journal-text"></i> Blog posts
                         </a>
-                        <a href="{{ route('admin.comments.index') }}"
+                        <a href="{{ route('admin.reviews.index') }}"
+                       class="sgh-admin-link {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
+                        <i class="bi bi-star"></i> Reviews
+                        @if ($pendingReviews > 0)
+                            <span class="sgh-count" aria-label="{{ $pendingReviews }} waiting">{{ $pendingReviews }}</span>
+                        @endif
+                    </a>
+
+                    <a href="{{ route('admin.comments.index') }}"
                             class="sgh-admin-link {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
                             <i class="bi bi-chat-dots"></i> Comments
                             @if ($pendingComments > 0)

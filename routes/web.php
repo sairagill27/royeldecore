@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\ShopController;
@@ -118,6 +119,10 @@ Route::middleware('auth')->group(function () {
     // CHECKOUT. throttle: max 10 order attempts per minute.
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
+
+    // PRODUCT REVIEWS: only customers who received the product. throttle:5,10 = max 5 per 10 minutes.
+    Route::post('/products/{slug}/reviews', [ReviewController::class, 'store'])
+        ->where('slug', '[A-Za-z0-9-]+')->middleware('throttle:5,10')->name('products.reviews.store');
 
     // WISHLIST: saved products. throttle:60,1 = max 60 clicks a minute.
     Route::get('/account/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
