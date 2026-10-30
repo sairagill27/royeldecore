@@ -3734,3 +3734,19 @@ a.sgh-tool-card:hover {
     .sgh-item-cost { grid-column: 1; grid-row: 2; }
     .sgh-item-remove { grid-column: 2; grid-row: 1; }
 }
+
+/* =====================================================
+   40. DECOR TOOLS: A LITTLE LIGHTER GREEN
+   ===================================================== */
+.sgh-tool-head {
+    background:
+        radial-gradient(60% 90% at 88% 0%, rgba(190, 215, 195, 0.30) 0%, transparent 60%),
+        radial-gradient(40% 70% at 4% 100%, rgba(217, 201, 182, 0.14) 0%, transparent 65%),
+        linear-gradient(115deg, #345840 0%, #3f674b 55%, #4a7654 100%);
+}
+.sgh-result-card {
+    background: linear-gradient(160deg, #345840 0%, #3f674b 100%);
+    box-shadow: 0 18px 44px rgba(52, 88, 64, 0.26);
+}
+.sgh-result-card .sgh-res-disclaimer { color: rgba(255, 255, 255, 0.78); }
+.sgh-result-card .sgh-res-note       { color: rgba(255, 255, 255, 0.76); }
