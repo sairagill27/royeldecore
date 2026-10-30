@@ -54,6 +54,7 @@
                 <div class="sgh-banner-actions">
                     <a href="{{ route('shop') }}" class="btn sgh-btn-dark rounded-pill px-4 py-2">Shop Now <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a>
                     <a href="{{ route('blog.index') }}" class="btn sgh-btn-ghost rounded-pill px-4 py-2">Explore Ideas</a>
+                    <a href="{{ route('tools.index') }}" class="btn sgh-btn-ghost rounded-pill px-4 py-2">Décor Tools</a>
                 </div>
 
                 {{-- From the journal: your newest article (appears once you have published one) --}}

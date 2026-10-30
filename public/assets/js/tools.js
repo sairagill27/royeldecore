@@ -89,10 +89,27 @@
         });
     }
 
+    // The budget planner: true while no item has a cost yet
+    function noCosts() {
+        var costs = form.querySelectorAll('input[name$="[cost]"]');
+        if (!costs.length) { return false; }
+        return !Array.prototype.some.call(costs, function (input) { return input.value.trim() !== ''; });
+    }
+
     function run(explicit) {
         var alertBox = document.querySelector('[data-server-alert]');
         if (alertBox) { alertBox.remove(); }
         clearErrors();
+
+        if (noCosts()) {
+            if (explicit) {
+                showError('items', 'Please add the cost of at least one item.');
+                showMessage('Add the cost of at least one item to see your result.');
+            } else {
+                showMessage('Fill in the measurements to see your result.');
+            }
+            return;
+        }
 
         var gaps = missing();
         if (gaps.length) {
@@ -159,5 +176,5 @@
     });
 
     // A browser may bring the numbers back after a reload: show the answer straight away
-    if (!box.querySelector('.sgh-res') && missing().length === 0) { run(false); }
+    if (!box.querySelector('.sgh-res') && missing().length === 0 && !noCosts()) { run(false); }
 })();

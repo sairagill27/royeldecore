@@ -31,7 +31,7 @@ return [
         'description' => 'Free wallpaper calculator: estimate how many rolls of wallpaper your room needs.',
         'icon'        => 'bi-card-image',
         'view'        => 'wallpaper',
-        'ready'       => false,
+        'ready'       => true,
         'gets'        => ['Rolls of wallpaper', 'Wall area'],
     ],
 
@@ -41,7 +41,7 @@ return [
         'description' => 'Free curtain calculator: estimate the fabric width, length and number of panels for your window.',
         'icon'        => 'bi-window',
         'view'        => 'curtain',
-        'ready'       => false,
+        'ready'       => true,
         'gets'        => ['Fabric width and length', 'Number of panels'],
     ],
 
@@ -51,7 +51,7 @@ return [
         'description' => 'Free room budget planner: list the items for your room, add their costs and see your total and what remains of your budget.',
         'icon'        => 'bi-wallet2',
         'view'        => 'budget',
-        'ready'       => false,
+        'ready'       => true,
         'gets'        => ['Total spend', 'Money left', 'Share by item'],
     ],
 

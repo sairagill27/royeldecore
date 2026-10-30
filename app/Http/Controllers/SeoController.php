@@ -105,6 +105,12 @@ class SeoController extends Controller
         $add(route('home'));
         $add(route('shop'));
         $add(route('blog.index'), BlogPost::published()->indexable()->max('updated_at'));
+        $add(route('tools.index'));
+        foreach (config('tools') as $key => $tool) {
+            if ($tool['ready']) {
+                $add(route('tools.show', $key));
+            }
+        }
         $add(route('about'));
         $add(route('contact'));
         $add(route('legal.privacy'));

@@ -52,6 +52,7 @@ class ToolController extends Controller
             return response()->json($result);
         }
 
+        // The budget list is sent back too, but only as plain text the page escapes when it prints it
         return redirect(route('tools.show', $tool) . '#result')->withInput()->with('result', $result);
     }
 }

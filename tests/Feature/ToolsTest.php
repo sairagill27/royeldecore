@@ -36,8 +36,8 @@ class ToolsTest extends TestCase
             ->assertSee('Wallpaper Calculator')
             ->assertSee('Curtain Calculator')
             ->assertSee('Room Budget Planner')
-            ->assertSee('Coming soon')
-            ->assertSee('href="' . route('tools.show', 'paint-calculator') . '"', false);
+            ->assertDontSee('Coming soon')
+            ->assertSee('href="' . route('tools.show', 'wallpaper-calculator') . '"', false);
     }
 
     public function test_a_calculator_page_has_its_form_and_the_search_engine_basics(): void
@@ -52,15 +52,12 @@ class ToolsTest extends TestCase
             ->assertSee('estimates');
     }
 
-    public function test_a_calculator_that_is_not_built_yet_shows_a_friendly_page_not_a_404(): void
+    public function test_every_calculator_page_opens_and_none_shows_a_coming_soon_page(): void
     {
-        $this->get(route('tools.show', 'wallpaper-calculator'))->assertOk()
-            ->assertSee('coming soon')
-            ->assertSee('noindex', false);
-
-        $this->postJson(route('tools.calculate', 'wallpaper-calculator'), [])->assertNotFound();
+        foreach (array_keys(config('tools')) as $slug) {
+            $this->get(route('tools.show', $slug))->assertOk()->assertDontSee('coming soon');
+        }
     }
-
     public function test_unknown_or_odd_tool_addresses_show_404(): void
     {
         $this->get('/tools/nothing-here')->assertNotFound();
@@ -240,5 +237,219 @@ class ToolsTest extends TestCase
         foreach (config('tools') as $tool) {
             $this->assertNotEmpty($tool['gets']);
         }
+    }
+
+    // ---------- wallpaper ----------
+
+    // A 4 x 5 m room, 2.5 m walls, 1 door and 2 windows, a 0.53 x 10 m roll and no pattern repeat
+    private const WALL = [
+        'unit' => 'm', 'length' => 4, 'width' => 5, 'height' => 2.5, 'doors' => 1, 'windows' => 2,
+        'rollw' => 0.53, 'rolll' => 10, 'repeat' => 0,
+    ];
+
+    public function test_wallpaper_rolls(): void
+    {
+        $values = $this->answer('wallpaper-calculator', self::WALL);
+
+        // 4 strips per roll (10 / 2.5). The 18 m around the room, less 3.3 m for the doors and windows,
+        // gives 28 strips (14.7 / 0.53 rounded up), which is 7 rolls.
+        $this->assertSame('7 rolls', $values['Rolls to buy']);
+        $this->assertSame('40.1 m²', $values['Wall area']);
+    }
+
+    public function test_a_pattern_repeat_makes_each_strip_longer_and_needs_more_rolls(): void
+    {
+        $plain   = (int) $this->answer('wallpaper-calculator', self::WALL)['Rolls to buy'];
+        $pattern = (int) $this->answer('wallpaper-calculator', array_merge(self::WALL, ['repeat' => 0.64]))['Rolls to buy'];
+
+        $this->assertGreaterThan($plain, $pattern);
+    }
+
+    public function test_wallpaper_shows_a_cost_only_when_a_price_is_given(): void
+    {
+        config(['shop.currency' => 'Rs.']);
+
+        $this->assertArrayNotHasKey('Estimated cost', $this->answer('wallpaper-calculator', self::WALL));
+        $this->assertSame('Rs. 21,000', $this->answer('wallpaper-calculator', array_merge(self::WALL, ['price' => 3000]))['Estimated cost']);
+    }
+
+    public function test_a_roll_too_short_for_one_strip_is_explained_not_divided_by_zero(): void
+    {
+        $this->postJson(route('tools.calculate', 'wallpaper-calculator'), array_merge(self::WALL, ['rolll' => 2]))
+            ->assertStatus(422)->assertJsonValidationErrors('rolll');
+    }
+
+    public function test_wallpaper_checks_every_value(): void
+    {
+        $bad = [
+            ['length' => 0], ['width' => null], ['height' => 9], ['rollw' => 0], ['rollw' => 3],
+            ['rolll' => 0], ['rolll' => 500], ['repeat' => -1], ['repeat' => 3], ['doors' => 99], ['unit' => 'z'],
+        ];
+
+        foreach ($bad as $change) {
+            $this->postJson(route('tools.calculate', 'wallpaper-calculator'), array_merge(self::WALL, $change))
+                ->assertStatus(422)->assertJsonValidationErrors(array_key_first($change));
+        }
+    }
+
+    public function test_wallpaper_in_feet(): void
+    {
+        $values = $this->answer('wallpaper-calculator', [
+            'unit' => 'ft', 'length' => 13, 'width' => 16, 'height' => 8, 'doors' => 0, 'windows' => 0,
+            'rollw' => 1.75, 'rolll' => 33, 'repeat' => 0,
+        ]);
+
+        $this->assertSame('4 strips per roll', trim(explode(',', $this->noteOf('wallpaper-calculator', [
+            'unit' => 'ft', 'length' => 13, 'width' => 16, 'height' => 8, 'doors' => 0, 'windows' => 0,
+            'rollw' => 1.75, 'rolll' => 33, 'repeat' => 0,
+        ], 'Rolls to buy'))[1]));
+        $this->assertSame('464 ft²', $values['Wall area']);   // 2 x (13 + 16) x 8
+    }
+
+    // ---------- curtains ----------
+
+    public function test_curtain_fabric_and_panels(): void
+    {
+        $values = $this->answer('curtain-calculator', ['unit' => 'm', 'width' => 2, 'drop' => 2.2, 'fullness' => 2, 'panelw' => 1.4]);
+
+        $this->assertSame('3 panels', $values['Panels needed']);              // 4 m of fabric / 1.4 m = 3 panels
+        $this->assertSame('7.5 m', $values['Fabric to buy']);                 // (2.2 + 0.3) x 3
+        $this->assertSame('4 m', $values['Fabric width across the window']);
+    }
+
+    public function test_more_fullness_needs_more_panels(): void
+    {
+        $light  = (int) $this->answer('curtain-calculator', ['unit' => 'm', 'width' => 3, 'drop' => 2, 'fullness' => 1.5, 'panelw' => 1.4])['Panels needed'];
+        $luxury = (int) $this->answer('curtain-calculator', ['unit' => 'm', 'width' => 3, 'drop' => 2, 'fullness' => 2.5, 'panelw' => 1.4])['Panels needed'];
+
+        $this->assertGreaterThan($light, $luxury);
+    }
+
+    public function test_curtains_in_feet_show_yards_of_fabric(): void
+    {
+        $values = $this->answer('curtain-calculator', ['unit' => 'ft', 'width' => 6, 'drop' => 7, 'fullness' => 2, 'panelw' => 4.6]);
+
+        $this->assertStringContainsString('yards', $values['Fabric to buy']);
+        $this->assertStringContainsString('ft', $values['Fabric width across the window']);
+    }
+
+    public function test_curtains_check_every_value(): void
+    {
+        $base = ['unit' => 'm', 'width' => 2, 'drop' => 2.2, 'fullness' => 2, 'panelw' => 1.4];
+        $bad  = [['width' => 0], ['drop' => null], ['drop' => 9], ['fullness' => 3], ['fullness' => 'lots'], ['panelw' => 0], ['unit' => 'x']];
+
+        foreach ($bad as $change) {
+            $this->postJson(route('tools.calculate', 'curtain-calculator'), array_merge($base, $change))
+                ->assertStatus(422)->assertJsonValidationErrors(array_key_first($change));
+        }
+    }
+
+    // ---------- room budget ----------
+
+    public function test_budget_total_and_money_left(): void
+    {
+        config(['shop.currency' => 'Rs.']);
+
+        $values = $this->answer('room-budget-planner', [
+            'budget' => 100000,
+            'items'  => [['name' => 'Sofa', 'cost' => 60000], ['name' => 'Rug', 'cost' => 15000], ['name' => '', 'cost' => '']],
+        ]);
+
+        $this->assertSame('Rs. 75,000', $values['Total spend']);
+        $this->assertSame('Rs. 25,000', $values['Money left']);
+        $this->assertSame('Rs. 60,000', $values['Sofa']);
+        $this->assertArrayNotHasKey('Over budget by', $values);
+    }
+
+    public function test_budget_says_when_you_are_over(): void
+    {
+        config(['shop.currency' => 'Rs.']);
+
+        $values = $this->answer('room-budget-planner', [
+            'budget' => 50000,
+            'items'  => [['name' => 'Sofa', 'cost' => 60000]],
+        ]);
+
+        $this->assertSame('Rs. 10,000', $values['Over budget by']);
+        $this->assertArrayNotHasKey('Money left', $values);
+    }
+
+    public function test_budget_without_a_budget_amount_gives_the_total_and_shares(): void
+    {
+        $response = $this->postJson(route('tools.calculate', 'room-budget-planner'), [
+            'items' => [['name' => 'Lamp', 'cost' => 1000], ['name' => 'Vase', 'cost' => 3000]],
+        ])->assertOk();
+
+        $labels = collect($response->json('results'))->pluck('label')->all();
+        $this->assertContains('Total spend', $labels);
+        $this->assertNotContains('Money left', $labels);
+        $this->assertSame('75% of your total', collect($response->json('results'))->firstWhere('label', 'Vase')['note']);
+    }
+
+    public function test_budget_names_are_plain_text_and_empty_names_become_item(): void
+    {
+        $response = $this->postJson(route('tools.calculate', 'room-budget-planner'), [
+            'items' => [['name' => '<script>alert(1)</script>', 'cost' => 500], ['name' => '', 'cost' => 100]],
+        ])->assertOk();
+
+        $labels = collect($response->json('results'))->pluck('label')->all();
+        $this->assertContains('Item', $labels);
+        $this->assertContains('<script>alert(1)</script>', $labels);    // kept as text in the data...
+
+        // ...but never printed as code on the page
+        $this->followingRedirects()
+            ->post(route('tools.calculate', 'room-budget-planner'), ['items' => [['name' => '<script>alert(1)</script>', 'cost' => 500]]])
+            ->assertOk()
+            ->assertDontSee('<script>alert(1)</script>', false);
+    }
+
+    public function test_budget_needs_at_least_one_cost_and_checks_every_value(): void
+    {
+        $url = route('tools.calculate', 'room-budget-planner');
+
+        $this->postJson($url, ['items' => [['name' => 'Sofa', 'cost' => '']]])->assertStatus(422)->assertJsonValidationErrors('items');
+        $this->postJson($url, ['items' => [['name' => 'Sofa', 'cost' => 0]]])->assertStatus(422)->assertJsonValidationErrors('items');
+        $this->postJson($url, [])->assertStatus(422)->assertJsonValidationErrors('items');
+        $this->postJson($url, ['items' => 'lots'])->assertStatus(422)->assertJsonValidationErrors('items');
+        $this->postJson($url, ['items' => [['name' => 'Sofa', 'cost' => -5]]])->assertStatus(422)->assertJsonValidationErrors('items.0.cost');
+        $this->postJson($url, ['items' => [['name' => 'Sofa', 'cost' => 'abc']]])->assertStatus(422)->assertJsonValidationErrors('items.0.cost');
+        $this->postJson($url, ['budget' => -1, 'items' => [['name' => 'Sofa', 'cost' => 5]]])->assertStatus(422)->assertJsonValidationErrors('budget');
+        $this->postJson($url, ['items' => [['name' => str_repeat('a', 61), 'cost' => 5]]])->assertStatus(422)->assertJsonValidationErrors('items.0.name');
+    }
+
+    public function test_budget_accepts_at_most_30_items(): void
+    {
+        $url   = route('tools.calculate', 'room-budget-planner');
+        $items = fn (int $n) => array_fill(0, $n, ['name' => 'Thing', 'cost' => 10]);
+
+        $this->postJson($url, ['items' => $items(30)])->assertOk();
+        $this->postJson($url, ['items' => $items(31)])->assertStatus(422)->assertJsonValidationErrors('items');
+    }
+
+    // ---------- the sitemap and the home page ----------
+
+    public function test_every_working_tool_is_in_the_sitemap(): void
+    {
+        $xml = $this->get('/sitemap.xml')->assertOk()->getContent();
+
+        $this->assertStringContainsString(route('tools.index'), $xml);
+        foreach (array_keys(config('tools')) as $slug) {
+            $this->assertStringContainsString(route('tools.show', $slug), $xml);
+        }
+    }
+
+    public function test_the_home_page_links_to_the_tools(): void
+    {
+        $this->get('/')->assertOk()
+            ->assertSee('href="' . route('tools.index') . '"', false)
+            ->assertSee('Décor Tools');
+    }
+
+    // Returns the note under one result row, for checks on the wording
+    private function noteOf(string $tool, array $data, string $label): string
+    {
+        $rows = $this->postJson(route('tools.calculate', $tool), $data)->assertOk()->json('results');
+
+        return (string) collect($rows)->firstWhere('label', $label)['note'];
     }
 }
