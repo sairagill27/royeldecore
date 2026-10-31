@@ -72,6 +72,21 @@ class CommentController extends Controller
         $comment->status       = ($user && $user->isStaff()) ? 'approved' : 'pending';
         $comment->save();
 
+        // Tell the owner a comment is waiting. A mail problem never stops the comment.
+        if ($comment->status === 'pending') {
+            \App\Services\AdminAlert::send(
+                'New comment waiting',
+                'A new comment is waiting for approval',
+                [
+                    'From: ' . $comment->name,
+                    'Article: ' . $post->title,
+                    'Comment: ' . \Illuminate\Support\Str::limit($comment->body, 300),
+                ],
+                route('admin.comments.index', ['status' => 'pending']),
+                'Review the comment'
+            );
+        }
+
         return $this->thanks($back, $comment->status === 'pending');
     }
 

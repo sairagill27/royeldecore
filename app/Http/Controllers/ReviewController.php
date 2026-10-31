@@ -82,6 +82,19 @@ class ReviewController extends Controller
 
         try {
             $review->save();
+
+            // Tell the owner a review is waiting. A mail problem never stops the review.
+            \App\Services\AdminAlert::send(
+                'New review waiting',
+                'A new product review is waiting for approval',
+                [
+                    'Product: ' . $product->name,
+                    'Rating: ' . $review->rating . ' out of 5',
+                    'Review: ' . \Illuminate\Support\Str::limit($review->body, 300),
+                ],
+                route('admin.reviews.index', ['status' => 'pending']),
+                'Review the review'
+            );
         } catch (UniqueConstraintViolationException $e) {
             // Two clicks at the same moment: the first one already saved it
         }

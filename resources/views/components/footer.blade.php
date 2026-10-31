@@ -84,6 +84,7 @@
                 <ul class="list-unstyled small">
                     <li><a href="{{ url('/about') }}">About Us</a></li>
                     <li><a href="{{ url('/contact') }}">Contact</a></li>
+                    <x-contact-details />
                     <li><a href="{{ url('/account') }}">My Account</a></li>
                 </ul>
             </div>

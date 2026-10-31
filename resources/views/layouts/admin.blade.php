@@ -126,7 +126,15 @@
 
                 <div class="d-flex align-items-center gap-3">
                     {{-- {{ }} escapes the name (safe) --}}
-                    <span class="small text-secondary d-none d-sm-inline">{{ auth()->user()->name }}</span>
+                    @php $bell = ($unreadMessages ?? 0) + ($pendingComments ?? 0) + ($pendingReviews ?? 0); @endphp
+                <a href="{{ route('admin.notifications.index') }}" class="sgh-bell"
+                   aria-label="Notifications{{ $bell > 0 ? ', ' . $bell . ' waiting' : '' }}">
+                    <i class="bi bi-bell" aria-hidden="true"></i>
+                    @if ($bell > 0)
+                        <span class="sgh-bell-count">{{ $bell }}</span>
+                    @endif
+                </a>
+                <span class="small text-secondary d-none d-sm-inline">{{ auth()->user()->name }}</span>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill px-3">Log out</button>

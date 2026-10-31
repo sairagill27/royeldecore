@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PostImageController;
@@ -69,3 +70,6 @@ Route::patch('reviews/{review}/reject', [ReviewController::class, 'reject'])
     ->middleware('throttle:60,1')->name('reviews.reject');
 Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])
     ->middleware('throttle:60,1')->name('reviews.destroy');
+
+// Notifications: everything waiting for you
+Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
