@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PostImageController;
+use App\Http\Controllers\Admin\PostPreviewLinkController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReviewController;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +52,9 @@ Route::post('posts/preview', [PostController::class, 'preview'])
 Route::post('posts/images', PostImageController::class)
     ->middleware('throttle:30,1')
     ->name('posts.images');
+// A private, expiring link to see a post as visitors will (works for drafts too)
+Route::get('posts/{post}/preview-link', PostPreviewLinkController::class)
+    ->middleware('throttle:30,1')->name('posts.preview-link');
 Route::resource('posts', PostController::class)->except('show');
 
 // Blog comments: list, approve, reject, delete

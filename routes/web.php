@@ -4,6 +4,7 @@ use App\Http\Controllers\Account\OrderController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogPreviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CommentController;
@@ -53,6 +54,10 @@ Route::get('/tools/{tool}', [ToolController::class, 'show'])
     ->where('tool', '[a-z0-9-]+')->name('tools.show');
 Route::post('/tools/{tool}', [ToolController::class, 'calculate'])
     ->where('tool', '[a-z0-9-]+')->middleware('throttle:90,1')->name('tools.calculate');
+// DRAFT PREVIEW: a private link that expires. "signed" = the address carries a signature,
+// so it cannot be guessed or changed.
+Route::get('/preview/blog/{post}', BlogPreviewController::class)
+    ->whereNumber('post')->middleware(['signed', 'throttle:60,1'])->name('blog.preview');
 // NEWSLETTER. throttle:5,10 = max 5 sign-ups per 10 minutes per visitor (stops spam)
 Route::post('/newsletter', [NewsletterController::class, 'subscribe'])->middleware('throttle:5,10')->name('newsletter.subscribe');
 Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])

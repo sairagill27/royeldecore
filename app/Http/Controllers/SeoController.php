@@ -40,6 +40,7 @@ class SeoController extends Controller
                 . "Disallow: /reset-password\n"
                 . "Disallow: /newsletter\n"
                 . "Disallow: /search\n"
+                . "Disallow: /preview\n"
                 // Searching and filtering make endless near-copies of the same page
                 . "Disallow: /*?q=\n"
                 . "Disallow: /*?sort=\n"

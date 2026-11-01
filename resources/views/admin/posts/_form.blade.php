@@ -264,6 +264,12 @@
 
 {{-- SAVE BAR: at the very end of the page --}}
 <div class="sgh-form-actions">
+    @if ($post->exists)
+        <a href="{{ route('admin.posts.preview-link', $post) }}" target="_blank" rel="noopener"
+           class="btn btn-outline-primary rounded-pill px-4" title="Opens your last saved version. Save first.">
+            <i class="bi bi-eye me-1" aria-hidden="true"></i> Preview as visitors see it
+        </a>
+    @endif
     <a href="{{ route('admin.posts.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
     <button type="submit" class="btn btn-primary rounded-pill px-5">
         <i class="bi bi-check2 me-1"></i> Save post

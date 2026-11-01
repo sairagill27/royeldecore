@@ -92,6 +92,19 @@ $ld = ['@context' => 'https://schema.org', '@graph' => [$articleLd, $breadcrumbL
 @endpush
 @section('content')
 
+{{-- Shown only when the page is opened from a private preview link --}}
+@if (! empty($preview))
+    <div class="sgh-preview-bar" role="status">
+        <i class="bi bi-eye" aria-hidden="true"></i>
+        @if (! empty($previewNotLive))
+            <strong>Preview:</strong> this article is not published yet, so visitors cannot see it.
+        @else
+            <strong>Preview:</strong> this is your latest saved version of a live article.
+        @endif
+        This private link stops working after 24 hours.
+    </div>
+@endif
+
 {{-- Reading progress: a thin line along the top of the screen --}}
 <div class="sgh-read-progress" aria-hidden="true"><span id="readBar"></span></div>
 
