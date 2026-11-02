@@ -74,6 +74,7 @@
         crossorigin="anonymous"></script>
 
     {{-- Extra scripts a page adds --}}
+    <script src="{{ asset('assets/js/layout.js') }}" defer></script>
     @stack('scripts')
 </body>
 

@@ -1,13 +1,40 @@
 @extends('layouts.app')
 
-@section('title', ($category ? $category->name : 'Shop') . ' | SGHomeTrends')
+@php
+    $siteName = config('app.name');
+    $currency = config('shop.currency');
+    $heading  = $category ? $category->name : 'Shop Décor';
+    $intro    = $category && $category->description
+        ? $category->description
+        : 'Beautiful pieces for your walls, shelves and every corner of your home.';
+
+    $hasMin   = request('min') !== null && request('min') !== '';
+    $hasMax   = request('max') !== null && request('max') !== '';
+    $filtered = $hasMin || $hasMax || request()->boolean('in_stock') || $sort !== 'newest';
+
+    // The one official address of this page. Filters and sorting never count; page 2, 3... keep their number.
+    $canonical = url()->current() . ($products->currentPage() > 1 ? '?page=' . $products->currentPage() : '');
+@endphp
+
+@section('title', ($category ? $category->name : 'Shop') . ' | ' . config('app.name'))
+@section('meta_description', \Illuminate\Support\Str::limit(strip_tags($intro), 155))
+
+@push('head')
+    <link rel="canonical" href="{{ $canonical }}">
+    {{-- Filtered and sorted views are near-copies of the main page, so search engines skip them --}}
+    @if ($filtered)
+        <meta name="robots" content="noindex, follow">
+    @endif
+@endpush
 
 @section('content')
 
 {{-- =====================================================
-     PART 1: SHOP HERO BANNER (top of the page)
+     HEADER: deep green, in the shop's own colours (same as the décor tools)
      ===================================================== --}}
-<section class="sgh-shop-hero">
+<section class="sgh-tool-head sgh-shop-head">
+    @include('tools._leaves')
+
     <div class="container-fluid px-3 px-lg-4 px-xl-5 position-relative">
 
         {{-- Breadcrumb: Home > Shop > Category --}}
@@ -21,31 +48,26 @@
             </ol>
         </nav>
 
-        <div class="d-flex flex-wrap align-items-end justify-content-between gap-3">
-
-            {{-- Left: small label, big heading, short text --}}
-            <div class="sgh-shop-hero-text">
-                <p class="sgh-eyebrow mb-2">{{ $category ? 'Collection' : 'The RoyelDecore shop' }}</p>
-                <h1 class="sgh-shop-hero-title mb-2">
-                    {{ $category ? $category->name : 'Shop Décor' }}
-                </h1>
-                <p class="text-secondary mb-0">
-                    {{ $category && $category->description
-                        ? $category->description
-                        : 'Beautiful pieces for your walls, shelves and every corner of your home.' }}
-                </p>
+        <div class="sgh-shop-head-row">
+            <div>
+                <span class="sgh-tool-badge">
+                    <i class="bi bi-bag-heart" aria-hidden="true"></i>
+                    {{ $category ? 'Collection' : 'The ' . $siteName . ' shop' }}
+                </span>
+                <h1 class="sgh-tool-head-title">{{ $heading }}</h1>
+                <p class="sgh-tool-head-text">{{ $intro }}</p>
             </div>
 
-            {{-- Right: product count badge --}}
+            {{-- Product count --}}
             <div class="sgh-shop-count">
                 <strong>{{ $products->total() }}</strong>
-                <span>{{ Str::plural('product', $products->total()) }}</span>
+                <span>{{ \Illuminate\Support\Str::plural('product', $products->total()) }}</span>
             </div>
         </div>
 
         {{-- Category pills: scroll sideways on phones --}}
-        <nav class="sgh-pills mt-4" aria-label="Shop categories">
-            <a href="{{ url('/shop') }}" class="sgh-pill {{ !$category ? 'active' : '' }}">All</a>
+        <nav class="sgh-pills" aria-label="Shop categories">
+            <a href="{{ url('/shop') }}" class="sgh-pill {{ ! $category ? 'active' : '' }}">All</a>
             @foreach ($categories as $cat)
                 <a href="{{ url('/shop/' . $cat->slug) }}"
                    class="sgh-pill {{ $category && $category->id === $cat->id ? 'active' : '' }}">{{ $cat->name }}</a>
@@ -56,15 +78,14 @@
 
 
 {{-- =====================================================
-     PART 2: FILTER PANEL (left) + PRODUCTS (right)
+     FILTER PANEL (left) + PRODUCTS (right)
      ===================================================== --}}
 <section class="py-3 py-lg-4">
-    {{-- container-fluid = full screen width (not centered in a narrow box) --}}
     <div class="container-fluid px-3 px-lg-4 px-xl-5">
         <div class="row g-3 g-lg-4">
 
             {{-- ============ LEFT: STICKY FILTER PANEL ============
-                 Desktop: fixed 300px panel at the left edge, stays while products scroll.
+                 Desktop: stays in view while the products scroll. The Apply button stays pinned at its bottom.
                  Mobile: slides in from the side (opened by the Filters button). --}}
             <aside class="col-lg-auto sgh-sidebar-col">
                 <div class="sgh-sidebar">
@@ -80,43 +101,60 @@
 
                         <div class="offcanvas-body d-block">
 
-                            {{-- CATEGORIES --}}
-                            <div class="sgh-filter-box mb-3">
-                                <h2 class="sgh-filter-title">Categories</h2>
-                                <ul class="list-unstyled mb-0">
+                            {{-- CATEGORIES (click the title to fold it away) --}}
+                            <details class="sgh-fold sgh-filter-box mb-3" open>
+                                <summary>
+                                    <span><i class="bi bi-grid" aria-hidden="true"></i> Categories</span>
+                                    <i class="bi bi-chevron-down sgh-fold-arrow" aria-hidden="true"></i>
+                                </summary>
+                                <ul class="list-unstyled mb-0 sgh-cat-list">
                                     <li>
-                                        <a href="{{ url('/shop') }}"
-                                           class="sgh-filter-link {{ !$category ? 'active' : '' }}">All products</a>
+                                        <a href="{{ url('/shop') }}" class="sgh-filter-link {{ ! $category ? 'active' : '' }}"
+                                           @if (! $category) aria-current="page" @endif>
+                                            <span>All products</span><i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                        </a>
                                     </li>
                                     @foreach ($categories as $cat)
+                                        @php $isActive = $category && $category->id === $cat->id; @endphp
                                         <li>
-                                            <a href="{{ url('/shop/' . $cat->slug) }}"
-                                               class="sgh-filter-link {{ $category && $category->id === $cat->id ? 'active' : '' }}">{{ $cat->name }}</a>
+                                            <a href="{{ url('/shop/' . $cat->slug) }}" class="sgh-filter-link {{ $isActive ? 'active' : '' }}"
+                                               @if ($isActive) aria-current="page" @endif>
+                                                <span>{{ $cat->name }}</span><i class="bi bi-chevron-right" aria-hidden="true"></i>
+                                            </a>
                                         </li>
                                     @endforeach
                                 </ul>
-                            </div>
+                            </details>
 
                             {{-- FILTERS (a normal GET form, so the link can be shared) --}}
                             <form method="GET" action="{{ url()->current() }}" id="filterForm" class="sgh-filter-box">
-                                <h2 class="sgh-filter-title">Price</h2>
-                                <div class="d-flex align-items-center gap-2 mb-3">
-                                    <input type="number" name="min" min="0" class="form-control form-control-sm"
-                                           placeholder="Min" value="{{ request('min') }}" aria-label="Minimum price">
-                                    <span class="text-secondary">–</span>
-                                    <input type="number" name="max" min="0" class="form-control form-control-sm"
-                                           placeholder="Max" value="{{ request('max') }}" aria-label="Maximum price">
+
+                                <h2 class="sgh-filter-title"><i class="bi bi-tag" aria-hidden="true"></i> Price ({{ $currency }})</h2>
+                                <div class="sgh-price-grid">
+                                    <div>
+                                        <label for="priceMin">From</label>
+                                        <input type="number" id="priceMin" name="min" min="0" inputmode="numeric"
+                                               class="form-control form-control-sm" placeholder="Min" value="{{ request('min') }}">
+                                    </div>
+                                    <div>
+                                        <label for="priceMax">To</label>
+                                        <input type="number" id="priceMax" name="max" min="0" inputmode="numeric"
+                                               class="form-control form-control-sm" placeholder="Max" value="{{ request('max') }}">
+                                    </div>
                                 </div>
 
-                                <h2 class="sgh-filter-title">Availability</h2>
+                                <h2 class="sgh-filter-title"><i class="bi bi-box-seam" aria-hidden="true"></i> Availability</h2>
                                 <div class="form-check form-switch mb-3">
                                     <input class="form-check-input" type="checkbox" role="switch" name="in_stock"
                                            value="1" id="inStock" {{ request()->boolean('in_stock') ? 'checked' : '' }}>
                                     <label class="form-check-label small" for="inStock">In stock only</label>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary w-100 rounded-pill">Apply filters</button>
-                                <a href="{{ url()->current() }}" class="btn btn-link btn-sm w-100 mt-1">Reset all</a>
+                                {{-- Pinned to the bottom of the panel, so it is always in reach --}}
+                                <div class="sgh-filter-actions">
+                                    <button type="submit" class="btn btn-primary w-100 rounded-pill">Apply filters</button>
+                                    <a href="{{ url()->current() }}" class="btn btn-link btn-sm w-100 mt-1">Reset all</a>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -151,10 +189,6 @@
                 </div>
 
                 {{-- ACTIVE FILTER CHIPS: click the x to remove one filter --}}
-                @php
-                    $hasMin = request('min') !== null && request('min') !== '';
-                    $hasMax = request('max') !== null && request('max') !== '';
-                @endphp
                 @if ($hasMin || $hasMax || request()->boolean('in_stock'))
                     <div class="d-flex flex-wrap gap-2 mb-3">
                         @if ($hasMin)
