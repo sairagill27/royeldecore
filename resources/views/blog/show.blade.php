@@ -110,7 +110,8 @@ $ld = ['@context' => 'https://schema.org', '@graph' => [$articleLd, $breadcrumbL
 
 <article>
     {{-- ============ ARTICLE HEADER ============ --}}
-    <header class="sgh-shop-hero">
+    <header class="sgh-tool-head sgh-article-hero">
+    @include('tools._leaves')
         <div class="container position-relative sgh-article-head">
 
             <nav aria-label="breadcrumb">

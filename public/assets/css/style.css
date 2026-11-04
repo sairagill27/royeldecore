@@ -4077,3 +4077,99 @@ a.sgh-tool-card:hover {
     .sgh-2fa-print { position: absolute; left: 0; top: 0; width: 100%; border: 0; box-shadow: none; }
     .sgh-2fa-print button { display: none; }
 }
+
+/* =====================================================
+   47. BLOG: GREEN HEADER, COMPACT FEATURED CARD, ARTICLE HEADER
+   ===================================================== */
+
+/* A narrower, centred column, so nothing stretches across a wide screen */
+.sgh-blog-wrap { max-width: 1140px; }
+
+/* ---------- Header search: a white pill on the dark green ---------- */
+.sgh-blog-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 32rem;
+    margin-top: 1.3rem;
+    padding: 0.35rem 0.35rem 0.35rem 1.1rem;
+    background: #fff;
+    border-radius: 999px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+}
+.sgh-blog-search:focus-within { box-shadow: 0 0 0 0.25rem rgba(217, 201, 182, 0.6); }
+.sgh-blog-search i { color: var(--sgh-sage); font-size: 1.05rem; }
+.sgh-blog-search input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.4rem 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: 0.95rem;
+    color: #27392e;
+}
+.sgh-blog-search input::placeholder { color: #7d8b81; }
+
+/* ---------- Featured article: a compact card ---------- */
+.sgh-featured-post {
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(46, 58, 47, 0.08);
+}
+.sgh-featured-post .sgh-blog-media { min-height: 220px; height: 100%; aspect-ratio: auto; }
+@media (min-width: 992px) {
+    .sgh-featured-post .sgh-blog-media { min-height: 300px; }
+}
+.sgh-featured-body { padding: 1.4rem; }
+@media (min-width: 992px) { .sgh-featured-body { padding: 1.9rem 2.1rem; } }
+
+.sgh-featured-flag {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.7rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    background: #f3ece1;
+    border: 1px solid #D9C9B6;
+    color: #6b5a3f;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.sgh-featured-flag i { color: #c08a2e; }
+.sgh-featured-title { font-size: clamp(1.35rem, 2.2vw, 1.75rem); line-height: 1.25; margin-bottom: 0.6rem; }
+.sgh-featured-text {
+    margin-bottom: 0.8rem;
+    color: var(--sgh-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ---------- Cards and the heading above the grid ---------- */
+.sgh-blog-card { border-radius: 16px; }
+.sgh-blog-title { font-size: 1.08rem; }
+
+.sgh-section-line { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+.sgh-section-line h2 { margin: 0; font-size: 1.3rem; }
+.sgh-section-line::after { content: ""; flex: 1; height: 1px; background: rgba(107, 143, 113, 0.28); }
+
+/* ---------- Article page: green header, smaller cover, narrower reading column ---------- */
+.sgh-article-hero { padding: 1.6rem 0 2.6rem; }
+.sgh-article-hero .breadcrumb { justify-content: center; }
+.sgh-article-hero .sgh-article-title { color: #fff; }
+.sgh-article-hero .lead.text-secondary { color: rgba(255, 255, 255, 0.86) !important; }
+.sgh-article-hero .sgh-blog-meta { color: rgba(255, 255, 255, 0.82); }
+.sgh-article-hero .sgh-blog-meta strong { color: #fff; }
+.sgh-article-hero .sgh-blog-cat { color: #ecdfcc; }
+.sgh-article-hero .sgh-blog-cat:hover { color: #fff; }
+
+.sgh-article-cover { max-width: 880px; margin-top: 1.75rem; border-radius: 18px; }
+.sgh-article-body { max-width: 720px; }
