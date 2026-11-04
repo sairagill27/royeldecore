@@ -83,6 +83,17 @@ class LaunchCheck extends Command
             false
         );
 
+        $withoutTwoFactor = DB::table('users')
+            ->whereIn('role', ['admin', 'staff'])
+            ->whereNull('two_factor_confirmed_at')
+            ->count();
+        $this->result(
+            $withoutTwoFactor === 0,
+            'Every admin and staff account uses two-step login',
+            $withoutTwoFactor . ' account(s) have no two-step login. Turn it on in Admin > Two-step login, then set TWO_FACTOR_REQUIRED=true.',
+            false
+        );
+
         // ---------- content and files ----------
         $this->newLine();
         $this->line('<options=bold>Content and files</>');

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Account\OrderController;
+use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
@@ -140,9 +141,16 @@ Route::middleware('auth')->group(function () {
 });
 
 
+// TWO-STEP LOGIN: the page where staff type their code. It is NOT behind the two-factor check itself.
+Route::middleware(['auth', 'staff'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('two-factor/challenge', [TwoFactorController::class, 'challenge'])->name('two-factor.challenge');
+    Route::post('two-factor/challenge', [TwoFactorController::class, 'verify'])
+        ->middleware('throttle:20,1')->name('two-factor.verify');
+});
+
 // ---------- ADMIN ----------
 // auth = must be logged in. staff = must be an active admin or staff member.
-Route::middleware(['auth', 'staff'])
+Route::middleware(['auth', 'staff', \App\Http\Middleware\EnsureTwoFactor::class])
     ->prefix('admin')
     ->name('admin.')
     ->group(base_path('routes/admin.php'));

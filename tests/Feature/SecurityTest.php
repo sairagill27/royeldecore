@@ -45,6 +45,10 @@ class SecurityTest extends TestCase
 
     public function test_every_admin_page_and_action_refuses_customers(): void
     {
+        // Rate limits share one counter per user, and this test visits every admin address in a row.
+        // Limits have their own tests, so they are switched off here.
+        $this->withoutMiddleware(\Illuminate\Routing\Middleware\ThrottleRequests::class);
+
         $this->actingAs($this->makeCustomer());
 
         foreach ($this->adminRoutes() as [$method, $uri]) {

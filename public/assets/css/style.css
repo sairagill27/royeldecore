@@ -4008,3 +4008,72 @@ a.sgh-tool-card:hover {
     border-top: 1px solid rgba(107, 143, 113, 0.15);
     border-radius: 0 0 18px 18px;
 }
+
+/* =====================================================
+   46. TWO-STEP LOGIN
+   ===================================================== */
+.sgh-2fa-card {
+    max-width: 420px;
+    padding: 2rem 1.75rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.2);
+    border-radius: 22px;
+    box-shadow: 0 14px 40px rgba(46, 58, 47, 0.1);
+    text-align: center;
+}
+.sgh-2fa-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+    border-radius: 16px;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+    font-size: 1.7rem;
+}
+.sgh-2fa-input { letter-spacing: 0.3em; font-size: 1.4rem; }
+.sgh-2fa-input-sm { width: 10rem; letter-spacing: 0.2em; font-size: 1.1rem; }
+
+.sgh-2fa-steps { padding-left: 1.2rem; }
+.sgh-2fa-steps > li { margin-bottom: 1.4rem; }
+
+/* The setup key: easy to read and to select */
+.sgh-2fa-secret {
+    margin: 0.7rem 0;
+    padding: 0.8rem 1rem;
+    background: #f5f8f4;
+    border: 1px dashed rgba(107, 143, 113, 0.55);
+    border-radius: 12px;
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    font-size: 1.15rem;
+    letter-spacing: 0.12em;
+    word-break: break-all;
+    user-select: all;
+}
+
+/* Recovery codes */
+.sgh-2fa-codes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    padding: 0;
+    list-style: none;
+}
+.sgh-2fa-codes li {
+    padding: 0.55rem 0.8rem;
+    background: #f5f8f4;
+    border-radius: 10px;
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    letter-spacing: 0.05em;
+}
+
+/* Printing shows only the recovery codes */
+@media print {
+    body * { visibility: hidden; }
+    .sgh-2fa-print, .sgh-2fa-print * { visibility: visible; }
+    .sgh-2fa-print { position: absolute; left: 0; top: 0; width: 100%; border: 0; box-shadow: none; }
+    .sgh-2fa-print button { display: none; }
+}

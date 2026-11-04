@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PostImageController;
 use App\Http\Controllers\Admin\PostPreviewLinkController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Admin\ReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -77,3 +79,19 @@ Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])
 
 // Notifications: everything waiting for you
 Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+// Two-step login: turn it on or off, and make new recovery codes
+Route::get('two-factor', [TwoFactorController::class, 'setup'])->name('two-factor.setup');
+Route::post('two-factor/enable', [TwoFactorController::class, 'enable'])
+    ->middleware('throttle:10,1')->name('two-factor.enable');
+Route::post('two-factor/disable', [TwoFactorController::class, 'disable'])
+    ->middleware('throttle:10,1')->name('two-factor.disable');
+Route::post('two-factor/recovery-codes', [TwoFactorController::class, 'regenerate'])
+    ->middleware('throttle:10,1')->name('two-factor.recovery');
+
+// My account: change your own name, email and password
+Route::get('account', [AccountController::class, 'edit'])->name('account.edit');
+Route::patch('account', [AccountController::class, 'update'])
+    ->middleware('throttle:10,1')->name('account.update');
+Route::put('account/password', [AccountController::class, 'password'])
+    ->middleware('throttle:6,1')->name('account.password');

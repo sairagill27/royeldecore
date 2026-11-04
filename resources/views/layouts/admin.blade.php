@@ -102,6 +102,14 @@
                     </nav>
 
                     <div class="sgh-admin-sidebar-foot">
+                    <a href="{{ route('admin.account.edit') }}"
+                       class="sgh-admin-link {{ request()->routeIs('admin.account.*') ? 'active' : '' }}">
+                        <i class="bi bi-person-gear"></i> My account
+                    </a>
+                    <a href="{{ route('admin.two-factor.setup') }}"
+                       class="sgh-admin-link {{ request()->routeIs('admin.two-factor.*') ? 'active' : '' }}">
+                        <i class="bi bi-shield-lock"></i> Two-step login
+                    </a>
                         <a href="{{ url('/') }}" target="_blank" rel="noopener" class="sgh-admin-link">
                             <i class="bi bi-box-arrow-up-right"></i> View website
                         </a>
