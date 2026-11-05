@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductReview;
 
 class ProductController extends Controller
 {
@@ -24,6 +25,12 @@ class ProductController extends Controller
             ->take(4)
             ->get();
 
-        return view('products.show', compact('product', 'related'));
+        // Approved reviews only: the average and the count (the page and the search-engine data use them)
+        $stats       = ProductReview::approved()->where('product_id', $product->id)
+                           ->selectRaw('count(*) as total, avg(rating) as average')->first();
+        $ratingCount = (int) ($stats->total ?? 0);
+        $ratingAvg   = $ratingCount > 0 ? round((float) $stats->average, 1) : 0;
+
+        return view('products.show', compact('product', 'related', 'ratingCount', 'ratingAvg'));
     }
 }

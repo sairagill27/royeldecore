@@ -4173,3 +4173,361 @@ a.sgh-tool-card:hover {
 
 .sgh-article-cover { max-width: 880px; margin-top: 1.75rem; border-radius: 18px; }
 .sgh-article-body { max-width: 720px; }
+
+/* =====================================================
+   48. PRODUCT PAGE
+   ===================================================== */
+
+/* Slim green strip with the breadcrumb */
+.sgh-pd-strip { padding: 1.1rem 0 3.6rem; }
+.sgh-pd-strip .breadcrumb { margin-bottom: 0; }
+.sgh-pd-strip .sgh-tool-leaves--b { display: none; }
+
+/* The product sits on a raised white card that overlaps the strip */
+.sgh-pd-card {
+    position: relative;
+    z-index: 2;
+    margin-top: -2.4rem;
+    padding: 1.1rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 24px;
+    box-shadow: 0 18px 50px rgba(46, 58, 47, 0.1);
+}
+@media (min-width: 768px) { .sgh-pd-card { padding: 1.75rem; } }
+@media (min-width: 992px) { .sgh-pd-card { padding: 2.25rem; } }
+
+/* Image */
+.sgh-pd-media {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--sgh-soft-sage);
+    border-radius: 18px;
+    color: var(--sgh-sage);
+    font-size: 4.5rem;
+}
+.sgh-pd-media img { width: 100%; height: 100%; object-fit: cover; }
+.sgh-pd-flag {
+    position: absolute;
+    top: 0.9rem;
+    left: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    background: #c08a2e;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(46, 58, 47, 0.2);
+}
+.sgh-pd-flag.is-out { background: #8a2f2f; }
+
+/* Title, rating, price */
+.sgh-pd-cat {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sgh-sage);
+    text-decoration: none;
+}
+.sgh-pd-cat:hover { color: var(--sgh-forest); }
+.sgh-pd-title { margin: 0.35rem 0 0.7rem; font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1.2; }
+.sgh-pd-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.7rem;
+    color: var(--sgh-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+.sgh-pd-rating:hover { color: var(--sgh-forest); }
+.sgh-pd-price {
+    margin: 0.2rem 0 0.9rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.9rem, 3.2vw, 2.5rem);
+    font-weight: 700;
+    color: var(--sgh-forest);
+}
+.sgh-pd-lead { color: #4a5a50; line-height: 1.7; }
+
+/* Buying */
+.sgh-pd-buy { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem; margin: 1.4rem 0 0.9rem; }
+.sgh-pd-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-bottom: 1.4rem; }
+.sgh-pd-actions .sgh-wish--text { margin-top: 0; }
+.sgh-pd-ask {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(107, 143, 113, 0.3);
+    border-radius: 999px;
+    color: var(--sgh-forest);
+    font-size: 0.92rem;
+    line-height: 1;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.sgh-pd-ask i { font-size: 1.1rem; color: #25a244; }
+.sgh-pd-ask:hover { background: var(--sgh-forest); border-color: var(--sgh-forest); color: #fff; }
+.sgh-pd-ask:hover i { color: #fff; }
+
+/* What to expect */
+.sgh-pd-perks { display: grid; gap: 0.6rem; margin: 0 0 1.25rem; padding: 0; list-style: none; }
+.sgh-pd-perks li {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 0.9rem;
+    background: #f5f8f4;
+    border-radius: 14px;
+}
+.sgh-pd-perks li > i {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--sgh-forest);
+    font-size: 1.1rem;
+}
+.sgh-pd-perks strong { display: block; font-size: 0.92rem; }
+.sgh-pd-perks small { display: block; color: var(--sgh-muted); }
+
+/* Share */
+.sgh-pd-share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(107, 143, 113, 0.22);
+}
+.sgh-pd-share strong { margin-right: 0.3rem; font-size: 0.9rem; }
+.sgh-pd-share a,
+.sgh-pd-share button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 38px;
+    padding: 0 0.85rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.3);
+    border-radius: 999px;
+    color: var(--sgh-forest);
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+}
+.sgh-pd-share a:hover,
+.sgh-pd-share button:hover { background: var(--sgh-sage); border-color: var(--sgh-sage); color: #fff; }
+
+/* Description and details cards */
+.sgh-pd-box {
+    padding: 1.4rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 20px;
+}
+@media (min-width: 768px) { .sgh-pd-box { padding: 1.75rem; } }
+.sgh-pd-text { color: #44524a; line-height: 1.8; overflow-wrap: anywhere; }
+.sgh-pd-specs > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-top: 1px solid rgba(46, 58, 47, 0.08);
+}
+.sgh-pd-specs > div:first-child { border-top: 0; padding-top: 0; }
+.sgh-pd-specs dt { font-weight: 500; color: var(--sgh-muted); }
+.sgh-pd-specs dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+
+/* Sticky Add to Cart bar: phones only */
+.sgh-pd-sticky { display: none; }
+@media (max-width: 767.98px) {
+    .sgh-pd-page { padding-bottom: 5rem !important; }
+    .sgh-pd-sticky {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1030;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.8rem;
+        padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
+        background: #fff;
+        border-top: 1px solid rgba(46, 58, 47, 0.12);
+        box-shadow: 0 -8px 24px rgba(46, 58, 47, 0.1);
+    }
+    .sgh-pd-sticky-info small { display: block; color: var(--sgh-muted); font-size: 0.78rem; }
+    .sgh-pd-sticky-info strong { font-size: 1.05rem; color: var(--sgh-forest); }
+}
+
+/* =====================================================
+   49. HOME PAGE SECTIONS
+   ===================================================== */
+
+/* Category cards: rounder, with a hover lift and a count */
+.sgh-cat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    height: 100%;
+    padding: 1.35rem 0.75rem 1.15rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.sgh-cat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--sgh-sage);
+    box-shadow: 0 14px 30px rgba(46, 58, 47, 0.12);
+}
+.sgh-cat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+    font-size: 1.9rem;
+    transition: background 0.2s, color 0.2s;
+}
+.sgh-cat-icon img { width: 100%; height: 100%; object-fit: cover; }
+.sgh-cat-card:hover .sgh-cat-icon { background: var(--sgh-forest); color: #fff; }
+.sgh-cat-name { font-weight: 600; font-size: 0.95rem; color: var(--sgh-charcoal); line-height: 1.3; }
+.sgh-cat-count { color: var(--sgh-muted); font-size: 0.78rem; }
+
+/* Free calculators band: deep green, like the tool pages */
+.sgh-home-tools {
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 0;
+    color: #fff;
+    background:
+        radial-gradient(60% 90% at 90% 0%, rgba(190, 215, 195, 0.28) 0%, transparent 60%),
+        linear-gradient(115deg, #345840 0%, #3f674b 55%, #4a7654 100%);
+    border-top: 3px solid #D9C9B6;
+    border-bottom: 3px solid #D9C9B6;
+}
+.sgh-home-tools-title { margin: 0.4rem 0 0.8rem; font-size: clamp(1.7rem, 3.2vw, 2.4rem); color: #fff; }
+.sgh-home-tools-text { max-width: 28rem; margin-bottom: 1.4rem; color: rgba(255, 255, 255, 0.85); line-height: 1.7; }
+.sgh-home-tool {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    height: 100%;
+    padding: 1rem 1.1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+}
+.sgh-home-tool:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-3px); color: #fff; }
+.sgh-home-tool-icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.16);
+    font-size: 1.3rem;
+}
+.sgh-home-tool strong { display: block; font-size: 0.95rem; }
+.sgh-home-tool small { display: block; color: rgba(255, 255, 255, 0.78); line-height: 1.35; }
+
+/* How ordering works */
+.sgh-flow-card {
+    position: relative;
+    height: 100%;
+    padding: 1.6rem 1.4rem 1.4rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 20px;
+}
+.sgh-flow-num {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(107, 143, 113, 0.22);
+}
+.sgh-flow-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 0.9rem;
+    border-radius: 16px;
+    background: var(--sgh-soft-sage);
+    color: var(--sgh-forest);
+    font-size: 1.5rem;
+}
+.sgh-flow-card h3 { margin: 0 0 0.4rem; font-family: 'Inter', system-ui, sans-serif; font-size: 1.05rem; font-weight: 600; }
+.sgh-flow-card p { margin: 0; color: var(--sgh-muted); font-size: 0.92rem; line-height: 1.65; }
+.sgh-flow-note { margin: 1.5rem 0 0; text-align: center; color: var(--sgh-muted); font-size: 0.9rem; }
+.sgh-flow-note i { margin-right: 0.35rem; color: var(--sgh-sage); }
+
+/* Customer reviews */
+.sgh-home-review {
+    height: 100%;
+    margin: 0;
+    padding: 1.4rem;
+    background: #fff;
+    border: 1px solid rgba(107, 143, 113, 0.18);
+    border-radius: 20px;
+}
+.sgh-home-review blockquote {
+    margin: 0.5rem 0 1rem;
+    color: #44524a;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+.sgh-home-review figcaption { color: var(--sgh-muted); font-size: 0.85rem; }
+.sgh-home-review figcaption a { display: block; margin-top: 0.15rem; color: var(--sgh-forest); }
+
+/* Questions band */
+.sgh-home-contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.75rem;
+    background: var(--sgh-soft-sage);
+    border: 1px solid rgba(107, 143, 113, 0.25);
+    border-radius: 24px;
+}
+@media (min-width: 992px) { .sgh-home-contact { padding: 2.25rem 2.5rem; } }
+.sgh-home-contact h2 { margin: 0 0 0.3rem; font-size: 1.5rem; }
+.sgh-home-contact p { margin: 0; color: var(--sgh-muted); }
+.sgh-home-contact-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; }
