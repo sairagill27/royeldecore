@@ -33,16 +33,13 @@ class HomeFeaturesTest extends TestCase
 
     // ---------- sections that are always there ----------
 
-    public function test_the_calculators_band_and_the_ordering_steps_are_always_there(): void
+    public function test_the_calculators_band_is_always_there_and_the_ordering_section_is_gone(): void
     {
         $this->get('/')->assertOk()
             ->assertSee('class="sgh-home-tools"', false)
             ->assertSee('Plan your room before you buy')
-            ->assertSee('How ordering works')
-            ->assertSee('Choose your pieces')
-            ->assertSee('Place your order')
-            ->assertSee('Follow your order')
-            ->assertSee('cash on delivery');
+            ->assertDontSee('How ordering works')
+            ->assertDontSee('Delivery charge:');
     }
 
     public function test_the_calculators_band_links_to_every_working_tool(): void
@@ -55,19 +52,6 @@ class HomeFeaturesTest extends TestCase
             $this->assertStringContainsString(route('tools.show', $slug), $band);
         }
         $this->assertStringContainsString(route('tools.index'), $band);
-    }
-
-    public function test_the_ordering_steps_show_the_delivery_charge_from_the_config(): void
-    {
-        config(['shop.currency' => 'Rs.', 'shop.shipping_fee' => 250, 'shop.free_shipping_over' => 15000]);
-
-        $this->get('/')->assertOk()
-            ->assertSee('Delivery charge: Rs. 250')
-            ->assertSee('no charge on orders over Rs. 15,000');
-
-        config(['shop.shipping_fee' => 0]);
-
-        $this->get('/')->assertOk()->assertDontSee('Delivery charge:');
     }
 
     public function test_the_home_page_makes_no_promises_the_shop_has_not_written_down(): void

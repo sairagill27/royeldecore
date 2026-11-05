@@ -21,6 +21,9 @@
     $shareUrl  = rawurlencode($url);
     $shareText = rawurlencode($product->name);
 
+    $hasText = filled(trim((string) $product->description));
+    $stockText = $product->stock > 5 ? 'In stock' : ($inStock ? 'Only ' . $product->stock . ' left' : 'Out of stock');
+
     // Data for search engines (printed safely by JsonLd::tag in the head)
     $offer = [
         '@type'         => 'Offer',
@@ -92,7 +95,7 @@
 
 @section('content')
 
-{{-- ============ SLIM GREEN STRIP: breadcrumb (same style as the shop and the tools) ============ --}}
+{{-- ============ GREEN STRIP: breadcrumb (same style as the shop and the tools) ============ --}}
 <section class="sgh-tool-head sgh-pd-strip">
     @include('tools._leaves')
     <div class="container position-relative">
@@ -196,8 +199,84 @@
                     @endif
                 </div>
 
-                {{-- What to expect: only things that are true for this shop --}}
-                <ul class="sgh-pd-perks">
+                <p class="sgh-pd-cod"><i class="bi bi-cash-coin" aria-hidden="true"></i> Cash on delivery. Pay when your order arrives.</p>
+
+                {{-- Share: plain links, no third-party scripts --}}
+                <div class="sgh-pd-share">
+                    <strong>Share</strong>
+                    <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></a>
+                    <button type="button" id="copyLink" data-url="{{ $url }}" aria-label="Copy link"><i class="bi bi-link-45deg"></i> <span>Copy link</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- ============ DESCRIPTION, DETAILS AND DELIVERY: one card with three tabs ============ --}}
+    <div class="sgh-pd-box sgh-pd-info">
+
+        <ul class="nav sgh-pd-tabs" id="pdTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pd-tab-description" data-bs-toggle="tab" data-bs-target="#pd-pane-description"
+                        type="button" role="tab" aria-controls="pd-pane-description" aria-selected="true">
+                    <i class="bi bi-card-text" aria-hidden="true"></i> Description
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pd-tab-details" data-bs-toggle="tab" data-bs-target="#pd-pane-details"
+                        type="button" role="tab" aria-controls="pd-pane-details" aria-selected="false">
+                    <i class="bi bi-list-check" aria-hidden="true"></i> Product details
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pd-tab-delivery" data-bs-toggle="tab" data-bs-target="#pd-pane-delivery"
+                        type="button" role="tab" aria-controls="pd-pane-delivery" aria-selected="false">
+                    <i class="bi bi-truck" aria-hidden="true"></i> Delivery and payment
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            {{-- DESCRIPTION --}}
+            <div class="tab-pane fade show active" id="pd-pane-description" role="tabpanel" aria-labelledby="pd-tab-description" tabindex="0">
+                @if ($hasText)
+                    {{-- e() blocks any HTML, nl2br keeps line breaks (safe) --}}
+                    <div class="sgh-pd-text">{!! nl2br(e((string) $product->description)) !!}</div>
+                @else
+                    <p class="text-secondary mb-0">No description yet.</p>
+                @endif
+            </div>
+
+            {{-- PRODUCT DETAILS --}}
+            <div class="tab-pane fade" id="pd-pane-details" role="tabpanel" aria-labelledby="pd-tab-details" tabindex="0">
+                <div class="sgh-pd-spec-grid">
+                    @if ($product->sku)
+                        <div class="sgh-pd-spec">
+                            <i class="bi bi-upc-scan" aria-hidden="true"></i>
+                            <span><small>SKU</small><strong>{{ $product->sku }}</strong></span>
+                        </div>
+                    @endif
+                    @if ($product->category)
+                        <div class="sgh-pd-spec">
+                            <i class="bi bi-tag" aria-hidden="true"></i>
+                            <span><small>Category</small><strong>{{ $product->category->name }}</strong></span>
+                        </div>
+                    @endif
+                    <div class="sgh-pd-spec">
+                        <i class="bi bi-box-seam" aria-hidden="true"></i>
+                        <span><small>Availability</small><strong>{{ $stockText }}</strong></span>
+                    </div>
+                    <div class="sgh-pd-spec">
+                        <i class="bi bi-cash-coin" aria-hidden="true"></i>
+                        <span><small>Payment</small><strong>Cash on delivery</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            {{-- DELIVERY AND PAYMENT: only things that are true for this shop --}}
+            <div class="tab-pane fade" id="pd-pane-delivery" role="tabpanel" aria-labelledby="pd-tab-delivery" tabindex="0">
+                <ul class="sgh-pd-perks sgh-pd-perks--row">
                     <li>
                         <i class="bi bi-cash-coin" aria-hidden="true"></i>
                         <span><strong>Cash on delivery</strong><small>Pay when your order arrives.</small></span>
@@ -218,40 +297,6 @@
                         <span><strong>Track your order</strong><small>Follow its status in My Orders after you sign in.</small></span>
                     </li>
                 </ul>
-
-                {{-- Share: plain links, no third-party scripts --}}
-                <div class="sgh-pd-share">
-                    <strong>Share</strong>
-                    <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="bi bi-whatsapp"></i></a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="bi bi-facebook"></i></a>
-                    <button type="button" id="copyLink" data-url="{{ $url }}" aria-label="Copy link"><i class="bi bi-link-45deg"></i> <span>Copy link</span></button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ============ DESCRIPTION AND DETAILS ============ --}}
-    <div class="row g-4 mt-1">
-        <div class="col-lg-8">
-            <div class="sgh-pd-box h-100">
-                <h2 class="h4 mb-3">Description</h2>
-                {{-- e() blocks any HTML, nl2br keeps line breaks (safe) --}}
-                <div class="sgh-pd-text">{!! nl2br(e((string) $product->description)) !!}</div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="sgh-pd-box h-100">
-                <h2 class="h4 mb-3">Product details</h2>
-                <dl class="sgh-pd-specs mb-0">
-                    @if ($product->sku)
-                        <div><dt>SKU</dt><dd>{{ $product->sku }}</dd></div>
-                    @endif
-                    @if ($product->category)
-                        <div><dt>Category</dt><dd>{{ $product->category->name }}</dd></div>
-                    @endif
-                    <div><dt>Availability</dt><dd>{{ $inStock ? 'In stock' : 'Out of stock' }}</dd></div>
-                    <div><dt>Payment</dt><dd>Cash on delivery</dd></div>
-                </dl>
             </div>
         </div>
     </div>

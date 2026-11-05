@@ -49,16 +49,13 @@
     {{-- 5. New arrivals (hidden when there are none) --}}
     @include('home.arrivals')
 
-    {{-- 6. How ordering works --}}
-    @include('home.steps')
-
-    {{-- 7. Customer reviews (hidden until there are approved ones) --}}
+    {{-- 6. Customer reviews (hidden until there are approved ones) --}}
     @include('home.reviews')
 
-    {{-- 8. Latest from the journal --}}
+    {{-- 7. Latest from the journal --}}
     @include('home.blog')
 
-    {{-- 9. WhatsApp or email band (hidden until you set a contact in .env) --}}
+    {{-- 8. WhatsApp or email band (hidden until you set a contact in .env) --}}
     @include('home.contact')
 
 @endsection
