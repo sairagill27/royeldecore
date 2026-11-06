@@ -26,7 +26,7 @@ class HomeController extends Controller
         $homeCategories = Category::where('is_active', true)
             ->orderBy('sort_order')
             ->take(6)
-            ->get(['id', 'name', 'slug', 'image']);
+            ->get(['id', 'name', 'slug', 'image', 'description']);
 
         // How many visible products each of those categories has (one query for all of them)
         $categoryCounts = Product::visible()

@@ -74,7 +74,7 @@ class HomeFeaturesTest extends TestCase
         $this->makeProduct(['category_id' => $category->id, 'status' => 'draft']);   // not counted
 
         $this->get('/')->assertOk()
-            ->assertSee('sgh-cat-card', false)
+            ->assertSee('sgh-collection', false)
             ->assertSee('Mirrors')
             ->assertSee('2 pieces');
     }
