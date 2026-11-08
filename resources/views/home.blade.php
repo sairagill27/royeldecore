@@ -37,25 +37,28 @@
     {{-- 1. Hero --}}
     @include('home.hero')
 
-    {{-- 2. Shop by category (with product counts) --}}
+    {{-- 2. Shop by category --}}
     @include('home.categories')
 
     {{-- 3. Featured products --}}
     @include('home.products')
 
-    {{-- 4. Free décor calculators --}}
+    {{-- 4. Free décor helper --}}
+    @include('home.helper')
+
+    {{-- 5. Free décor calculators --}}
     @include('home.tools')
 
-    {{-- 5. New arrivals (hidden when there are none) --}}
+    {{-- 6. New arrivals (hidden when there are none) --}}
     @include('home.arrivals')
 
-    {{-- 6. Customer reviews (hidden until there are approved ones) --}}
+    {{-- 7. Customer reviews (hidden until there are approved ones) --}}
     @include('home.reviews')
 
-    {{-- 7. Latest from the journal --}}
+    {{-- 8. Latest from the journal --}}
     @include('home.blog')
 
-    {{-- 8. WhatsApp or email band (hidden until you set a contact in .env) --}}
+    {{-- 9. WhatsApp or email band (hidden until you set a contact in .env) --}}
     @include('home.contact')
 
 @endsection

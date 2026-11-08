@@ -5646,3 +5646,59 @@ a.sgh-tool-card:hover {
 }
 .sgh-pd-thumbs [data-bs-target].active { opacity: 1; border-color: var(--sgh-sage); }
 .sgh-pd-thumbs img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* =====================================================
+   54. DECOR HELPER AND HOME POLISH
+   ===================================================== */
+
+/* Mood board tiles (the layout itself is Bootstrap) */
+.sgh-board-caption { background: linear-gradient(to top, rgba(36, 64, 45, 0.78), transparent); }
+.sgh-board-tile img { transition: transform 0.5s; }
+.sgh-board-tile:hover img { transform: scale(1.05); }
+
+/* A beige divider under every section heading on the home page */
+.sgh-section-title::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 3px;
+    margin: 0.8rem 0 0.9rem;
+    border-radius: 3px;
+    background: #D9C9B6;
+}
+.text-center > .sgh-section-title::after { margin-left: auto; margin-right: auto; }
+
+/* A soft wave where the hero meets the categories */
+.sgh-cats { position: relative; border-top: 0; }
+.sgh-cats::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -39px;
+    height: 40px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40' preserveAspectRatio='none'%3E%3Cpath fill='%23FAF6EE' d='M0 22C240 44 480 0 720 22s480 22 720 0V40H0z'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat;
+    pointer-events: none;
+}
+
+/* The helper section: warm cream to pale green */
+.sgh-helper { background: linear-gradient(135deg, #F3ECE0 0%, #E8EFE6 100%); }
+.sgh-helper-card {
+    padding: 2.5rem 1.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(107, 143, 113, 0.25);
+    border-radius: 22px;
+    color: var(--sgh-muted);
+}
+.sgh-helper-card i { display: block; margin-bottom: 0.6rem; font-size: 2.4rem; color: var(--sgh-sage); }
+
+/* Sections fade up as they come into view (only when the script switched this on) */
+.js-reveal .sgh-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.js-reveal .sgh-reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+    .js-reveal .sgh-reveal { opacity: 1; transform: none; transition: none; }
+}

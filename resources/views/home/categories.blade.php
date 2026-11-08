@@ -26,7 +26,6 @@
         <div class="text-center mb-5">
             <p class="sgh-eyebrow mb-2">Shop by category</p>
             <h2 class="sgh-section-title">Find the perfect piece for <em>every space</em></h2>
-            <span class="sgh-rule" aria-hidden="true"></span>
             <p class="sgh-section-sub">Browse our collections and find what suits your home.</p>
         </div>
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HelperController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PasswordResetController;
@@ -49,6 +50,8 @@ Route::middleware('throttle:120,1')->group(function () {
 Route::post('/blog/{slug}/comments', [CommentController::class, 'store'])
     ->middleware('throttle:5,10')->name('blog.comments.store');
 
+// DECOR HELPER: free guided finder (room, style, budget). It matches real products and uses no outside service.
+Route::get('/helper', [HelperController::class, 'index'])->middleware('throttle:60,1')->name('helper');
 // DECOR TOOLS: the calculators. The sums are done on the server, so the page can show a result live.
 Route::get('/tools', [ToolController::class, 'index'])->name('tools.index');
 Route::get('/tools/{tool}', [ToolController::class, 'show'])

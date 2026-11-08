@@ -54,6 +54,7 @@
                         <a class="nav-link dropdown-toggle {{ request()->is('tools*') ? 'active' : '' }}" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">Tools</a>
                         <ul class="dropdown-menu sgh-dropdown">
+                            <li><a class="dropdown-item" href="{{ url('/helper') }}">Décor Helper (free)</a></li>
                             <li><a class="dropdown-item" href="{{ url('/tools/paint-calculator') }}">Paint Calculator</a></li>
                             <li><a class="dropdown-item" href="{{ url('/tools/flooring-calculator') }}">Flooring Calculator</a></li>
                             <li><a class="dropdown-item" href="{{ url('/tools/wallpaper-calculator') }}">Wallpaper Calculator</a></li>
