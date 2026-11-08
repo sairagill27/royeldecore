@@ -40,8 +40,10 @@
         'brand'       => ['@type' => 'Brand', 'name' => config('app.name')],
         'offers'      => $offer,
     ];
-    if ($image) {
-        $productLd['image'] = [$image];
+    // All photos: the main one first, then the gallery
+    $photos = collect([$product->image])->merge($product->images->pluck('path'))->filter()->unique()->values();
+    if ($photos->isNotEmpty()) {
+        $productLd['image'] = $photos->map(fn ($p) => asset('storage/' . $p))->all();
     }
     if (filled($product->sku)) {
         $productLd['sku'] = $product->sku;
@@ -118,14 +120,56 @@
     <div class="sgh-pd-card">
         <div class="row g-4 g-lg-5">
 
-            {{-- ---------- LEFT: IMAGE ---------- --}}
+            {{-- ---------- LEFT: PHOTOS (one photo, or a slider with thumbnails when there are more) ---------- --}}
             <div class="col-md-6">
-                <div class="sgh-pd-media">
-                    @if ($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                             width="800" height="800" loading="eager" fetchpriority="high">
+                <div class="position-relative">
+
+                    @if ($photos->count() > 1)
+                        <div id="pdGallery" class="carousel slide sgh-pd-gallery" data-bs-ride="false" aria-label="Product photos">
+                            <div class="position-relative">
+                                <div class="carousel-inner rounded-4 overflow-hidden">
+                                    @foreach ($photos as $i => $path)
+                                        <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
+                                            <div class="ratio ratio-1x1" style="background: var(--sgh-soft-sage);">
+                                                <img src="{{ asset('storage/' . $path) }}"
+                                                     alt="{{ $product->name }}, photo {{ $i + 1 }} of {{ $photos->count() }}"
+                                                     class="object-fit-cover" width="800" height="800"
+                                                     @if ($i === 0) loading="eager" fetchpriority="high" @else loading="lazy" @endif>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <button class="carousel-control-prev" type="button" data-bs-target="#pdGallery" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous photo</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#pdGallery" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next photo</span>
+                                </button>
+                            </div>
+
+                            {{-- Thumbnails: Bootstrap's own slide indicators, made into small pictures --}}
+                            <div class="carousel-indicators sgh-pd-thumbs">
+                                @foreach ($photos as $i => $path)
+                                    <button type="button" data-bs-target="#pdGallery" data-bs-slide-to="{{ $i }}"
+                                            class="{{ $i === 0 ? 'active' : '' }}" @if ($i === 0) aria-current="true" @endif
+                                            aria-label="Show photo {{ $i + 1 }}">
+                                        <img src="{{ asset('storage/' . $path) }}" alt="" width="68" height="68" loading="lazy">
+                                    </button>
+                                @endforeach
+                            </div>
+                        </div>
                     @else
-                        <i class="bi bi-image" aria-hidden="true"></i>
+                        <div class="sgh-pd-media">
+                            @if ($photos->isNotEmpty())
+                                <img src="{{ asset('storage/' . $photos[0]) }}" alt="{{ $product->name }}"
+                                     width="800" height="800" loading="eager" fetchpriority="high">
+                            @else
+                                <i class="bi bi-image" aria-hidden="true"></i>
+                            @endif
+                        </div>
                     @endif
 
                     @if ($inStock && $product->stock <= 5)

@@ -16,4 +16,7 @@
     @include('admin.products._form')
 </form>
 
+{{-- Extra photos (outside the form above) --}}
+@include('admin.products._gallery', ['product' => $product])
+
 @endsection

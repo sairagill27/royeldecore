@@ -28,16 +28,18 @@ class CategoryCollectionsTest extends TestCase
             ->assertDontSee('sgh-collections', false);
     }
 
-    public function test_each_card_has_a_link_a_name_a_shop_now_link_and_the_whole_shop_button(): void
+    public function test_each_card_is_a_bootstrap_card_with_a_visible_shop_now_button(): void
     {
         $this->makeCategory('Wall Clocks');
 
         $this->get('/')->assertOk()
             ->assertSee('Shop by category')
-            ->assertSee('Find the perfect piece for every space')
-            ->assertSee('class="sgh-collection"', false)
+            ->assertSee('Find the perfect piece for')
+            ->assertSee('<em>every space</em>', false)
+            ->assertSee('class="card sgh-collection h-100', false)
             ->assertSee('href="' . url('/shop/wall-clocks') . '"', false)
             ->assertSee('Wall Clocks')
+            ->assertSee('stretched-link', false)
             ->assertSee('Shop now')
             ->assertSee('Browse the whole shop');
     }
@@ -51,6 +53,20 @@ class CategoryCollectionsTest extends TestCase
         }
     }
 
+    public function test_four_categories_use_four_columns_and_five_use_three_per_row(): void
+    {
+        foreach (range(1, 4) as $n) {
+            $this->makeCategory('Category ' . $n, ['sort_order' => $n]);
+        }
+        $html = $this->get('/')->assertOk()->getContent();
+        $this->assertSame(4, substr_count($html, 'col-12 col-sm-6 col-lg-3'));
+
+        $this->makeCategory('Category 5', ['sort_order' => 5]);
+        $html = $this->get('/')->assertOk()->getContent();
+        $this->assertSame(5, substr_count($html, 'col-12 col-sm-6 col-lg-4'));
+        $this->assertStringContainsString('justify-content-center', $html);
+    }
+
     public function test_at_most_six_cards_are_shown(): void
     {
         foreach (range(1, 8) as $n) {
@@ -59,7 +75,7 @@ class CategoryCollectionsTest extends TestCase
 
         $html = $this->get('/')->assertOk()->getContent();
 
-        $this->assertSame(6, substr_count($html, 'class="sgh-collection"'));
+        $this->assertSame(6, substr_count($html, 'card sgh-collection h-100'));
     }
 
     public function test_the_description_is_shown_short_and_as_plain_text(): void

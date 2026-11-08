@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PostImageController;
 use App\Http\Controllers\Admin\PostPreviewLinkController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Admin\ReviewController;
@@ -95,3 +96,9 @@ Route::patch('account', [AccountController::class, 'update'])
     ->middleware('throttle:10,1')->name('account.update');
 Route::put('account/password', [AccountController::class, 'password'])
     ->middleware('throttle:6,1')->name('account.password');
+
+// Product gallery: add several photos, remove one
+Route::post('products/{product}/gallery', [ProductGalleryController::class, 'store'])
+    ->middleware('throttle:20,1')->name('products.gallery.store');
+Route::delete('products/{product}/gallery/{image}', [ProductGalleryController::class, 'destroy'])
+    ->middleware('throttle:60,1')->name('products.gallery.destroy');

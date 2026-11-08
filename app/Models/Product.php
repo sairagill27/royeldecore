@@ -8,6 +8,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
+
+    // The extra photos of this product (the main photo stays in the "image" column)
+    public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ProductImage::class)->orderBy('sort_order')->orderBy('id');
+    }
+
+    // When a product is deleted, its gallery photos are removed from the disk too
+    protected static function booted(): void
+    {
+        static::deleting(function (Product $product) {
+            foreach ($product->images as $photo) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($photo->path);
+            }
+        });
+    }
     protected $fillable = [
         'category_id',
         'name',

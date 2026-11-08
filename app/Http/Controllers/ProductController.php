@@ -10,7 +10,7 @@ class ProductController extends Controller
     public function show(string $slug)
     {
         // SECURITY: draft products, and products in a hidden category, show 404
-        $product = Product::with('category')
+        $product = Product::with(['category', 'images'])
             ->visible()
             ->where('slug', $slug)
             ->firstOrFail();
