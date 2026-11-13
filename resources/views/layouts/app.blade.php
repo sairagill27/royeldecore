@@ -67,6 +67,9 @@
          This loads resources/views/components/flash.blade.php --}}
     <x-flash />
 
+    {{-- Floating button to the assistant --}}
+    <x-chat-fab />
+
     {{-- Bootstrap JavaScript (makes the mobile menu and dropdowns work) --}}
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

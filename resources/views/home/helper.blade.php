@@ -26,6 +26,9 @@
                 <a href="{{ route('helper') }}" class="btn sgh-btn-dark rounded-pill px-4">
                     Open the Décor Helper <i class="bi bi-arrow-right ms-1" aria-hidden="true"></i>
                 </a>
+                <a href="{{ route('assistant') }}" class="btn btn-outline-primary rounded-pill px-4 ms-1">
+                    <i class="bi bi-chat-heart me-1" aria-hidden="true"></i>Ask the assistant
+                </a>
             </div>
 
             <div class="col-lg-6">

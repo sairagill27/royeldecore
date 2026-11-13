@@ -108,6 +108,7 @@ class SeoController extends Controller
         $add(route('blog.index'), BlogPost::published()->indexable()->max('updated_at'));
         $add(route('tools.index'));
         $add(route('helper'));
+        $add(route('assistant'));
         foreach (config('tools') as $key => $tool) {
             if ($tool['ready']) {
                 $add(route('tools.show', $key));

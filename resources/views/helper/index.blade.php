@@ -197,6 +197,15 @@
         @endif
     @endif
 
+        <div class="card border-0 shadow-sm rounded-4 mt-5">
+        <div class="card-body p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+                <h2 class="h5 mb-1">Prefer to type your question?</h2>
+                <p class="text-secondary small mb-0">Ask the Décor Assistant. It suggests pieces from our shop and answers questions about ordering.</p>
+            </div>
+            <a href="{{ route('assistant') }}" class="btn sgh-btn-dark rounded-pill px-4"><i class="bi bi-chat-heart me-1" aria-hidden="true"></i>Ask the assistant</a>
+        </div>
+    </div>
     <p class="small text-secondary mt-5 mb-0">
         <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
         This helper is a guided finder, not an AI. It matches your choices to the names and descriptions of our products,

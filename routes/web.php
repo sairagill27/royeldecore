@@ -3,6 +3,7 @@
 use App\Http\Controllers\Account\OrderController;
 use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\AssistantController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogPreviewController;
@@ -50,6 +51,9 @@ Route::middleware('throttle:120,1')->group(function () {
 Route::post('/blog/{slug}/comments', [CommentController::class, 'store'])
     ->middleware('throttle:5,10')->name('blog.comments.store');
 
+// DECOR ASSISTANT: a chat page and the endpoint it talks to. throttle:15,1 = max 15 questions a minute per visitor.
+Route::get('/assistant', [AssistantController::class, 'show'])->middleware('throttle:60,1')->name('assistant');
+Route::post('/assistant/ask', [AssistantController::class, 'ask'])->middleware('throttle:15,1')->name('assistant.ask');
 // DECOR HELPER: free guided finder (room, style, budget). It matches real products and uses no outside service.
 Route::get('/helper', [HelperController::class, 'index'])->middleware('throttle:60,1')->name('helper');
 // DECOR TOOLS: the calculators. The sums are done on the server, so the page can show a result live.
