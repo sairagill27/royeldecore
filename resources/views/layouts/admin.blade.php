@@ -92,7 +92,12 @@
                             <span class="sgh-count" aria-label="{{ $pendingComments }} waiting">{{ $pendingComments }}</span>
                             @endif
                         </a>
-                        <a href="{{ route('admin.messages.index') }}"
+                        <a href="{{ route('admin.affiliate-links.index') }}"
+                    class="sgh-admin-link {{ request()->routeIs('admin.affiliate-links.*', 'admin.affiliate-analytics', 'admin.activity') ? 'active' : '' }}">
+                        <i class="bi bi-link-45deg"></i> Affiliate links
+                    </a>
+
+                    <a href="{{ route('admin.messages.index') }}"
                             class="sgh-admin-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
                             <i class="bi bi-envelope"></i> Messages
                             @if ($unreadMessages > 0)

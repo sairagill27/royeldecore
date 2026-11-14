@@ -74,6 +74,9 @@
                 <ul class="list-unstyled small">
                     <li><a href="{{ url('/blog') }}">Blog</a></li>
                     <li><a href="{{ url('/tools') }}">Décor Tools</a></li>
+                    @if (\Illuminate\Support\Facades\Cache::remember('affiliate.has', 600, fn () => \App\Models\AffiliateLink::active()->exists()))
+                        <li><a href="{{ route('recommended') }}">Recommended</a></li>
+                    @endif
                     <li><a href="{{ route('search') }}">Search</a></li>
                 </ul>
             </div>

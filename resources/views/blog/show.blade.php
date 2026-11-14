@@ -205,6 +205,8 @@ $ld = ['@context' => 'https://schema.org', '@graph' => [$articleLd, $breadcrumbL
         </div>
     </div>
 </article>
+<x-affiliate-related :post="$post" />
+
 @include('blog.comments', ['post' => $post])
 
 {{-- ============ FROM OUR SHOP ============ --}}

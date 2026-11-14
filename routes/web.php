@@ -3,7 +3,9 @@
 use App\Http\Controllers\Account\OrderController;
 use App\Http\Controllers\Admin\TwoFactorController;
 use App\Http\Controllers\Account\ProfileController;
+use App\Http\Controllers\AffiliateRedirectController;
 use App\Http\Controllers\AssistantController;
+use App\Http\Controllers\RecommendedController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogPreviewController;
@@ -54,6 +56,11 @@ Route::post('/blog/{slug}/comments', [CommentController::class, 'store'])
 // DECOR ASSISTANT: a chat page and the endpoint it talks to. throttle:15,1 = max 15 questions a minute per visitor.
 Route::get('/assistant', [AssistantController::class, 'show'])->middleware('throttle:60,1')->name('assistant');
 Route::post('/assistant/ask', [AssistantController::class, 'ask'])->middleware('throttle:15,1')->name('assistant.ask');
+// AFFILIATE LINKS. /go/{slug} counts a click and sends the visitor to the store.
+// "Recommended" lists the active links. throttle = max requests per minute per visitor.
+Route::get('/go/{slug}', AffiliateRedirectController::class)
+    ->where('slug', '[a-z0-9-]+')->middleware('throttle:120,1')->name('affiliate.go');
+Route::get('/recommended', [RecommendedController::class, 'index'])->middleware('throttle:60,1')->name('recommended');
 // DECOR HELPER: free guided finder (room, style, budget). It matches real products and uses no outside service.
 Route::get('/helper', [HelperController::class, 'index'])->middleware('throttle:60,1')->name('helper');
 // DECOR TOOLS: the calculators. The sums are done on the server, so the page can show a result live.

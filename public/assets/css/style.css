@@ -5751,3 +5751,16 @@ a.sgh-tool-card:hover {
 /* The floating button. On phones it sits above the sticky Add to Cart bar on product pages. */
 .sgh-chat-fab { position: fixed; right: 1rem; bottom: 1rem; z-index: 1040; }
 @media (max-width: 767.98px) { body:has(.sgh-pd-sticky) .sgh-chat-fab { bottom: 5.2rem; } }
+
+/* =====================================================
+   56. AFFILIATE CARDS (the cards themselves are Bootstrap)
+   ===================================================== */
+
+/* Inside an article, the article's link styles must not repaint the button */
+.sgh-prose .sgh-affiliate a.btn { color: #fff; text-decoration: none; }
+.sgh-prose .sgh-affiliate a.btn:hover { color: #fff; }
+.sgh-prose .sgh-affiliate img { margin: 0; border-radius: 0; }
+.sgh-prose .sgh-affiliate h3 { margin-top: 0; font-size: 1.2rem; }
+.sgh-prose .sgh-affiliate p { margin-bottom: 0.5rem; }
+
+.sgh-affiliate .card-title { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\AffiliateLinkController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\CustomerController;
@@ -102,3 +104,16 @@ Route::post('products/{product}/gallery', [ProductGalleryController::class, 'sto
     ->middleware('throttle:20,1')->name('products.gallery.store');
 Route::delete('products/{product}/gallery/{image}', [ProductGalleryController::class, 'destroy'])
     ->middleware('throttle:60,1')->name('products.gallery.destroy');
+
+// Affiliate links: add, edit, pause or resume, mark as checked, delete, and the analytics page
+Route::get('affiliate-analytics', [AffiliateLinkController::class, 'analytics'])->name('affiliate-analytics');
+Route::patch('affiliate-links/{link}/status', [AffiliateLinkController::class, 'toggle'])
+    ->middleware('throttle:60,1')->name('affiliate-links.toggle');
+Route::patch('affiliate-links/{link}/checked', [AffiliateLinkController::class, 'checked'])
+    ->middleware('throttle:60,1')->name('affiliate-links.checked');
+Route::resource('affiliate-links', AffiliateLinkController::class)
+    ->parameters(['affiliate-links' => 'link'])
+    ->except('show');
+
+// Activity log: who changed what (admins only)
+Route::get('activity', [ActivityLogController::class, 'index'])->name('activity');

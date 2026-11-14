@@ -41,6 +41,7 @@ class SeoController extends Controller
                 . "Disallow: /newsletter\n"
                 . "Disallow: /search\n"
                 . "Disallow: /preview\n"
+                . "Disallow: /go/\n"
                 // Searching and filtering make endless near-copies of the same page
                 . "Disallow: /*?q=\n"
                 . "Disallow: /*?sort=\n"
@@ -109,6 +110,9 @@ class SeoController extends Controller
         $add(route('tools.index'));
         $add(route('helper'));
         $add(route('assistant'));
+        if (\App\Models\AffiliateLink::active()->exists()) {
+            $add(route('recommended'));
+        }
         foreach (config('tools') as $key => $tool) {
             if ($tool['ready']) {
                 $add(route('tools.show', $key));
