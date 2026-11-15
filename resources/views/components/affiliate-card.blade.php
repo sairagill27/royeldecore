@@ -8,7 +8,7 @@
 @endphp
 
 @if ($variant === 'tile')
-    <div class="card sgh-affiliate h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card sgh-affiliate sgh-lift h-100 border-0 shadow-sm rounded-4 overflow-hidden">
         <div class="ratio ratio-4x3 bg-success-subtle">
             @if ($link->image)
                 <img src="{{ asset('storage/' . $link->image) }}" alt="{{ $link->name }}" class="object-fit-cover" width="640" height="480" loading="lazy">

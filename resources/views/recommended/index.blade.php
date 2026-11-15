@@ -9,6 +9,9 @@
             ['@type' => 'ListItem', 'position' => 2, 'name' => 'Recommended', 'item' => route('recommended')],
         ],
     ];
+
+    // "1 pick", "3 picks"
+    $picks = fn (int $n): string => $n . ' ' . \Illuminate\Support\Str::plural('pick', $n);
 @endphp
 
 @section('title', 'Recommended for your home | ' . config('app.name'))
@@ -56,6 +59,28 @@
             <a href="{{ url('/shop') }}" class="btn btn-primary rounded-pill px-4">Browse the shop</a>
         </div>
     @else
+
+        {{-- Three short notes (not shown while someone is searching) --}}
+        @unless ($filtered)
+            <div class="row g-3 mb-4">
+                @foreach ([
+                    ['bi-hand-thumbs-up', 'Hand-picked', 'Chosen by us, one at a time.'],
+                    ['bi-bag-heart', 'Useful extras', 'Things that go with your décor, from other stores.'],
+                    ['bi-tag', 'Check the price', 'Prices change, so each card sends you to the store for the latest price.'],
+                ] as [$chipIcon, $chipTitle, $chipText])
+                    <div class="col-md-4">
+                        <div class="d-flex align-items-center gap-3 p-3 bg-white border rounded-4 h-100">
+                            <span class="sgh-rec-icon sgh-rec-icon--green"><i class="bi {{ $chipIcon }}" aria-hidden="true"></i></span>
+                            <span>
+                                <strong class="d-block">{{ $chipTitle }}</strong>
+                                <small class="text-secondary">{{ $chipText }}</small>
+                            </span>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endunless
+
         <x-affiliate-disclosure />
 
         {{-- Search and section buttons --}}
@@ -94,27 +119,81 @@
             </div>
         @else
 
+            {{-- ============ FEATURED PICKS ============ --}}
             @if ($featured->isNotEmpty())
-                <h2 class="h4 mb-3">Featured picks</h2>
-                <div class="row g-4 mb-4">
-                    @foreach ($featured as $link)
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <x-affiliate-card :link="$link" variant="tile" />
-                        </div>
-                    @endforeach
-                </div>
+                <section class="sgh-rec-featured mb-5" aria-labelledby="rec-featured">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="sgh-rec-icon"><i class="bi bi-star-fill" aria-hidden="true"></i></span>
+                        <h2 class="h4 mb-0" id="rec-featured">Featured picks</h2>
+                    </div>
+                    <div class="row g-4">
+                        @foreach ($featured as $link)
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <x-affiliate-card :link="$link" variant="tile" />
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
             @endif
 
+            {{-- ============ ONE BLOCK PER SECTION ============ --}}
             @foreach ($groups as $title => $items)
-                <h2 class="h4 mb-3 mt-4">{{ $title }}</h2>
-                <div class="row g-4">
-                    @foreach ($items as $link)
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <x-affiliate-card :link="$link" variant="tile" />
-                        </div>
-                    @endforeach
-                </div>
+                <section class="mb-5" aria-labelledby="rec-section-{{ $loop->index }}">
+                    <div class="sgh-rec-head">
+                        <h2 class="h4 mb-0" id="rec-section-{{ $loop->index }}">{{ $title }}</h2>
+                        <span class="sgh-rec-count">{{ $picks($items->count()) }}</span>
+                    </div>
+                    <div class="row g-4">
+                        @foreach ($items as $link)
+                            <div class="col-12 col-sm-6 col-lg-4">
+                                <x-affiliate-card :link="$link" variant="tile" />
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
             @endforeach
+
+            {{-- ============ HOW THESE PICKS WORK, AND THE CLOSING BAND (not while searching) ============ --}}
+            @unless ($filtered)
+                <section class="mt-5 pt-3" aria-labelledby="rec-how">
+                    <h2 class="h4 text-center mb-4" id="rec-how">How these picks work</h2>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="sgh-rec-step">
+                                <span class="sgh-rec-step-num">1</span>
+                                <h3 class="h6">We choose</h3>
+                                <p class="small text-secondary mb-0">We pick items that fit a home décor project, such as tools, lighting and small extras.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="sgh-rec-step">
+                                <span class="sgh-rec-step-num">2</span>
+                                <h3 class="h6">You visit the store</h3>
+                                <p class="small text-secondary mb-0">The button opens the store's own page, where you see the current price and details before you decide.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="sgh-rec-step">
+                                <span class="sgh-rec-step-num">3</span>
+                                <h3 class="h6">The store may pay us</h3>
+                                <p class="small text-secondary mb-0">
+                                    If you buy, the store may pay us a small commission, at no extra cost to you.
+                                    <a href="{{ route('legal.affiliate') }}">Read our affiliate disclosure</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="sgh-rec-cta">
+                    <h2 class="h4 mb-2">Looking for pieces for your walls?</h2>
+                    <p class="mb-3 opacity-75">Our own shop has wall art, mirrors, clocks and more.</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a href="{{ url('/shop') }}" class="btn btn-light rounded-pill px-4">Browse the shop</a>
+                        <a href="{{ route('helper') }}" class="btn btn-outline-light rounded-pill px-4">Try the Décor Helper</a>
+                    </div>
+                </section>
+            @endunless
         @endif
     @endif
 </div>

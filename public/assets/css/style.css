@@ -5764,3 +5764,58 @@ a.sgh-tool-card:hover {
 .sgh-prose .sgh-affiliate p { margin-bottom: 0.5rem; }
 
 .sgh-affiliate .card-title { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; }
+
+/* =====================================================
+   57. RECOMMENDED PAGE (the cards and layout are Bootstrap)
+   ===================================================== */
+.sgh-lift { transition: transform 0.25s, box-shadow 0.25s; }
+.sgh-lift:hover { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(46, 58, 47, 0.14) !important; }
+.sgh-lift .ratio img { transition: transform 0.5s; }
+.sgh-lift:hover .ratio img { transform: scale(1.05); }
+
+.sgh-rec-icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: #fff;
+    color: #c08a2e;
+}
+.sgh-rec-icon--green { width: 44px; height: 44px; background: #E8EFE6; color: #3E5F46; font-size: 1.2rem; }
+
+.sgh-rec-featured {
+    padding: 1.25rem;
+    background: linear-gradient(135deg, #F3ECE0 0%, #E8EFE6 100%);
+    border: 1px solid rgba(107, 143, 113, 0.22);
+    border-radius: 24px;
+}
+@media (min-width: 768px) { .sgh-rec-featured { padding: 1.75rem; } }
+
+.sgh-rec-head { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 1.25rem; }
+.sgh-rec-head::after { content: ""; flex: 1; height: 1px; background: rgba(107, 143, 113, 0.28); }
+.sgh-rec-count { padding: 0.2rem 0.7rem; border-radius: 999px; background: #E8EFE6; color: #3E5F46; font-size: 0.78rem; font-weight: 600; }
+
+.sgh-rec-step { position: relative; height: 100%; padding: 1.4rem; background: #fff; border: 1px solid rgba(107, 143, 113, 0.18); border-radius: 20px; }
+.sgh-rec-step-num {
+    position: absolute;
+    top: 0.9rem;
+    right: 1.2rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(107, 143, 113, 0.28);
+}
+
+.sgh-rec-cta {
+    margin-top: 2.5rem;
+    padding: 2.25rem 1.5rem;
+    text-align: center;
+    color: #fff;
+    border-radius: 24px;
+    background: linear-gradient(115deg, #345840 0%, #3f674b 55%, #4a7654 100%);
+}
+.sgh-rec-cta h2 { color: #fff; }
