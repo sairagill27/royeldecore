@@ -5850,3 +5850,51 @@ a.sgh-tool-card:hover {
 
 /* The logo in the footer */
 .sgh-footer-logo-box img { height: var(--sgh-logo-footer); width: auto; }
+
+/* =====================================================
+   59. HERO PICTURE. To change what shows, edit only the numbers in :root below.
+   ===================================================== */
+:root {
+    /* Big screens (1400 pixels and wider) */
+    --sgh-hero-width: 62%;          /* how much of the hero the picture takes */
+    --sgh-hero-fade: 22%;           /* how much of its left edge fades into the background. 0% = no fade */
+
+    /* Laptops (992 to 1399 pixels): the text needs more room, so the fade is longer */
+    --sgh-hero-width-laptop: 58%;
+    --sgh-hero-fade-laptop: 30%;
+
+    /* Which part stays in view when the picture is trimmed: "50% 50%" = the middle,
+       "left center", "right center", or "50% 30%" (a little higher up) */
+    --sgh-hero-focus: 100% 50%;
+
+    /* Phones: the shape of the picture as width / height. Use your picture's own shape to show ALL of it,
+       for example 4 / 3 for a 1600 x 1200 picture. A bigger second number makes it taller. */
+    --sgh-hero-phone-ratio: 16 / 10;
+}
+
+.sgh-banner-photo img { object-position: var(--sgh-hero-focus); }
+
+@media (min-width: 992px) {
+    .sgh-banner-photo {
+        width: var(--sgh-hero-width);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--sgh-hero-fade));
+        mask-image: linear-gradient(to right, transparent 0, #000 var(--sgh-hero-fade));
+    }
+}
+@media (min-width: 992px) and (max-width: 1399.98px) {
+    .sgh-banner-photo {
+        width: var(--sgh-hero-width-laptop);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--sgh-hero-fade-laptop));
+        mask-image: linear-gradient(to right, transparent 0, #000 var(--sgh-hero-fade-laptop));
+    }
+}
+
+/* Phones and tablets: a taller picture, with a shorter fade at the top */
+@media (max-width: 991.98px) {
+    .sgh-banner-photo {
+        height: auto;
+        aspect-ratio: var(--sgh-hero-phone-ratio);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 10%);
+        mask-image: linear-gradient(to bottom, transparent 0, #000 10%);
+    }
+}
