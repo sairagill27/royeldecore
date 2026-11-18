@@ -5819,3 +5819,34 @@ a.sgh-tool-card:hover {
     background: linear-gradient(115deg, #345840 0%, #3f674b 55%, #4a7654 100%);
 }
 .sgh-rec-cta h2 { color: #fff; }
+
+/* =====================================================
+   58. LOGO SIZE. To change it, edit only the four numbers in :root below.
+   Bigger = a larger number. Keep "auto" for the width, so the logo is never stretched.
+   ===================================================== */
+:root {
+    --sgh-logo-xl: 80px;   /* screens 1200 pixels wide and more */
+    --sgh-logo-lg: 66px;   /* laptops and small desktops (992 to 1199), where the menu is crowded */
+    --sgh-logo-md: 64px;   /* tablets */
+    --sgh-logo-sm: 54px;   /* phones */
+    --sgh-logo-footer: 56px;
+}
+
+.sgh-logo,
+.sgh-header .navbar-brand img {
+    height: var(--sgh-logo-xl);
+    width: auto;
+    max-width: 100%;
+}
+@media (max-width: 1199.98px) {
+    .sgh-logo, .sgh-header .navbar-brand img { height: var(--sgh-logo-lg); }
+}
+@media (max-width: 991.98px) {
+    .sgh-logo, .sgh-header .navbar-brand img { height: var(--sgh-logo-md); }
+}
+@media (max-width: 575.98px) {
+    .sgh-logo, .sgh-header .navbar-brand img { height: var(--sgh-logo-sm); }
+}
+
+/* The logo in the footer */
+.sgh-footer-logo-box img { height: var(--sgh-logo-footer); width: auto; }
