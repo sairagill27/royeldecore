@@ -5869,7 +5869,7 @@ a.sgh-tool-card:hover {
 
     /* Phones: the shape of the picture as width / height. Use your picture's own shape to show ALL of it,
        for example 4 / 3 for a 1600 x 1200 picture. A bigger second number makes it taller. */
-    --sgh-hero-phone-ratio: 16 / 10;
+    --sgh-hero-phone-ratio: 1135 / 1024;
 }
 
 .sgh-banner-photo img { object-position: var(--sgh-hero-focus); }
