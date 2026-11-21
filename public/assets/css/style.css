@@ -5898,3 +5898,74 @@ a.sgh-tool-card:hover {
         mask-image: linear-gradient(to bottom, transparent 0, #000 10%);
     }
 }
+
+/* =====================================================
+   60. HERO COLORS: warm cream, sage and gold, taken from the pictures.
+   To change the mood, edit only the colors in :root below.
+   ===================================================== */
+:root {
+    --sgh-hero-cream: #FBF5E8;                      /* the light cream on the left */
+    --sgh-hero-sand:  #F4EAD4;                      /* a warmer sand in the middle */
+    --sgh-hero-sage:  #E6ECDA;                      /* a soft green where it meets the picture */
+    --sgh-hero-glow:  rgba(222, 180, 100, 0.34);    /* the golden glow, like the lamps in your photos */
+    --sgh-hero-gold:  #C99A45;                      /* lines and borders */
+    --sgh-hero-gold-text: #8A6420;                  /* small gold text (dark enough to read) */
+}
+
+.sgh-banner {
+    background:
+        radial-gradient(52% 68% at 6% 6%, var(--sgh-hero-glow) 0%, transparent 62%),
+        radial-gradient(46% 56% at 34% 104%, rgba(160, 188, 148, 0.34) 0%, transparent 66%),
+        linear-gradient(105deg, var(--sgh-hero-cream) 0%, var(--sgh-hero-sand) 42%, var(--sgh-hero-sage) 100%);
+}
+
+/* The small title: gold-brown, with a short gold line before it */
+.sgh-banner-eyebrow { color: var(--sgh-hero-gold-text); }
+.sgh-banner-eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 34px;
+    height: 2px;
+    margin-right: 0.75rem;
+    vertical-align: middle;
+    border-radius: 2px;
+    background: var(--sgh-hero-gold);
+}
+
+/* The word "Décor": green, with a soft gold highlight underneath */
+.sgh-banner-title em {
+    color: #5A8161;
+    padding: 0 0.08em;
+    background: linear-gradient(transparent 80%, rgba(222, 180, 100, 0.5) 80%);
+}
+
+/* The leaves: sage and soft gold */
+.sgh-banner path[stroke="#7c9c82"] { stroke: #8FA27A; }
+.sgh-banner .sgh-leaf-a { fill: #9FB899; }
+.sgh-banner .sgh-leaf-b { fill: #D6BB7F; }
+
+/* The secondary buttons: white glass with a gold border */
+.sgh-banner .sgh-btn-ghost {
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(160, 122, 52, 0.45);
+    color: #2E3A2F;
+}
+.sgh-banner .sgh-btn-ghost:hover {
+    background: #F6E7C3;
+    border-color: var(--sgh-hero-gold);
+    color: #2E3A2F;
+}
+
+/* The "From the journal" card */
+.sgh-banner-feature {
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid rgba(201, 154, 69, 0.32);
+    box-shadow: 0 10px 30px rgba(120, 90, 40, 0.1), inset 4px 0 0 var(--sgh-hero-gold);
+}
+.sgh-banner-feature-icon { background: #F4E6C4; color: var(--sgh-hero-gold-text); }
+.sgh-banner-feature small { color: var(--sgh-hero-gold-text); }
+
+/* The "Shop by" chips */
+.sgh-banner-chips-label { color: var(--sgh-hero-gold-text); }
+.sgh-banner-chip { background: rgba(255, 255, 255, 0.72); border-color: rgba(160, 122, 52, 0.28); }
+.sgh-banner-chip:hover { background: #F6E7C3; border-color: var(--sgh-hero-gold); }
