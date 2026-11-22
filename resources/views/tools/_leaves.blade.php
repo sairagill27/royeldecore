@@ -1,3 +1,31 @@
+{{-- Warm shade (always) and an optional photo (only when a picture exists in public/assets/images/headers/) --}}
+@php
+    $headKey = match (true) {
+        request()->is('shop', 'shop/*')                        => 'shop',
+        request()->is('blog', 'blog/category/*', 'blog/tag/*') => 'blog',
+        request()->is('tools', 'tools/*')                      => 'tools',
+        request()->is('helper')                                => 'helper',
+        request()->is('assistant')                             => 'assistant',
+        request()->is('recommended')                           => 'recommended',
+        default                                                => null,
+    };
+
+    $headPhoto = null;
+    if ($headKey) {
+        foreach (['webp', 'jpg', 'jpeg', 'png'] as $ext) {
+            if (file_exists(public_path('assets/images/headers/' . $headKey . '.' . $ext))) {
+                $headPhoto = 'assets/images/headers/' . $headKey . '.' . $ext;
+                break;
+            }
+        }
+    }
+@endphp
+<div class="sgh-head-glow" aria-hidden="true"></div>
+@if ($headPhoto)
+    <div class="sgh-head-photo" aria-hidden="true">
+        <img src="{{ asset($headPhoto) }}" alt="" width="1600" height="700" loading="eager" decoding="async">
+    </div>
+@endif
 {{-- Decorative leaf branches for the dark green tool header. Pure SVG, no image files. --}}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>

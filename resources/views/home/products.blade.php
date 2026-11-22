@@ -1,5 +1,5 @@
 {{-- FEATURED PRODUCTS: up to 4 ($featuredProducts comes from HomeController) --}}
-<section class="sgh-section" style="background: var(--sgh-soft-sage);">
+<section class="sgh-section sgh-sand">
     <div class="container">
 
         <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-4">

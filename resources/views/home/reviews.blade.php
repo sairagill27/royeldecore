@@ -11,7 +11,7 @@
 @endphp
 
 @if (($homeReviews ?? collect())->isNotEmpty())
-<section class="sgh-section" style="background: var(--sgh-soft-sage);">
+<section class="sgh-section sgh-sand">
     <div class="container">
 
         <div class="text-center mb-5">
