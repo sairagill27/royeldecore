@@ -5969,3 +5969,243 @@ a.sgh-tool-card:hover {
 .sgh-banner-chips-label { color: var(--sgh-hero-gold-text); }
 .sgh-banner-chip { background: rgba(255, 255, 255, 0.72); border-color: rgba(160, 122, 52, 0.28); }
 .sgh-banner-chip:hover { background: #F6E7C3; border-color: var(--sgh-hero-gold); }
+
+/* =====================================================
+   61. PAGE HEADERS: a warm shade, and an optional photo (shop, blog, tools...)
+   To change them, edit only the numbers in :root below.
+   ===================================================== */
+:root {
+    --sgh-head-glow: 0.20;           /* strength of the golden glow (0 = none, 0.35 = strong) */
+    --sgh-head-photo-width: 46%;     /* laptops: how much of the header the photo takes */
+    --sgh-head-photo-opacity: 0.9;   /* laptops: 1 = full strength, 0.6 = softer */
+    --sgh-head-photo-phone: 0.2;     /* phones: the photo is a faint background */
+}
+
+.sgh-tool-head { border-bottom-color: #CFA55A; }
+
+/* The warm golden shade (always on) */
+.sgh-head-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(48% 90% at 4% 0%, rgba(222, 180, 100, var(--sgh-head-glow)) 0%, transparent 62%),
+        radial-gradient(40% 70% at 55% 120%, rgba(222, 180, 100, calc(var(--sgh-head-glow) / 2)) 0%, transparent 70%);
+}
+
+/* The optional photo */
+.sgh-head-photo {
+    position: absolute;
+    inset: 0;
+    opacity: var(--sgh-head-photo-phone);
+    pointer-events: none;
+}
+.sgh-head-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.sgh-head-photo::after {                       /* a light warm tint, so every photo matches the page */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(36, 64, 45, 0.35) 0%, rgba(201, 154, 69, 0.14) 100%);
+}
+
+@media (min-width: 992px) {
+    .sgh-head-photo {
+        left: auto;
+        width: var(--sgh-head-photo-width);
+        opacity: var(--sgh-head-photo-opacity);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 55%);
+        mask-image: linear-gradient(to right, transparent 0, #000 55%);
+    }
+}
+
+/* Keep the small items readable when they sit over a photo */
+.sgh-head-photo ~ .container .sgh-shop-count { background: rgba(28, 52, 38, 0.6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.sgh-head-photo ~ .container .sgh-pill:not(.active) { background: rgba(28, 52, 38, 0.45); }
+
+/* =====================================================
+   62. WARM DECORATION: colors taken from the category pictures, in a few places only.
+   To change the look, edit only the colors in :root below.
+   ===================================================== */
+:root {
+    --sgh-sand-light: #F4EAD2;                       /* the lighter end of the warm shade */
+    --sgh-sand:       #EBDCBC;                       /* the main warm shade, a little deeper than cream */
+    --sgh-sand-deep:  #E0CBA0;                       /* the deeper end */
+    --sgh-warm-gold:  #C99A45;                       /* lines and decoration */
+    --sgh-warm-glow:  rgba(214, 168, 88, 0.32);      /* the golden lamp-light glow */
+    --sgh-green-deep: #2F4E39;                       /* a deeper green for the calculators band */
+}
+
+/* Warm sections: Featured products and Customer reviews */
+.sgh-sand {
+    background:
+        radial-gradient(46% 80% at 100% 0%, var(--sgh-warm-glow) 0%, transparent 62%),
+        linear-gradient(160deg, var(--sgh-sand-light) 0%, var(--sgh-sand) 55%, var(--sgh-sand-deep) 100%);
+    border-top: 1px solid rgba(201, 154, 69, 0.5);
+    border-bottom: 1px solid rgba(201, 154, 69, 0.5);
+}
+/* Small text on the sand: darker, so it is easy to read */
+.sgh-sand .sgh-eyebrow { color: #7A5A22; }
+.sgh-sand .container > .d-flex > a.fw-semibold { color: var(--sgh-green-deep); }
+
+/* Customer review cards: a gold border and a quotation mark */
+.sgh-home-review { position: relative; border-color: rgba(201, 154, 69, 0.4); }
+.sgh-home-review::before {
+    content: "\201C";
+    content: "\201C" / "";
+    display: block;
+    height: 1.6rem;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 3.2rem;
+    line-height: 1;
+    color: rgba(201, 154, 69, 0.6);
+}
+
+/* The calculators band: a deeper green, a golden glow and gold borders */
+.sgh-home-tools {
+    background:
+        radial-gradient(52% 90% at 6% 0%, rgba(214, 168, 88, 0.3) 0%, transparent 60%),
+        radial-gradient(50% 80% at 92% 0%, rgba(190, 215, 195, 0.2) 0%, transparent 62%),
+        linear-gradient(115deg, var(--sgh-green-deep) 0%, #3A5E45 55%, #47704F 100%);
+    border-top-color: #CFA55A;
+    border-bottom-color: #CFA55A;
+}
+
+/* The "Questions about a piece?" band: a sand panel with a gold bar on the left */
+.sgh-home-contact {
+    background: linear-gradient(120deg, var(--sgh-sand-light) 0%, var(--sgh-sand) 100%);
+    border: 1px solid rgba(201, 154, 69, 0.45);
+    box-shadow: inset 5px 0 0 var(--sgh-warm-gold);
+}
+
+/* A gold divider under each section heading (it was beige) */
+.sgh-section-title::after { background: linear-gradient(90deg, var(--sgh-warm-gold), #E5C98A); }
+
+/* A gold line along the top of the footer */
+.sgh-footer { border-top: 3px solid #CFA55A; }
+
+/* =====================================================
+   63. ELEGANT THEME: deep emerald, antique gold and warm ivory, for every page.
+   The colors live in :root below. Change them there.
+   ===================================================== */
+:root {
+    --sgh-ivory:        #FBF8F1;   /* the page background: a warm, bright ivory */
+    --sgh-champagne:    #FCF5E4;   /* light, glowing sections */
+    --sgh-emerald-deep: #1F3A2B;   /* the richest green */
+    --sgh-emerald:      #2F5240;   /* main buttons and dark bands */
+    --sgh-emerald-soft: #3E6B52;   /* the lighter end of dark bands */
+    --sgh-gold:         #C9A04A;   /* lines, borders, decoration */
+    --sgh-gold-light:   #E8D199;   /* gold on dark backgrounds */
+    --sgh-gold-deep:    #9A7428;   /* gold text on light backgrounds (dark enough to read) */
+
+    /* the earlier warm shades become light and luminous */
+    --sgh-sand-light: #FFFDF8;
+    --sgh-sand:       #FBF3E0;
+    --sgh-sand-deep:  #F4E6C2;
+    --sgh-warm-gold:  #C9A04A;
+    --sgh-green-deep: #24402D;
+}
+
+body { background-color: var(--sgh-ivory); }
+::selection { background: var(--sgh-gold-light); color: var(--sgh-emerald-deep); }
+a:focus-visible, .btn:focus-visible { outline: 3px solid rgba(154, 116, 40, 0.55); outline-offset: 2px; }
+
+/* The top menu: a thin gold line under it */
+.sgh-header { border-bottom: 1px solid rgba(201, 160, 74, 0.35); }
+
+/* A luminous gold divider under every section heading */
+.sgh-section-title::after { height: 3px; background: linear-gradient(90deg, #B8863B, var(--sgh-gold-light) 60%, var(--sgh-gold)); }
+
+/* ---------- Home: Featured products becomes light and glowing ---------- */
+.sgh-sand {
+    background:
+        radial-gradient(50% 90% at 100% 0%, rgba(232, 209, 153, 0.55) 0%, transparent 60%),
+        radial-gradient(40% 70% at 0% 100%, rgba(232, 209, 153, 0.35) 0%, transparent 62%),
+        linear-gradient(180deg, #FFFDF8 0%, var(--sgh-champagne) 100%);
+    border-top: 1px solid rgba(201, 160, 74, 0.45);
+    border-bottom: 1px solid rgba(201, 160, 74, 0.45);
+}
+.sgh-sand .sgh-eyebrow { color: var(--sgh-gold-deep); }
+
+/* ---------- Home: the customer reviews become a rich emerald band ---------- */
+.sgh-sand:has(.sgh-home-review) {
+    background:
+        radial-gradient(50% 90% at 8% 0%, rgba(201, 160, 74, 0.28) 0%, transparent 60%),
+        radial-gradient(40% 70% at 95% 100%, rgba(190, 215, 195, 0.16) 0%, transparent 62%),
+        linear-gradient(135deg, var(--sgh-emerald-deep) 0%, var(--sgh-emerald) 60%, var(--sgh-emerald-soft) 100%);
+    border-top-color: #CFA55A;
+    border-bottom-color: #CFA55A;
+}
+.sgh-sand:has(.sgh-home-review) .sgh-eyebrow { color: var(--sgh-gold-light); }
+.sgh-sand:has(.sgh-home-review) .sgh-section-title { color: #fff; }
+
+/* ---------- Home: the "Questions about a piece?" band ---------- */
+.sgh-home-contact {
+    background: linear-gradient(120deg, #FFFDF8 0%, #FBF1DA 100%);
+    border: 1px solid rgba(201, 160, 74, 0.5);
+    box-shadow: inset 5px 0 0 var(--sgh-gold), 0 10px 30px rgba(70, 52, 20, 0.06);
+}
+
+/* ---------- Cards on every page: white, a thin gold border, a warm soft shadow ---------- */
+.sgh-card, .sgh-auth-card, .sgh-contact-card, .sgh-summary, .sgh-filter-box, .sgh-how-card {
+    background: #fff;
+    border: 1px solid rgba(201, 160, 74, 0.28);
+    border-radius: 18px;
+    box-shadow: 0 8px 26px rgba(70, 52, 20, 0.07);
+}
+.sgh-how-card { transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; }
+.sgh-how-card:hover { transform: translateY(-4px); border-color: rgba(201, 160, 74, 0.6); box-shadow: 0 16px 36px rgba(70, 52, 20, 0.12); }
+
+.sgh-product-card {
+    border: 1px solid rgba(201, 160, 74, 0.22);
+    border-radius: 18px;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.sgh-product-card:hover { transform: translateY(-5px); border-color: rgba(201, 160, 74, 0.6); box-shadow: 0 18px 40px rgba(70, 52, 20, 0.14); }
+
+/* ---------- Buttons: a deeper, richer emerald, and a thin gold ring on hover ---------- */
+.btn-primary {
+    --bs-btn-bg: var(--sgh-emerald);
+    --bs-btn-border-color: var(--sgh-emerald);
+    --bs-btn-hover-bg: var(--sgh-emerald-deep);
+    --bs-btn-hover-border-color: var(--sgh-emerald-deep);
+    --bs-btn-active-bg: var(--sgh-emerald-deep);
+    --bs-btn-active-border-color: var(--sgh-emerald-deep);
+    --bs-btn-disabled-bg: var(--sgh-emerald);
+    --bs-btn-disabled-border-color: var(--sgh-emerald);
+    background-color: var(--sgh-emerald);
+    border-color: var(--sgh-emerald);
+    color: #fff;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: var(--sgh-emerald-deep);
+    border-color: var(--sgh-emerald-deep);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(31, 58, 43, 0.28), 0 0 0 2px rgba(201, 160, 74, 0.5);
+}
+.btn-outline-primary {
+    --bs-btn-color: var(--sgh-emerald);
+    --bs-btn-border-color: var(--sgh-emerald);
+    --bs-btn-hover-bg: var(--sgh-emerald);
+    --bs-btn-hover-border-color: var(--sgh-emerald);
+    --bs-btn-active-bg: var(--sgh-emerald-deep);
+    --bs-btn-active-border-color: var(--sgh-emerald-deep);
+    color: var(--sgh-emerald);
+    border-color: var(--sgh-emerald);
+}
+.btn-outline-primary:hover, .btn-outline-primary:active { background-color: var(--sgh-emerald); border-color: var(--sgh-emerald); color: #fff; }
+.sgh-btn-dark:hover { background-color: var(--sgh-emerald-deep); box-shadow: 0 8px 20px rgba(31, 58, 43, 0.3), 0 0 0 2px rgba(201, 160, 74, 0.55); }
+
+/* ---------- Footer: gold titles, gold hover and a gold line ---------- */
+.sgh-footer { border-top: 3px solid #CFA55A; }
+.sgh-footer-title { color: var(--sgh-gold-light); }
+.sgh-footer a:hover { color: var(--sgh-gold-light); }
+.sgh-footer-bottom { border-top-color: rgba(232, 209, 153, 0.25); }
+
+/* ---------- Product page ---------- */
+.sgh-pd-price { color: var(--sgh-emerald-deep); }
+.sgh-pd-tabs .nav-link.active { color: var(--sgh-emerald-deep); border-bottom-color: var(--sgh-gold); }
+.sgh-pd-tabs .nav-link i { color: #B8863B; }
+.sgh-pd-card { box-shadow: 0 18px 50px rgba(70, 52, 20, 0.12); border-color: rgba(201, 160, 74, 0.3); }
+.sgh-pd-perks li, .sgh-pd-spec { background: #FBF6EA; }
+.sgh-pd-perks li > i, .sgh-pd-spec > i { background: #fff; color: var(--sgh-gold-deep); }
+
