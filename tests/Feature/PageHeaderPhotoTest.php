@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PageHeaderPhotoTest extends TestCase
@@ -20,6 +21,8 @@ class PageHeaderPhotoTest extends TestCase
 
     public function test_every_page_header_gets_the_warm_shade_but_the_home_page_has_no_photo_box(): void
     {
+        Storage::fake('public');
+
         foreach (['/shop', '/blog', '/tools', '/helper', '/assistant', '/recommended'] as $page) {
             $this->get($page)->assertOk()->assertSee('sgh-head-glow', false);
         }
@@ -27,8 +30,10 @@ class PageHeaderPhotoTest extends TestCase
         $this->get('/')->assertOk()->assertDontSee('sgh-head-photo', false);
     }
 
-    public function test_a_photo_appears_only_on_its_own_page_and_only_when_the_file_exists(): void
+    public function test_a_photo_placed_by_hand_appears_only_on_its_own_page(): void
     {
+        Storage::fake('public');
+
         $dir = public_path('assets/images/headers');
 
         foreach (['webp', 'jpg', 'jpeg', 'png'] as $ext) {

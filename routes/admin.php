@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PostImageController;
 use App\Http\Controllers\Admin\PostPreviewLinkController;
+use App\Http\Controllers\Admin\PagePictureController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\AccountController;
@@ -117,3 +118,10 @@ Route::resource('affiliate-links', AffiliateLinkController::class)
 
 // Activity log: who changed what (admins only)
 Route::get('activity', [ActivityLogController::class, 'index'])->name('activity');
+
+// Page pictures: the decoration photo in the green header of Shop, Blog, Tools and more
+Route::get('page-pictures', [PagePictureController::class, 'index'])->name('page-pictures.index');
+Route::post('page-pictures/{key}', [PagePictureController::class, 'update'])
+    ->middleware('throttle:20,1')->name('page-pictures.update');
+Route::delete('page-pictures/{key}', [PagePictureController::class, 'destroy'])
+    ->middleware('throttle:30,1')->name('page-pictures.destroy');

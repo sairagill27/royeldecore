@@ -11,11 +11,20 @@
     };
 
     $headPhoto = null;
+    $headVersion = null;
     if ($headKey) {
-        foreach (['webp', 'jpg', 'jpeg', 'png'] as $ext) {
-            if (file_exists(public_path('assets/images/headers/' . $headKey . '.' . $ext))) {
-                $headPhoto = 'assets/images/headers/' . $headKey . '.' . $ext;
-                break;
+        // 1. a picture uploaded in Admin > Page pictures
+        $stored = 'page-headers/' . $headKey . '.jpg';
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($stored)) {
+            $headPhoto   = 'storage/' . $stored;
+            $headVersion = \Illuminate\Support\Facades\Storage::disk('public')->lastModified($stored);
+        } else {
+            // 2. a file placed by hand in public/assets/images/headers/
+            foreach (['webp', 'jpg', 'jpeg', 'png'] as $ext) {
+                if (file_exists(public_path('assets/images/headers/' . $headKey . '.' . $ext))) {
+                    $headPhoto = 'assets/images/headers/' . $headKey . '.' . $ext;
+                    break;
+                }
             }
         }
     }
@@ -23,7 +32,7 @@
 <div class="sgh-head-glow" aria-hidden="true"></div>
 @if ($headPhoto)
     <div class="sgh-head-photo" aria-hidden="true">
-        <img src="{{ asset($headPhoto) }}" alt="" width="1600" height="700" loading="eager" decoding="async">
+        <img src="{{ asset($headPhoto) }}{{ $headVersion ? '?v=' . $headVersion : '' }}" alt="" width="1600" height="700" loading="eager" decoding="async">
     </div>
 @endif
 {{-- Decorative leaf branches for the dark green tool header. Pure SVG, no image files. --}}
