@@ -6209,3 +6209,48 @@ a:focus-visible, .btn:focus-visible { outline: 3px solid rgba(154, 116, 40, 0.55
 .sgh-pd-perks li, .sgh-pd-spec { background: #FBF6EA; }
 .sgh-pd-perks li > i, .sgh-pd-spec > i { background: #fff; color: var(--sgh-gold-deep); }
 
+
+/* =====================================================
+   64. HEADER PHOTO: bigger, clearer and more central. To change it, edit only the numbers in :root below.
+   ===================================================== */
+:root {
+    --sgh-head-photo-width: 62%;       /* laptops: how much of the header the photo takes (bigger = more toward the center) */
+    --sgh-head-photo-opacity: 1;       /* 1 = full strength, 0.8 = softer */
+    --sgh-head-fade: 36%;              /* how much of the photo's left side fades into the green (smaller = clearer photo) */
+    --sgh-head-fade-bottom: 72%;       /* where the photo starts to fade at the bottom (so the buttons sit on calm green) */
+    --sgh-head-focus: 50% 50%;         /* which part of the photo stays in view: "left center", "right center", "50% 30%"... */
+}
+
+.sgh-head-photo img { object-position: var(--sgh-head-focus); }
+
+/* The tint is only on the left edge now, so the middle and right keep their real colors */
+.sgh-head-photo::after { background: linear-gradient(90deg, rgba(31, 58, 43, 0.42) 0%, rgba(31, 58, 43, 0) 55%); }
+
+@media (min-width: 992px) {
+    .sgh-head-photo {
+        width: var(--sgh-head-photo-width);
+        opacity: var(--sgh-head-photo-opacity);
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--sgh-head-fade)),
+                            linear-gradient(to bottom, #000 0, #000 var(--sgh-head-fade-bottom), transparent 100%);
+        mask-image: linear-gradient(to right, transparent 0, #000 var(--sgh-head-fade)),
+                    linear-gradient(to bottom, #000 0, #000 var(--sgh-head-fade-bottom), transparent 100%);
+        -webkit-mask-composite: source-in;
+        mask-composite: intersect;
+    }
+}
+
+/* Nothing is drawn on top of the photo */
+.sgh-head-photo ~ .sgh-tool-leaves { display: none; }
+
+/* Small items on top of the photo: dark glass, easy to read */
+.sgh-head-photo ~ .container .sgh-shop-count { background: rgba(24, 46, 34, 0.78); }
+.sgh-head-photo ~ .container .sgh-pill:not(.active) {
+    background: rgba(24, 46, 34, 0.62);
+    border-color: rgba(255, 255, 255, 0.35);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+/* A soft shadow keeps the white words readable even over a bright photo */
+.sgh-head-photo ~ .container .sgh-tool-head-title,
+.sgh-head-photo ~ .container .sgh-tool-head-text { text-shadow: 0 1px 14px rgba(10, 30, 20, 0.55); }
