@@ -51,8 +51,8 @@ class PagePictureTest extends TestCase
         Storage::disk('public')->assertExists('page-headers/shop.jpg');
 
         $info = getimagesizefromstring(Storage::disk('public')->get('page-headers/shop.jpg'));
-        $this->assertSame(1600, $info[0]);
-        $this->assertSame(700, $info[1]);
+        $this->assertSame((int) config('pagepictures.width'), $info[0]);
+        $this->assertSame((int) config('pagepictures.height'), $info[1]);
         $this->assertSame(IMAGETYPE_JPEG, $info[2]);
 
         $this->get('/shop')->assertOk()
@@ -75,7 +75,7 @@ class PagePictureTest extends TestCase
         }
 
         $info = getimagesizefromstring(Storage::disk('public')->get('page-headers/blog.jpg'));
-        $this->assertSame([1600, 700], [$info[0], $info[1]]);
+        $this->assertSame([(int) config('pagepictures.width'), (int) config('pagepictures.height')], [$info[0], $info[1]]);
     }
 
     public function test_a_new_picture_replaces_the_old_one(): void

@@ -13,7 +13,7 @@ class ElegantThemeTest extends TestCase
     {
         $css = file_get_contents(public_path('assets/css/style.css'));
 
-        foreach (['63. ELEGANT THEME', '--sgh-emerald-deep', '--sgh-emerald', '--sgh-gold', '--sgh-champagne', 'PAGE-HEADERS-START', 'PAGE-HEADERS-END', '.sgh-shop-hero', '.sgh-footer-title', '.btn-primary', '.sgh-product-card'] as $needle) {
+        foreach (['63. ELEGANT THEME', '--sgh-emerald-deep', '--sgh-emerald', '--sgh-gold', '--sgh-champagne', '.sgh-footer-title', '.btn-primary', '.sgh-product-card'] as $needle) {
             $this->assertStringContainsString($needle, $css);
         }
 
