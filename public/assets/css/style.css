@@ -6254,3 +6254,20 @@ a:focus-visible, .btn:focus-visible { outline: 3px solid rgba(154, 116, 40, 0.55
 /* A soft shadow keeps the white words readable even over a bright photo */
 .sgh-head-photo ~ .container .sgh-tool-head-title,
 .sgh-head-photo ~ .container .sgh-tool-head-text { text-shadow: 0 1px 14px rgba(10, 30, 20, 0.55); }
+
+/* =====================================================
+   65. ABOUT AND CONTACT PAGES
+   ===================================================== */
+.sgh-contact-icon { background: #F4E6C4; color: #8A6420; }
+
+.sgh-cta-band {
+    padding: 2.25rem 1.5rem;
+    color: #fff;
+    border-radius: 24px;
+    border-bottom: 3px solid #CFA55A;
+    background:
+        radial-gradient(48% 90% at 4% 0%, rgba(214, 168, 88, 0.3) 0%, transparent 62%),
+        linear-gradient(115deg, var(--sgh-emerald-deep, #1F3A2B) 0%, var(--sgh-emerald, #2F5240) 55%, var(--sgh-emerald-soft, #3E6B52) 100%);
+}
+.sgh-cta-band h2 { color: #fff; }
+.sgh-cta-band p { color: rgba(255, 255, 255, 0.86) !important; }
