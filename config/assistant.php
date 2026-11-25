@@ -14,5 +14,6 @@ return [
 
     // Daily caps. They protect the free plan. Each person is counted by login or by internet address.
     'per_person_daily' => (int) env('ASSISTANT_DAILY_PER_PERSON', 30),
+    'per_ip_daily'     => (int) env('ASSISTANT_DAILY_PER_IP', 150),     // one internet address (many people can share it)
     'total_daily'      => (int) env('ASSISTANT_DAILY_TOTAL', 800),
 ];

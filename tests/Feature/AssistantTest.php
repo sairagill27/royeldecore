@@ -324,6 +324,7 @@ class AssistantTest extends TestCase
         Http::fake();
         $this->aiOff();
         config(['assistant.per_person_daily' => 2]);
+        $this->withSession(['assistant_vid' => str_repeat('a', 32)]);   // the same visitor every time
 
         $this->ask('wall clock')->assertOk();
         $this->ask('mirror')->assertOk();

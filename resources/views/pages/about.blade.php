@@ -6,7 +6,8 @@
 @section('content')
 
 {{-- Banner --}}
-<section class="sgh-shop-hero">
+<section class="sgh-tool-head">
+    @include('tools._leaves')
     <div class="container position-relative">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-3">
@@ -14,9 +15,14 @@
                 <li class="breadcrumb-item active" aria-current="page">About</li>
             </ol>
         </nav>
-        <p class="sgh-eyebrow mb-2">About us</p>
-        <h1 class="sgh-shop-hero-title mb-2">Making every room feel like home</h1>
-        <p class="text-secondary mb-0">Décor you will love, and ideas to help you place it.</p>
+        <div class="sgh-tool-head-row">
+            <span class="sgh-tool-head-icon" aria-hidden="true"><i class="bi bi-house-heart"></i></span>
+            <div>
+                <span class="sgh-tool-badge"><i class="bi bi-stars" aria-hidden="true"></i> About us</span>
+                <h1 class="sgh-tool-head-title">Making every room feel like home</h1>
+                <p class="sgh-tool-head-text">Décor you will love, and ideas to help you place it.</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -68,13 +74,36 @@
         </div>
     </div>
 
+    {{-- Explore --}}
+    <div class="mb-5">
+        <h2 class="h3 text-center mb-4">Explore {{ config('app.name') }}</h2>
+        <div class="row row-cols-2 row-cols-lg-4 g-3">
+            @foreach ([
+                ['Shop décor', url('/shop'), 'bi-bag-heart', 'Wall art, mirrors, clocks and more'],
+                ['Read the journal', url('/blog'), 'bi-journal-richtext', 'Ideas and guides for your home'],
+                ['Décor tools', route('tools.index'), 'bi-rulers', 'Free calculators to plan your room'],
+                ['Décor Helper', route('helper'), 'bi-magic', 'Ideas by room, style and budget'],
+            ] as [$exTitle, $exUrl, $exIcon, $exText])
+                <div class="col">
+                    <a href="{{ $exUrl }}" class="card h-100 border-0 shadow-sm rounded-4 text-decoration-none sgh-lift">
+                        <div class="card-body text-center p-4">
+                            <span class="sgh-rec-icon sgh-rec-icon--green mb-3"><i class="bi {{ $exIcon }}" aria-hidden="true"></i></span>
+                            <h3 class="h6 mb-1 text-body">{{ $exTitle }}</h3>
+                            <p class="small text-secondary mb-0">{{ $exText }}</p>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
     {{-- Call to action --}}
-    <div class="sgh-success text-center">
+    <div class="sgh-cta-band text-center">
         <h2 class="h4 mb-2">Ready to refresh your space?</h2>
         <p class="text-secondary mb-3">Browse the shop or get in touch.</p>
         <div class="d-flex flex-wrap justify-content-center gap-2">
-            <a href="{{ url('/shop') }}" class="btn btn-primary rounded-pill px-4">Shop décor</a>
-            <a href="{{ route('contact') }}" class="btn btn-outline-primary rounded-pill px-4">Contact us</a>
+            <a href="{{ url('/shop') }}" class="btn btn-light rounded-pill px-4">Shop décor</a>
+            <a href="{{ route('contact') }}" class="btn btn-outline-light rounded-pill px-4">Contact us</a>
         </div>
     </div>
 </div>

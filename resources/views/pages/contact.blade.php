@@ -6,7 +6,8 @@
 @section('content')
 
 {{-- ============ PAGE HEADER (reuses the shop banner style) ============ --}}
-<section class="sgh-shop-hero">
+<section class="sgh-tool-head">
+    @include('tools._leaves')
     <div class="container position-relative">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb small mb-3">
@@ -14,9 +15,14 @@
                 <li class="breadcrumb-item active" aria-current="page">Contact</li>
             </ol>
         </nav>
-        <p class="sgh-eyebrow mb-2">Get in touch</p>
-        <h1 class="sgh-shop-hero-title mb-2">We would love to hear from you</h1>
-        <p class="text-secondary mb-0">Questions about an order, a product or your décor plans? Send us a message.</p>
+        <div class="sgh-tool-head-row">
+            <span class="sgh-tool-head-icon" aria-hidden="true"><i class="bi bi-chat-heart"></i></span>
+            <div>
+                <span class="sgh-tool-badge"><i class="bi bi-stars" aria-hidden="true"></i> Get in touch</span>
+                <h1 class="sgh-tool-head-title">We would love to hear from you</h1>
+                <p class="sgh-tool-head-text">Questions about an order, a product or your décor plans? Send us a message.</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -35,7 +41,54 @@
                 </div>
             </div>
 
-            {{-- To add a phone number or an address later, copy the box above and change the icon and text --}}
+            @php
+    // Only valid details are shown (set CONTACT_WHATSAPP, CONTACT_PHONE and CONTACT_ADDRESS in .env)
+    $cWa = preg_replace('/\D/', '', (string) config('contact.whatsapp'));
+    $cWa = (strlen($cWa) >= 10 && strlen($cWa) <= 15) ? $cWa : null;
+
+    $cPhone = preg_replace('/[^0-9+]/', '', (string) config('contact.phone'));
+    $cPhone = (strlen(preg_replace('/\D/', '', $cPhone)) >= 7) ? $cPhone : null;
+
+    $cAddress = trim((string) config('contact.address'));
+@endphp
+
+            @if ($cWa)
+                <div class="sgh-contact-card mb-3">
+                    <span class="sgh-contact-icon"><i class="bi bi-whatsapp"></i></span>
+                    <div>
+                        <strong>WhatsApp</strong>
+                        <a href="https://wa.me/{{ $cWa }}?text={{ rawurlencode('Hello ' . config('app.name') . ', I have a question.') }}" target="_blank" rel="noopener noreferrer">Chat with us</a>
+                    </div>
+                </div>
+            @endif
+
+            @if ($cPhone)
+                <div class="sgh-contact-card mb-3">
+                    <span class="sgh-contact-icon"><i class="bi bi-telephone"></i></span>
+                    <div>
+                        <strong>Call us</strong>
+                        <a href="tel:{{ $cPhone }}">{{ config('contact.phone') }}</a>
+                    </div>
+                </div>
+            @endif
+
+            @if ($cAddress !== '')
+                <div class="sgh-contact-card mb-3">
+                    <span class="sgh-contact-icon"><i class="bi bi-geo-alt"></i></span>
+                    <div>
+                        <strong>Visit us</strong>
+                        <span class="text-secondary small">{{ $cAddress }}</span>
+                    </div>
+                </div>
+            @endif
+
+            <div class="sgh-contact-card mb-3">
+                <span class="sgh-contact-icon"><i class="bi bi-stars"></i></span>
+                <div>
+                    <strong>Quick question?</strong>
+                    <a href="{{ route('assistant') }}">Ask the Décor Assistant</a>
+                </div>
+            </div>
 
             <div class="sgh-contact-card">
                 <span class="sgh-contact-icon"><i class="bi bi-chat-heart"></i></span>

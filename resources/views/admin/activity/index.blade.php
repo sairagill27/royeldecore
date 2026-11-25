@@ -17,6 +17,9 @@
         'affiliate.checked' => 'Link checked',
         'affiliate.deleted' => 'Link deleted',
         'affiliate.blocked' => 'Unsafe address blocked',
+        'assistant.answer.created' => 'Assistant answer added',
+        'assistant.answer.updated' => 'Assistant answer edited',
+        'assistant.answer.deleted' => 'Assistant answer deleted',
     ];
 @endphp
 

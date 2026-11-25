@@ -7,6 +7,8 @@
         request()->is('helper')                                => 'helper',
         request()->is('assistant')                             => 'assistant',
         request()->is('recommended')                           => 'recommended',
+        request()->is('about')                                 => 'about',
+        request()->is('contact')                               => 'contact',
         default                                                => null,
     };
 

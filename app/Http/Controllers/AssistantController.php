@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\AssistantUnavailable;
+use App\Models\AssistantAnswer;
+use App\Models\AssistantUsage;
 use App\Models\Category;
 use App\Services\AssistantAI;
 use App\Services\AssistantCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 
 class AssistantController extends Controller
@@ -16,13 +19,14 @@ class AssistantController extends Controller
     public function show()
     {
         return view('assistant.index', [
-            'ai'         => AssistantAI::available(),
-            'categories' => Category::where('is_active', true)->orderBy('sort_order')->take(3)->pluck('name'),
-            'max'        => (int) config('assistant.max_chars', 500),
+            'ai'              => AssistantAI::available(),
+            'categories'      => Category::where('is_active', true)->orderBy('sort_order')->take(3)->pluck('name'),
+            'commonQuestions' => AssistantAnswer::active()->orderByDesc('hits')->orderBy('id')->take(3)->pluck('question'),
+            'max'             => (int) config('assistant.max_chars', 500),
         ]);
     }
 
-    // POST /assistant/ask: one question in, one answer out (as JSON). Nothing is saved except two daily counters.
+    // POST /assistant/ask: one question in, one answer out (as JSON). Nothing is saved except daily counters.
     public function ask(Request $request)
     {
         $max = (int) config('assistant.max_chars', 500);
@@ -38,18 +42,39 @@ class AssistantController extends Controller
             return $this->fail('Please keep your question under ' . $max . ' characters.', 422);
         }
 
-        // Daily limits protect the free plan. Each person is counted by login, or by internet address.
+        // 1. A saved answer is free and instant. It never uses the AI or the daily limits.
+        $saved = AssistantAnswer::match($message);
+        if ($saved) {
+            AssistantAnswer::whereKey($saved->id)->increment('hits');
+            AssistantUsage::hit('saved');
+
+            return response()->json([
+                'reply'     => $saved->answer,
+                'products'  => [],
+                'followups' => AssistantAnswer::suggest($saved->id),
+                'mode'      => 'saved',
+            ]);
+        }
+
+        // 2. Daily limits protect the free plan. A signed-in person is counted by account, anyone else by a private
+        //    cookie, so people who share one internet address (for example on a phone network) do not eat each other's limit.
+        //    The address has a bigger cap of its own, which stops someone who throws their cookie away.
         $day       = now()->format('Ymd');
-        $who       = $request->user() ? 'u' . $request->user()->id : 'ip' . $request->ip();
+        $who       = $request->user() ? 'u' . $request->user()->id : 'v' . $this->visitorId($request);
         $personKey = "assistant:{$day}:{$who}";
+        $ipKey     = "assistant:{$day}:ip:" . $request->ip();
         $totalKey  = "assistant:{$day}:all";
 
-        if ((int) Cache::get($personKey, 0) >= (int) config('assistant.per_person_daily', 30)) {
+        if ((int) Cache::get($personKey, 0) >= (int) config('assistant.per_person_daily', 30)
+            || (int) Cache::get($ipKey, 0) >= (int) config('assistant.per_ip_daily', 150)) {
+            AssistantUsage::hit('limited');
+
             return $this->fail("You have reached today's limit of questions. Please try the Décor Helper, or come back tomorrow.", 429);
         }
 
         $siteIsFull = (int) Cache::get($totalKey, 0) >= (int) config('assistant.total_daily', 800);
         $this->count($personKey);
+        $this->count($ipKey);
         $this->count($totalKey);
 
         $history = $this->cleanHistory($request->input('history'));
@@ -85,6 +110,8 @@ class AssistantController extends Controller
             }
         }
 
+        AssistantUsage::hit($mode);
+
         return response()->json([
             'reply'     => $reply,
             'products'  => $products->map(fn ($product) => AssistantCatalog::card($product))->all(),
@@ -105,6 +132,20 @@ class AssistantController extends Controller
     {
         Cache::add($key, 0, now()->endOfDay());
         Cache::increment($key);
+    }
+
+    // A private random number kept in the visitor's session (the session cookie that Laravel already uses).
+    // People who share one internet address do not eat each other's limit, and no extra cookie is needed.
+    private function visitorId(Request $request): string
+    {
+        $id = $request->session()->get('assistant_vid');
+
+        if (! is_string($id) || ! preg_match('/^[a-f0-9]{32}$/', $id)) {
+            $id = bin2hex(random_bytes(16));
+            $request->session()->put('assistant_vid', $id);
+        }
+
+        return $id;
     }
 
     // The earlier messages, checked one by one: only "user" and "assistant", plain text, short, at most 12

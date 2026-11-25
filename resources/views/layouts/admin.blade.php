@@ -102,6 +102,11 @@
                         <i class="bi bi-image"></i> Page pictures
                     </a>
 
+                    <a href="{{ route('admin.assistant-answers.index') }}"
+                    class="sgh-admin-link {{ request()->routeIs('admin.assistant-answers.*', 'admin.assistant-usage') ? 'active' : '' }}">
+                        <i class="bi bi-chat-heart"></i> Assistant answers
+                    </a>
+
                     <a href="{{ route('admin.messages.index') }}"
                             class="sgh-admin-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
                             <i class="bi bi-envelope"></i> Messages

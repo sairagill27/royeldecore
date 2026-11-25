@@ -76,9 +76,13 @@
                         @foreach ($categories as $name)
                             <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-ask="Show me {{ $name }}">Show me {{ $name }}</button>
                         @endforeach
-                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-ask="Ideas for a small living room">Ideas for a small living room</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-ask="Gift ideas for a new home">Gift ideas for a new home</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-ask="How does cash on delivery work?">How does cash on delivery work?</button>
+                        @forelse ($commonQuestions as $common)
+                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-ask="{{ $common }}">{{ $common }}</button>
+                        @empty
+                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-ask="Ideas for a small living room">Ideas for a small living room</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-ask="Gift ideas for a new home">Gift ideas for a new home</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-ask="How does cash on delivery work?">How does cash on delivery work?</button>
+                        @endforelse
                     </div>
                 </div>
 

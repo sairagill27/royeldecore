@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PostImageController;
 use App\Http\Controllers\Admin\PostPreviewLinkController;
 use App\Http\Controllers\Admin\PagePictureController;
+use App\Http\Controllers\Admin\AssistantAnswerController;
+use App\Http\Controllers\Admin\AssistantUsageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductGalleryController;
 use App\Http\Controllers\Admin\AccountController;
@@ -125,3 +127,9 @@ Route::post('page-pictures/{key}', [PagePictureController::class, 'update'])
     ->middleware('throttle:20,1')->name('page-pictures.update');
 Route::delete('page-pictures/{key}', [PagePictureController::class, 'destroy'])
     ->middleware('throttle:30,1')->name('page-pictures.destroy');
+
+// Décor Assistant: the answers the shop writes itself, and how the assistant is used
+Route::get('assistant-usage', [AssistantUsageController::class, 'index'])->name('assistant-usage');
+Route::resource('assistant-answers', AssistantAnswerController::class)
+    ->parameters(['assistant-answers' => 'answer'])
+    ->except('show');
