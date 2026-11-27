@@ -7,6 +7,12 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## GitHub Pages preview
+
+The Pages site at <https://sairagill27.github.io/royeldecore/> is a static, read-only export of the public pages. GitHub Pages does not run Laravel or its database, so checkout, cart, sign-in, forms, and other server-backed features are unavailable there.
+
+The `design-update` branch deploys the contents of `docs/` with GitHub Actions. Enable GitHub Pages once in the repository settings by selecting **Settings → Pages → Build and deployment → Source → GitHub Actions**. To refresh the preview after changing site content, run `php artisan site:export --base=https://sairagill27.github.io/royeldecore --out=<empty-folder-outside-this-project>`, then replace the contents of `docs/` with the generated files (keep the repository's `README.md`) and push the changes.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

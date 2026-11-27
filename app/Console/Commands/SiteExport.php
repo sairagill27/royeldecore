@@ -25,6 +25,8 @@ class SiteExport extends Command
     protected $description = 'Saves a view-only static copy of the public pages (for a GitHub Pages preview)';
 
     private array $storageFiles = [];
+    private array $origins = [];
+    private string $base = '';
 
     public function handle(): int
     {
@@ -48,6 +50,9 @@ class SiteExport extends Command
 
         // Every link and picture in the pages will use the preview address, and nothing is saved while the pages are made
         // The list of pages is made FIRST, with plain paths. Once the preview address is forced, paths would start with its folder name.
+        $this->base    = $base;
+        $this->origins = array_values(array_unique(array_filter([rtrim((string) config('app.url'), '/'), 'http://localhost', 'https://localhost'])));
+
         $paths = $this->paths();
 
         config(['session.driver' => 'array', 'cache.default' => 'array', 'preview.enabled' => false, 'app.url' => $base]);
@@ -181,6 +186,11 @@ class SiteExport extends Command
     // Adds the "do not list this page" mark, a small badge, and a guard that switches forms off
     private function finish(string $html): string
     {
+        // Links that still point at the address the pages were made from are pointed at the preview address
+        foreach ($this->origins as $origin) {
+            $html = str_replace([$origin, str_replace('/', '\/', $origin)], [$this->base, str_replace('/', '\/', $this->base)], $html);
+        }
+
         $head = '<meta name="robots" content="noindex, nofollow">' . "\n";
 
         $tail = <<<'HTML'
